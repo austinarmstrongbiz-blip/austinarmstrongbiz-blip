@@ -310,3 +310,18 @@ html {
 
 /* ─── LINKS ──────────────────────────────────────────────────────── */
 a { color: inherit; text-decoration: none; }
+
+/* ─── MOBILE NAV ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .desktop-nav { display: none !important; }
+  .mobile-menu-btn { display: flex !important; }
+}
+
+/* ─── PILLAR COLORS ──────────────────────────────────────────────── */
+/* Used on essay/pillar cards as accent colors */
+:root {
+  --color-pillar-lifestyle: #c9a96e;
+  --color-pillar-ai:        #6ea5c9;
+  --color-pillar-finance:   #6ec98a;
+  --color-pillar-personal:  #c96e8a;
+}

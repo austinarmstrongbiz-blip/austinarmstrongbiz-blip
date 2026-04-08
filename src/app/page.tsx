@@ -243,14 +243,15 @@ export default function HomePage() {
           >
             Contents
           </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "0" }} />
+          <hr className="rule rule-thick animate-fade-up" style={{ marginBottom: "0", animationDelay: "0.1s" }} />
 
           {sections.map((section, i) => (
             <Link
               key={section.href}
               href={section.href}
-              className={`animate-fade-up delay-${(i + 2) * 100}`}
+              className="animate-fade-up"
               style={{
+                animationDelay: `${(i + 2) * 0.1}s`,
                 display: "grid",
                 gridTemplateColumns: "3rem 1fr 1.5rem",
                 gap: "1.5rem",

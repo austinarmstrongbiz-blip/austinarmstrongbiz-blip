@@ -174,8 +174,9 @@ export default function ResumePage() {
           {experience.map((job, i) => (
             <article
               key={`${job.role}-${job.company}`}
-              className={`animate-fade-up delay-${(i + 2) * 100}`}
+              className="animate-fade-up"
               style={{
+                animationDelay: `${(i + 2) * 0.1}s`,
                 paddingBottom: "3rem",
                 marginBottom: "3rem",
                 borderBottom: "1px solid var(--color-rule)",
@@ -296,7 +297,7 @@ export default function ResumePage() {
             }}
           >
             {skills.map((group, i) => (
-              <div key={group.label} className={`animate-fade-up delay-${(i + 2) * 100}`}>
+              <div key={group.label} className="animate-fade-up" style={{ animationDelay: `${(i + 2) * 0.1}s` }}>
                 <div className="text-label" style={{ marginBottom: "1rem" }}>
                   {group.label}
                 </div>

@@ -212,8 +212,9 @@ export default function EssaysPage() {
           {rest.map((essay, i) => (
             <article
               key={essay.slug}
-              className={`animate-fade-up delay-${(i + 2) * 100}`}
+              className="animate-fade-up"
               style={{
+                animationDelay: `${(i + 2) * 0.1}s`,
                 padding: "2.5rem 0",
                 borderBottom: "1px solid var(--color-rule)",
                 cursor: "pointer",

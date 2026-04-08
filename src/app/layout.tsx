@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import MobileNav from "@/components/ui/MobileNav";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -112,7 +113,9 @@ export default function RootLayout({
             >
               <LogoWordmark />
 
+              {/* Desktop nav — hidden on mobile */}
               <ul
+                className="desktop-nav"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -130,6 +133,9 @@ export default function RootLayout({
                   </li>
                 ))}
               </ul>
+
+              {/* Mobile nav — hamburger + drawer */}
+              <MobileNav />
             </nav>
           </div>
         </header>

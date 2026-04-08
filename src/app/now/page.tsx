@@ -158,8 +158,9 @@ export default function NowPage() {
             {reading.map((book, i) => (
               <article
                 key={book.title}
-                className={`animate-fade-up delay-${(i + 2) * 100}`}
+                className="animate-fade-up"
                 style={{
+                  animationDelay: `${(i + 2) * 0.1}s`,
                   padding: "2rem 0",
                   borderBottom: "1px solid var(--color-rule)",
                 }}
@@ -249,7 +250,8 @@ export default function NowPage() {
             {thinking.map((thought, i) => (
               <article
                 key={thought.idea}
-                className={`animate-fade-up delay-${(i + 2) * 100}`}
+                className="animate-fade-up"
+                style={{ animationDelay: `${(i + 2) * 0.1}s` }}
               >
                 <div
                   style={{
