@@ -1,33 +1,95 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,opsz,wght@0,5..1200,400..900;1,5..1200,400..900&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..900;1,9..40,100..900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+/* ─── BASILIA LOCAL FONTS ─────────────────────────────────────────
+   Drop your Basilia font files into /public/fonts/ and these
+   @font-face rules will pick them up automatically.
+   Supported filenames (rename yours to match, or update src below):
+   ----------------------------------------------------------------- */
+/* Google Fonts — must come before @font-face blocks */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..900;1,9..40,100..900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-Regular.otf") format("opentype"),
+       url("/fonts/Basilia-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-Italic.otf") format("opentype"),
+       url("/fonts/Basilia-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-Medium.otf") format("opentype"),
+       url("/fonts/Basilia-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-MediumItalic.otf") format("opentype"),
+       url("/fonts/Basilia-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-Bold.otf") format("opentype"),
+       url("/fonts/Basilia-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-BoldItalic.otf") format("opentype"),
+       url("/fonts/Basilia-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-Black.otf") format("opentype"),
+       url("/fonts/Basilia-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basilia";
+  src: url("/fonts/Basilia-BlackItalic.otf") format("opentype"),
+       url("/fonts/Basilia-BlackItalic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
 
 /* ─── DESIGN TOKENS ──────────────────────────────────────────────── */
 @theme {
-  /* Colors */
-  --color-ink:        #0a0a0a;
-  --color-cream:      #f5f0e8;
-  --color-cream-dim:  #d8d2c6;
-  --color-gold:       #c8a96e;
-  --color-gold-dim:   #8a7249;
-  --color-sage:       #4a7c6b;
-  --color-sage-dim:   #2e4f43;
-  --color-muted:      #6b6560;
-  --color-rule:       #2a2520;
-  --color-surface:    #111108;
-  --color-surface-2:  #181510;
+  /* Brand colors */
+  --color-yellow:      #fbd601;
+  --color-yellow-dim:  #e8c400;
+  --color-ink:         #231f20;
+  --color-ink-soft:    #4a4547;
+  --color-ink-muted:   #7a7577;
+  --color-bg:          #f9f9f9;
+  --color-bg-warm:     #ffffff;
+  --color-rule:        #e4e0db;
 
-  /* Typography scale */
-  --font-display: "DM Serif Display", "Playfair Display", Georgia, serif;
-  --font-serif:   "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  /* Typography */
+  --font-display: "Basilia", "Bodoni MT", "Didot", Georgia, serif;
   --font-sans:    "DM Sans", system-ui, sans-serif;
   --font-mono:    "JetBrains Mono", "Fira Code", monospace;
-
-  /* Spacing */
-  --spacing-gutter: 2rem;
-  --spacing-wide:   8rem;
 }
-
-/* ─── FONT IMPORTS (moved to top, before @theme) ─────────────────── */
 
 /* ─── RESET & BASE ───────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -37,8 +99,8 @@
 }
 
 html {
-  background: var(--color-ink);
-  color: var(--color-cream);
+  background: var(--color-bg);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.7;
@@ -48,177 +110,209 @@ html {
 }
 
 ::selection {
-  background: var(--color-gold);
+  background: var(--color-yellow);
   color: var(--color-ink);
 }
 
-/* ─── TYPOGRAPHY ─────────────────────────────────────────────────── */
-.font-display  { font-family: var(--font-display); }
-.font-serif    { font-family: var(--font-serif); }
-.font-mono     { font-family: var(--font-mono); }
+/* ─── TYPOGRAPHY UTILITIES ───────────────────────────────────────── */
+
+/* The brand's signature: yellow highlight underline
+   Sits behind text like a physical highlighter stroke */
+.brand-highlight {
+  position: relative;
+  display: inline;
+}
+.brand-highlight::after {
+  content: "";
+  position: absolute;
+  left: -0.05em;
+  right: -0.05em;
+  bottom: 0.06em;
+  height: 0.38em;
+  background: var(--color-yellow);
+  z-index: -1;
+}
+
+/* Full-width highlight bar (logo / hero usage) */
+.highlight-block {
+  background: var(--color-yellow);
+  display: inline-block;
+  padding: 0 0.15em;
+  line-height: 1;
+}
 
 .text-display {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 7.5rem);
-  line-height: 0.95;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.92;
   letter-spacing: -0.02em;
-  font-weight: 400;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .text-headline {
-  font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 4vw, 3rem);
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.05;
   letter-spacing: -0.015em;
   font-weight: 700;
+  font-style: italic;
 }
 
 .text-subhead {
-  font-family: var(--font-serif);
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  line-height: 1.3;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  line-height: 1.25;
   font-weight: 400;
   font-style: italic;
 }
 
 .text-label {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-ink-muted);
 }
 
-.text-body {
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.75;
-  color: var(--color-cream-dim);
-}
-
-/* ─── EDITORIAL COMPONENTS ───────────────────────────────────────── */
-
-/* Horizontal rule */
-.rule {
-  border: none;
-  border-top: 1px solid var(--color-rule);
-  margin: 0;
-}
-
-.rule-gold {
-  border-top-color: var(--color-gold-dim);
-}
-
-/* Pull quote */
-.pull-quote {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  line-height: 1.2;
-  font-style: italic;
-  color: var(--color-cream);
-  border-left: 2px solid var(--color-gold);
-  padding-left: 1.5rem;
-}
-
-/* Issue label / folio */
 .folio {
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-ink-muted);
 }
 
-/* Interest tag */
+/* ─── PULL QUOTE ─────────────────────────────────────────────────── */
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  line-height: 1.15;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--color-ink);
+  border-left: 3px solid var(--color-yellow);
+  padding-left: 1.25rem;
+}
+
+/* ─── INTEREST TAG ───────────────────────────────────────────────── */
 .interest-tag {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.25rem 0.6rem;
   border: 1px solid var(--color-rule);
-  color: var(--color-muted);
-  transition: all 0.2s ease;
+  color: var(--color-ink-muted);
+  transition: all 0.15s ease;
+  display: inline-block;
 }
 
 .interest-tag:hover {
-  border-color: var(--color-gold-dim);
-  color: var(--color-gold);
+  border-color: var(--color-yellow-dim);
+  background: var(--color-yellow);
+  color: var(--color-ink);
 }
 
-/* Nav link */
+/* ─── NAV LINK ───────────────────────────────────────────────────── */
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-ink-muted);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: var(--color-cream);
+.nav-link:hover {
+  color: var(--color-ink);
+}
+
+/* ─── HORIZONTAL RULE ────────────────────────────────────────────── */
+.rule {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+}
+
+.rule-thick {
+  border-top: 2px solid var(--color-ink);
 }
 
 /* ─── LAYOUT ─────────────────────────────────────────────────────── */
 .container-editorial {
   max-width: 1200px;
   margin-inline: auto;
-  padding-inline: 2rem;
+  padding-inline: 1.5rem;
 }
 
 @media (min-width: 768px) {
-  .container-editorial {
-    padding-inline: 4rem;
-  }
+  .container-editorial { padding-inline: 4rem; }
+}
+@media (min-width: 1200px) {
+  .container-editorial { padding-inline: 6rem; }
 }
 
-@media (min-width: 1200px) {
-  .container-editorial {
-    padding-inline: 6rem;
-  }
+/* ─── YELLOW BUTTON ──────────────────────────────────────────────── */
+.btn-yellow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.75rem;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  display: inline-block;
+  font-weight: 500;
+}
+.btn-yellow:hover { background: var(--color-yellow-dim); }
+
+.btn-outline {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.75rem;
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-block;
+}
+.btn-outline:hover {
+  background: var(--color-ink);
+  color: var(--color-bg);
 }
 
 /* ─── ANIMATIONS ─────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes slideRight {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
+.animate-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-in  { animation: fadeIn 0.8s ease both; }
 
-.animate-fade-up {
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-fade-in {
-  animation: fadeIn 1s ease both;
-}
-
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-.delay-600 { animation-delay: 0.6s; }
-.delay-700 { animation-delay: 0.7s; }
-.delay-800 { animation-delay: 0.8s; }
+.delay-100 { animation-delay: 0.10s; }
+.delay-200 { animation-delay: 0.20s; }
+.delay-300 { animation-delay: 0.30s; }
+.delay-400 { animation-delay: 0.40s; }
+.delay-500 { animation-delay: 0.50s; }
+.delay-600 { animation-delay: 0.60s; }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-ink); }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb { background: var(--color-rule); }
-::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-ink-muted); }
 
-/* ─── LINK DEFAULTS ──────────────────────────────────────────────── */
+/* ─── LINKS ──────────────────────────────────────────────────────── */
 a { color: inherit; text-decoration: none; }

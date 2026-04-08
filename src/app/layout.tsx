@@ -18,11 +18,56 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
-  { href: "/",       label: "Home"   },
   { href: "/now",    label: "Now"    },
   { href: "/essays", label: "Essays" },
   { href: "/resume", label: "CV"     },
 ];
+
+/* The brand logo — "Austin Armstrong." in Basilia Bold Italic
+   with the yellow highlight bar sitting under "Armstrong." */
+function LogoWordmark() {
+  return (
+    <Link
+      href="/"
+      style={{
+        fontFamily: "var(--font-display)",
+        fontWeight: 700,
+        fontStyle: "italic",
+        fontSize: "1.1rem",
+        lineHeight: 1,
+        color: "var(--color-ink)",
+        textDecoration: "none",
+        display: "inline-flex",
+        alignItems: "baseline",
+        gap: "0.3em",
+      }}
+      aria-label="Austin Armstrong — home"
+    >
+      <span>Austin</span>
+      {/* "Armstrong." with yellow highlight bar behind it */}
+      <span
+        style={{
+          position: "relative",
+          display: "inline-block",
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "-0.08em",
+            right: "-0.08em",
+            bottom: "-0.08em",
+            height: "0.42em",
+            background: "var(--color-yellow)",
+            zIndex: 0,
+          }}
+        />
+        <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
+      </span>
+    </Link>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -33,38 +78,41 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body
         className="min-h-full flex flex-col"
-        style={{ background: "var(--color-ink)", color: "var(--color-cream)" }}
+        style={{ background: "var(--color-bg)", color: "var(--color-ink)" }}
       >
-        {/* ── Top navigation bar ── */}
+        {/* ── Navigation ── */}
         <header
-          style={{ borderBottom: "1px solid var(--color-rule)" }}
-          className="sticky top-0 z-50"
-          role="banner"
+          style={{
+            borderBottom: "1px solid var(--color-rule)",
+            background: "rgba(249,249,249,0.94)",
+            backdropFilter: "blur(10px)",
+            position: "sticky",
+            top: 0,
+            zIndex: 50,
+          }}
         >
-          <div
-            style={{ background: "rgba(10,10,10,0.92)", backdropFilter: "blur(12px)" }}
-            className="container-editorial"
-          >
+          <div className="container-editorial">
             <nav
-              className="flex items-center justify-between"
-              style={{ height: "3.5rem" }}
+              style={{
+                height: "3.75rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
               aria-label="Primary"
             >
-              {/* Wordmark */}
-              <Link
-                href="/"
-                className="font-serif"
+              <LogoWordmark />
+
+              <ul
                 style={{
-                  fontSize: "1.05rem",
-                  letterSpacing: "0.01em",
-                  color: "var(--color-cream)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "2rem",
+                  listStyle: "none",
+                  margin: 0,
+                  padding: 0,
                 }}
               >
-                Austin Armstrong
-              </Link>
-
-              {/* Nav links */}
-              <ul className="flex items-center gap-8 list-none">
                 {navItems.map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} className="nav-link">
@@ -77,17 +125,42 @@ export default function RootLayout({
           </div>
         </header>
 
-        {/* ── Page content ── */}
+        {/* ── Content ── */}
         <main className="flex-1">{children}</main>
 
         {/* ── Footer ── */}
-        <footer style={{ borderTop: "1px solid var(--color-rule)" }}>
+        <footer
+          style={{
+            borderTop: "2px solid var(--color-ink)",
+            marginTop: "auto",
+          }}
+        >
+          {/* Yellow accent strip */}
+          <div style={{ height: "4px", background: "var(--color-yellow)" }} />
           <div
-            className="container-editorial flex items-center justify-between"
-            style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
+            className="container-editorial"
+            style={{
+              paddingTop: "1.75rem",
+              paddingBottom: "1.75rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "1rem",
+            }}
           >
-            <span className="folio">Austin Armstrong · {new Date().getFullYear()}</span>
-            <span className="folio">austin-armstrong.me</span>
+            <span
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "1rem",
+                color: "var(--color-ink)",
+              }}
+            >
+              Austin Armstrong.
+            </span>
+            <span className="folio">austin-armstrong.me · {new Date().getFullYear()}</span>
           </div>
         </footer>
       </body>

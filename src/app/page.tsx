@@ -51,42 +51,86 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section
         style={{
-          borderBottom: "1px solid var(--color-rule)",
           paddingTop: "5rem",
           paddingBottom: "0",
+          borderBottom: "1px solid var(--color-rule)",
         }}
       >
         <div className="container-editorial">
-          {/* Issue label */}
-          <div className="animate-fade-up folio" style={{ marginBottom: "3rem" }}>
-            Vol. I · Personal Site · Est. 2024
+          {/* Folio / edition label */}
+          <div className="animate-fade-up folio" style={{ marginBottom: "2.5rem" }}>
+            Personal site · Austin Armstrong
           </div>
 
-          {/* Display name */}
-          <h1
-            className="text-display animate-fade-up delay-100"
-            style={{ color: "var(--color-cream)", maxWidth: "16ch" }}
-          >
-            Austin
-            <br />
-            <em style={{ color: "var(--color-gold)", fontStyle: "italic" }}>
-              Armstrong.
-            </em>
+          {/* Big display name — Basilia Bold Italic, Pittsburgh yellow highlight */}
+          <h1 className="animate-fade-up delay-100" style={{ marginBottom: "0" }}>
+            {/* "Austin" — plain */}
+            <span
+              style={{
+                display: "block",
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "clamp(4rem, 10vw, 9rem)",
+                lineHeight: 0.9,
+                letterSpacing: "-0.025em",
+                color: "var(--color-ink)",
+              }}
+            >
+              Austin
+            </span>
+
+            {/* "Armstrong." — yellow highlight bar behind it, like the logo */}
+            <span
+              style={{
+                display: "inline-block",
+                position: "relative",
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "clamp(4rem, 10vw, 9rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.025em",
+                color: "var(--color-ink)",
+              }}
+            >
+              {/* Yellow bar — sits behind the text */}
+              <span
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: "0.06em",
+                  height: "0.4em",
+                  background: "var(--color-yellow)",
+                  zIndex: 0,
+                }}
+              />
+              <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
+            </span>
           </h1>
 
           {/* Tagline */}
           <div
             className="animate-fade-up delay-200"
             style={{
-              marginTop: "2.5rem",
-              borderTop: "1px solid var(--color-rule)",
+              marginTop: "3rem",
               paddingTop: "2rem",
               paddingBottom: "4rem",
+              borderTop: "1px solid var(--color-rule)",
+              maxWidth: "60ch",
             }}
           >
             <p
-              className="text-subhead"
-              style={{ maxWidth: "55ch", color: "var(--color-cream-dim)" }}
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 400,
+                fontStyle: "italic",
+                fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
+                lineHeight: 1.4,
+                color: "var(--color-ink-soft)",
+              }}
             >
               "I am someone who is curious about the world,
               <br />
@@ -112,61 +156,68 @@ export default function HomePage() {
               gap: "4rem",
             }}
           >
-            {/* Bio text */}
-            <div className="animate-fade-up delay-300">
+            {/* Bio */}
+            <div className="animate-fade-up delay-200">
               <div className="text-label" style={{ marginBottom: "1.5rem" }}>
                 About
               </div>
               <p
                 style={{
+                  fontFamily: "var(--font-sans)",
                   fontSize: "1.1rem",
                   lineHeight: 1.8,
-                  color: "var(--color-cream-dim)",
-                  marginBottom: "1.5rem",
-                  fontFamily: "var(--font-sans)",
+                  color: "var(--color-ink-soft)",
+                  marginBottom: "1.25rem",
                 }}
               >
-                I'm a generalist who refuses to stay in a single lane. My thinking moves
-                across disciplines — from the mechanics of cognition and how ideas become
-                immune to criticism, to the mathematics of risk in barbell strategies, to
-                what it means to build a company worth building.
+                I'm a generalist who refuses to stay in a single lane. My
+                thinking moves across disciplines — from the mechanics of
+                cognition and how ideas become immune to criticism, to the
+                mathematics of risk in barbell strategies, to what it means to
+                build a company worth building.
               </p>
               <p
                 style={{
+                  fontFamily: "var(--font-sans)",
                   fontSize: "1.1rem",
                   lineHeight: 1.8,
-                  color: "var(--color-cream-dim)",
-                  marginBottom: "1.5rem",
-                  fontFamily: "var(--font-sans)",
+                  color: "var(--color-ink-soft)",
+                  marginBottom: "1.25rem",
                 }}
               >
-                I read obsessively. I think out loud here. If you're drawn to ideas that
-                don't fit neatly into a single domain — finance intersecting with
-                philosophy, AI intersecting with how we form beliefs, soccer intersecting
-                with everything — you'll find something worth your time.
+                I read obsessively. I think out loud here. If you're drawn to
+                ideas that don't fit neatly into a single domain — finance
+                intersecting with philosophy, AI intersecting with how we form
+                beliefs, soccer intersecting with everything — you'll find
+                something worth your time.
               </p>
               <p
                 style={{
+                  fontFamily: "var(--font-sans)",
                   fontSize: "1.1rem",
                   lineHeight: 1.8,
-                  color: "var(--color-cream-dim)",
-                  fontFamily: "var(--font-sans)",
+                  color: "var(--color-ink-soft)",
                 }}
               >
-                Always reading. Deeply invested in my family and the humans around me.
+                Always reading. Deeply invested in my family and the humans
+                around me.
               </p>
             </div>
 
             {/* Pull quote + interests */}
-            <div className="animate-fade-up delay-400">
-              <blockquote className="pull-quote" style={{ marginBottom: "3rem" }}>
+            <div className="animate-fade-up delay-300">
+              {/* Pull quote with yellow left-border */}
+              <blockquote
+                className="pull-quote"
+                style={{ marginBottom: "3rem" }}
+              >
                 The generalist sees connections the specialist never will.
               </blockquote>
 
               <div className="text-label" style={{ marginBottom: "1rem" }}>
                 Areas of interest
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
                 {interests.map((interest) => (
                   <span key={interest} className="interest-tag">
                     {interest}
@@ -178,69 +229,82 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── SECTIONS INDEX ───────────────────────────────────────── */}
-      <section style={{ paddingTop: "5rem", paddingBottom: "6rem" }}>
+      {/* ── SECTION INDEX ────────────────────────────────────────── */}
+      <section
+        style={{
+          paddingTop: "5rem",
+          paddingBottom: "6rem",
+        }}
+      >
         <div className="container-editorial">
-          <div className="text-label animate-fade-up delay-200" style={{ marginBottom: "3rem" }}>
+          <div
+            className="text-label animate-fade-up"
+            style={{ marginBottom: "0.5rem" }}
+          >
             Contents
           </div>
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "0" }} />
 
-          <div>
-            {sections.map((section, i) => (
-              <Link
-                key={section.href}
-                href={section.href}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "3rem 1fr 2rem",
-                  alignItems: "start",
-                  gap: "1.5rem",
-                  padding: "2rem 0",
-                  borderBottom: "1px solid var(--color-rule)",
-                  textDecoration: "none",
-                }}
-                className={`animate-fade-up delay-${(i + 3) * 100}`}
-              >
-                <span className="folio" style={{ paddingTop: "0.3rem" }}>
-                  {section.num}
-                </span>
-                <div>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontSize: "1.5rem",
-                      fontWeight: 700,
-                      letterSpacing: "-0.01em",
-                      color: "var(--color-cream)",
-                      marginBottom: "0.4rem",
-                    }}
-                  >
-                    {section.label}
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "var(--color-muted)",
-                      fontFamily: "var(--font-sans)",
-                    }}
-                  >
-                    {section.desc}
-                  </p>
-                </div>
-                <span
+          {sections.map((section, i) => (
+            <Link
+              key={section.href}
+              href={section.href}
+              className={`animate-fade-up delay-${(i + 2) * 100}`}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "3rem 1fr 1.5rem",
+                gap: "1.5rem",
+                alignItems: "start",
+                padding: "2.25rem 0",
+                borderBottom: "1px solid var(--color-rule)",
+                textDecoration: "none",
+                transition: "background 0.15s ease",
+              }}
+            >
+              <span className="folio" style={{ paddingTop: "0.3rem" }}>
+                {section.num}
+              </span>
+
+              <div>
+                <div
                   style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "1.1rem",
-                    color: "var(--color-muted)",
-                    paddingTop: "0.25rem",
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 700,
+                    fontStyle: "italic",
+                    fontSize: "clamp(1.4rem, 3vw, 2rem)",
+                    lineHeight: 1.05,
+                    letterSpacing: "-0.015em",
+                    color: "var(--color-ink)",
+                    marginBottom: "0.5rem",
                   }}
-                  aria-hidden
                 >
-                  →
-                </span>
-              </Link>
-            ))}
-          </div>
+                  {section.label}
+                </div>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "0.9rem",
+                    color: "var(--color-ink-muted)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {section.desc}
+                </p>
+              </div>
+
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "1rem",
+                  color: "var(--color-ink-muted)",
+                  paddingTop: "0.3rem",
+                }}
+                aria-hidden
+              >
+                →
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
     </>

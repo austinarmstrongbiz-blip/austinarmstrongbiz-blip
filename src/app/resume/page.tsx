@@ -5,7 +5,6 @@ export const metadata: Metadata = {
   description: "Austin Armstrong — curriculum vitae.",
 };
 
-/* ─── DATA ─────────────────────────────────────────────────────────── */
 const experience = [
   {
     role: "Founder & CEO",
@@ -41,6 +40,25 @@ const experience = [
   },
 ];
 
+const skills = [
+  {
+    label: "Strategy & Vision",
+    items: ["Product strategy", "Go-to-market", "Fundraising", "Team building"],
+  },
+  {
+    label: "Thinking Frameworks",
+    items: ["Systems thinking", "Barbell strategy", "First principles", "Mental models"],
+  },
+  {
+    label: "Domain Knowledge",
+    items: ["AI / LLMs", "Consumer growth", "B2B SaaS", "FinTech"],
+  },
+  {
+    label: "Communication",
+    items: ["Long-form writing", "Public speaking", "Investor narrative", "Team alignment"],
+  },
+];
+
 const education = [
   {
     degree: "B.S., Economics",
@@ -50,68 +68,90 @@ const education = [
   },
 ];
 
-const skills = [
-  { label: "Strategy & Vision",        items: ["Product strategy", "Go-to-market", "Fundraising", "Team building"] },
-  { label: "Thinking Frameworks",       items: ["Systems thinking", "Barbell strategy", "First principles", "Mental models"] },
-  { label: "Domain Knowledge",          items: ["AI / LLMs", "Consumer growth", "B2B SaaS", "FinTech"] },
-  { label: "Communication",             items: ["Long-form writing", "Public speaking", "Investor narrative", "Team alignment"] },
-];
-
-/* ─── PAGE ─────────────────────────────────────────────────────────── */
 export default function ResumePage() {
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
       <section
         style={{
-          paddingTop: "5rem",
+          paddingTop: "0",
           paddingBottom: "4rem",
-          borderBottom: "1px solid var(--color-rule)",
+          borderBottom: "2px solid var(--color-ink)",
         }}
       >
-        <div className="container-editorial">
+        <div style={{ background: "var(--color-yellow)", height: "4px" }} />
+        <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <div className="animate-fade-up folio" style={{ marginBottom: "2rem" }}>
             Curriculum Vitae
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "2rem",
-            }}
+          {/* Name as display type */}
+          <h1
+            className="animate-fade-up delay-100"
+            style={{ marginBottom: "2.5rem" }}
           >
-            <div>
-              <h1
-                className="text-display animate-fade-up delay-100"
-                style={{ color: "var(--color-cream)" }}
-              >
-                Austin
-                <br />
-                Armstrong
-              </h1>
-            </div>
-
-            <div className="animate-fade-up delay-200">
-              <p
+            <span
+              style={{
+                display: "block",
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "clamp(3rem, 8vw, 7rem)",
+                lineHeight: 0.92,
+                letterSpacing: "-0.025em",
+                color: "var(--color-ink)",
+              }}
+            >
+              Austin
+            </span>
+            <span
+              style={{
+                display: "inline-block",
+                position: "relative",
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "clamp(3rem, 8vw, 7rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.025em",
+                color: "var(--color-ink)",
+              }}
+            >
+              <span
+                aria-hidden
                 style={{
-                  fontFamily: "var(--font-sans)",
-                  fontStyle: "italic",
-                  fontSize: "1.1rem",
-                  color: "var(--color-cream-dim)",
-                  maxWidth: "50ch",
-                  marginBottom: "1.5rem",
-                  lineHeight: 1.7,
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: "0.06em",
+                  height: "0.4em",
+                  background: "var(--color-yellow)",
+                  zIndex: 0,
                 }}
-              >
-                Founder, generalist, and relentless reader. I build things at
-                the intersection of AI, knowledge, and human curiosity.
-              </p>
+              />
+              <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
+            </span>
+          </h1>
 
-              <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-                <span className="folio">austin-armstrong.me</span>
-                <span className="folio">Available for select advisory</span>
-              </div>
+          <div className="animate-fade-up delay-200">
+            <p
+              style={{
+                fontFamily: "var(--font-display)",
+                fontStyle: "italic",
+                fontWeight: 400,
+                fontSize: "1.15rem",
+                color: "var(--color-ink-soft)",
+                maxWidth: "50ch",
+                lineHeight: 1.5,
+                marginBottom: "1.5rem",
+              }}
+            >
+              Founder, generalist, and relentless reader. I build things at the
+              intersection of AI, knowledge, and human curiosity.
+            </p>
+            <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
+              <span className="folio">austin-armstrong.me</span>
+              <span className="folio">Available for select advisory</span>
             </div>
           </div>
         </div>
@@ -129,140 +169,148 @@ export default function ResumePage() {
           <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
             Experience
           </div>
-          <hr className="rule animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "0" }}>
-            {experience.map((job, i) => (
-              <article
-                key={`${job.role}-${job.company}`}
-                className={`animate-fade-up delay-${(i + 2) * 100}`}
+          {experience.map((job, i) => (
+            <article
+              key={`${job.role}-${job.company}`}
+              className={`animate-fade-up delay-${(i + 2) * 100}`}
+              style={{
+                paddingBottom: "3rem",
+                marginBottom: "3rem",
+                borderBottom: "1px solid var(--color-rule)",
+              }}
+            >
+              <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr",
-                  gap: "0.5rem",
-                  paddingBottom: "3rem",
-                  marginBottom: "3rem",
-                  borderBottom: "1px solid var(--color-rule)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "1.5rem",
+                  marginBottom: "1.25rem",
                 }}
               >
-                {/* Role header */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    gap: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <div>
-                    <h2
+                <div>
+                  <h2
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "1.4rem",
+                      letterSpacing: "-0.01em",
+                      color: "var(--color-ink)",
+                      lineHeight: 1.1,
+                    }}
+                  >
+                    {job.role}
+                  </h2>
+                  {/* Company with yellow underline accent */}
+                  <span
+                    style={{
+                      display: "inline-block",
+                      position: "relative",
+                      fontFamily: "var(--font-display)",
+                      fontStyle: "italic",
+                      fontWeight: 400,
+                      fontSize: "1rem",
+                      color: "var(--color-ink-soft)",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    <span
+                      aria-hidden
                       style={{
-                        fontFamily: "var(--font-serif)",
-                        fontSize: "1.3rem",
-                        fontWeight: 700,
-                        color: "var(--color-cream)",
-                        letterSpacing: "-0.01em",
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        bottom: "0",
+                        height: "0.35em",
+                        background: "var(--color-yellow)",
+                        zIndex: 0,
                       }}
-                    >
-                      {job.role}
-                    </h2>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "1rem",
-                        color: "var(--color-gold)",
-                        marginTop: "0.2rem",
-                      }}
-                    >
-                      {job.company}
-                    </p>
-                  </div>
-                  <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <div className="folio">{job.period}</div>
-                    <div className="folio" style={{ marginTop: "0.25rem" }}>
-                      {job.location}
-                    </div>
-                  </div>
+                    />
+                    <span style={{ position: "relative", zIndex: 1 }}>{job.company}</span>
+                  </span>
                 </div>
 
-                {/* Bullets */}
-                <ul
-                  style={{
-                    listStyle: "none",
-                    padding: 0,
-                    display: "grid",
-                    gap: "0.6rem",
-                  }}
-                >
-                  {job.bullets.map((bullet) => (
-                    <li
-                      key={bullet}
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <div className="folio">{job.period}</div>
+                  <div className="folio" style={{ marginTop: "0.3rem" }}>{job.location}</div>
+                </div>
+              </div>
+
+              <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: "0.6rem" }}>
+                {job.bullets.map((bullet) => (
+                  <li
+                    key={bullet}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1rem 1fr",
+                      gap: "0.75rem",
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.95rem",
+                      lineHeight: 1.7,
+                      color: "var(--color-ink-soft)",
+                    }}
+                  >
+                    <span
                       style={{
-                        display: "grid",
-                        gridTemplateColumns: "1rem 1fr",
-                        gap: "0.75rem",
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "0.95rem",
-                        lineHeight: 1.7,
-                        color: "var(--color-cream-dim)",
+                        width: "5px",
+                        height: "5px",
+                        background: "var(--color-yellow)",
+                        display: "inline-block",
+                        marginTop: "0.65rem",
+                        flexShrink: 0,
                       }}
-                    >
-                      <span
-                        style={{ color: "var(--color-gold-dim)", marginTop: "0.55rem", fontSize: "0.5rem" }}
-                        aria-hidden
-                      >
-                        ●
-                      </span>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
+                      aria-hidden
+                    />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
         </div>
       </section>
 
-      {/* ── Skills ─────────────────────────────────────────────── */}
+      {/* ── Competencies ───────────────────────────────────────── */}
       <section
         style={{
           paddingTop: "4rem",
           paddingBottom: "4rem",
           borderBottom: "1px solid var(--color-rule)",
-          background: "var(--color-surface)",
+          background: "var(--color-bg-warm)",
         }}
       >
         <div className="container-editorial">
           <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
             Competencies
           </div>
-          <hr className="rule animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              gap: "2.5rem",
+              gap: "3rem",
             }}
           >
             {skills.map((group, i) => (
-              <div
-                key={group.label}
-                className={`animate-fade-up delay-${(i + 2) * 100}`}
-              >
+              <div key={group.label} className={`animate-fade-up delay-${(i + 2) * 100}`}>
                 <div className="text-label" style={{ marginBottom: "1rem" }}>
                   {group.label}
                 </div>
-                <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: "0.4rem" }}>
+                <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: "0.5rem" }}>
                   {group.items.map((item) => (
                     <li
                       key={item}
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontSize: "0.9rem",
-                        color: "var(--color-cream-dim)",
+                        color: "var(--color-ink-soft)",
                         lineHeight: 1.5,
+                        paddingLeft: "0.75rem",
+                        borderLeft: "2px solid var(--color-yellow)",
                       }}
                     >
                       {item}
@@ -281,7 +329,7 @@ export default function ResumePage() {
           <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
             Education
           </div>
-          <hr className="rule animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
 
           {education.map((edu) => (
             <div
@@ -291,26 +339,31 @@ export default function ResumePage() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "flex-start",
-                gap: "1.5rem",
+                gap: "2rem",
               }}
             >
               <div>
                 <h2
                   style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: "1.2rem",
+                    fontFamily: "var(--font-display)",
                     fontWeight: 700,
-                    color: "var(--color-cream)",
+                    fontStyle: "italic",
+                    fontSize: "1.3rem",
+                    color: "var(--color-ink)",
+                    letterSpacing: "-0.01em",
+                    marginBottom: "0.3rem",
                   }}
                 >
                   {edu.degree}
                 </h2>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
+                    fontFamily: "var(--font-display)",
+                    fontStyle: "italic",
+                    fontWeight: 400,
                     fontSize: "1rem",
-                    color: "var(--color-gold)",
-                    marginTop: "0.2rem",
+                    color: "var(--color-ink-soft)",
+                    marginBottom: "0.5rem",
                   }}
                 >
                   {edu.institution}
@@ -319,21 +372,18 @@ export default function ResumePage() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "0.9rem",
-                    color: "var(--color-muted)",
-                    marginTop: "0.5rem",
+                    color: "var(--color-ink-muted)",
                     fontStyle: "italic",
                   }}
                 >
                   {edu.note}
                 </p>
               </div>
-              <div className="folio" style={{ flexShrink: 0 }}>
-                {edu.period}
-              </div>
+              <div className="folio" style={{ flexShrink: 0 }}>{edu.period}</div>
             </div>
           ))}
 
-          {/* Download CTA */}
+          {/* CTA */}
           <div
             style={{
               marginTop: "4rem",
@@ -342,33 +392,20 @@ export default function ResumePage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: "1rem",
+              gap: "1.5rem",
+              flexWrap: "wrap",
             }}
           >
             <p
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "0.9rem",
-                color: "var(--color-muted)",
+                color: "var(--color-ink-muted)",
               }}
             >
               For a formal PDF copy of this CV, reach out directly.
             </p>
-            <button
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                padding: "0.75rem 1.5rem",
-                border: "1px solid var(--color-rule)",
-                color: "var(--color-cream-dim)",
-                background: "transparent",
-                cursor: "pointer",
-              }}
-            >
-              Download PDF
-            </button>
+            <button className="btn-yellow">Download PDF</button>
           </div>
         </div>
       </section>

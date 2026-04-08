@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Essays",
-  description: "Long-form writing by Austin Armstrong on AI, cognition, finance, and the art of being a generalist.",
+  description:
+    "Long-form writing by Austin Armstrong on AI, cognition, finance, and the art of being a generalist.",
 };
 
 interface Essay {
@@ -16,7 +17,6 @@ interface Essay {
   featured?: boolean;
 }
 
-/* ─── STUB ESSAYS ─────────────────────────────────────────────────── */
 const essays: Essay[] = [
   {
     slug: "the-generalist-advantage",
@@ -42,7 +42,8 @@ const essays: Essay[] = [
   {
     slug: "barbell-strategy-career",
     title: "The Barbell Career",
-    subtitle: "Applying Taleb's anti-fragility framework to how you design your professional life",
+    subtitle:
+      "Applying Taleb's anti-fragility framework to how you design your professional life",
     date: "January 2024",
     readTime: "11 min",
     tag: "Barbell Strategy",
@@ -62,7 +63,8 @@ const essays: Essay[] = [
   {
     slug: "what-manchester-city-taught-me",
     title: "What Manchester City Taught Me About Systems Thinking",
-    subtitle: "Pep Guardiola runs a masterclass in organizational coherence every weekend",
+    subtitle:
+      "Pep Guardiola runs a masterclass in organizational coherence every weekend",
     date: "November 2023",
     readTime: "7 min",
     tag: "Soccer",
@@ -71,7 +73,6 @@ const essays: Essay[] = [
   },
 ];
 
-/* ─── PAGE ─────────────────────────────────────────────────────────── */
 export default function EssaysPage() {
   const featured = essays.find((e) => e.featured);
   const rest = essays.filter((e) => !e.featured);
@@ -81,31 +82,26 @@ export default function EssaysPage() {
       {/* ── Header ─────────────────────────────────────────────── */}
       <section
         style={{
-          paddingTop: "5rem",
+          paddingTop: "0",
           paddingBottom: "4rem",
           borderBottom: "1px solid var(--color-rule)",
         }}
       >
-        <div className="container-editorial">
+        {/* Top yellow bar */}
+        <div style={{ background: "var(--color-yellow)", height: "4px" }} />
+        <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <div className="animate-fade-up folio" style={{ marginBottom: "2rem" }}>
             {essays.length} essays · Long-form writing
           </div>
-
-          <h1
-            className="text-display animate-fade-up delay-100"
-            style={{ color: "var(--color-cream)" }}
-          >
-            Essays
-          </h1>
-
+          <h1 className="text-display animate-fade-up delay-100">Essays</h1>
           <p
             className="animate-fade-up delay-200"
             style={{
               marginTop: "2rem",
-              maxWidth: "55ch",
-              fontSize: "1.1rem",
+              maxWidth: "52ch",
+              fontSize: "1.05rem",
               lineHeight: 1.75,
-              color: "var(--color-cream-dim)",
+              color: "var(--color-ink-soft)",
               fontFamily: "var(--font-sans)",
             }}
           >
@@ -121,96 +117,85 @@ export default function EssaysPage() {
           style={{
             paddingTop: "4rem",
             paddingBottom: "4rem",
-            borderBottom: "1px solid var(--color-rule)",
-            background: "var(--color-surface)",
+            borderBottom: "2px solid var(--color-ink)",
+            background: "var(--color-yellow)",
           }}
         >
           <div className="container-editorial">
-            <div className="text-label animate-fade-up" style={{ marginBottom: "2rem" }}>
+            <div className="text-label animate-fade-up" style={{ marginBottom: "2rem", color: "var(--color-ink)" }}>
               Featured essay
             </div>
 
             <article className="animate-fade-up delay-100">
-              <div
+              <span
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr",
-                  gap: "2rem",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  padding: "0.2rem 0.5rem",
+                  border: "1px solid var(--color-ink)",
+                  color: "var(--color-ink)",
+                  display: "inline-block",
+                  marginBottom: "1.5rem",
                 }}
               >
-                <div>
-                  <span className="interest-tag" style={{ marginBottom: "1.5rem", display: "inline-block" }}>
-                    {featured.tag}
-                  </span>
+                {featured.tag}
+              </span>
 
-                  <h2
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
-                      fontWeight: 700,
-                      color: "var(--color-cream)",
-                      letterSpacing: "-0.02em",
-                      lineHeight: 1.1,
-                      marginBottom: "0.75rem",
-                    }}
-                  >
-                    {featured.title}
-                  </h2>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  fontSize: "clamp(1.8rem, 4vw, 3rem)",
+                  lineHeight: 1.0,
+                  letterSpacing: "-0.02em",
+                  color: "var(--color-ink)",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                {featured.title}
+              </h2>
 
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontStyle: "italic",
-                      color: "var(--color-gold)",
-                      fontSize: "1.05rem",
-                      marginBottom: "1.5rem",
-                    }}
-                  >
-                    {featured.subtitle}
-                  </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                  color: "var(--color-ink-soft)",
+                  fontSize: "1.1rem",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                {featured.subtitle}
+              </p>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "1.5rem",
-                      marginBottom: "1.5rem",
-                    }}
-                  >
-                    <span className="folio">{featured.date}</span>
-                    <span className="folio">{featured.readTime} read</span>
-                  </div>
-
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "1rem",
-                      lineHeight: 1.8,
-                      color: "var(--color-cream-dim)",
-                      maxWidth: "65ch",
-                      marginBottom: "2rem",
-                    }}
-                  >
-                    {featured.excerpt}
-                  </p>
-
-                  <button
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.7rem",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      padding: "0.75rem 1.5rem",
-                      border: "1px solid var(--color-gold-dim)",
-                      color: "var(--color-gold)",
-                      background: "transparent",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                    }}
-                  >
-                    Read essay →
-                  </button>
-                </div>
+              <div style={{ display: "flex", gap: "1.5rem", marginBottom: "1.5rem" }}>
+                <span className="folio" style={{ color: "var(--color-ink-soft)" }}>
+                  {featured.date}
+                </span>
+                <span className="folio" style={{ color: "var(--color-ink-soft)" }}>
+                  {featured.readTime} read
+                </span>
               </div>
+
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "1rem",
+                  lineHeight: 1.8,
+                  color: "var(--color-ink-soft)",
+                  maxWidth: "65ch",
+                  marginBottom: "2rem",
+                }}
+              >
+                {featured.excerpt}
+              </p>
+
+              <button className="btn-outline" style={{ borderColor: "var(--color-ink)" }}>
+                Read essay →
+              </button>
             </article>
           </div>
         </section>
@@ -222,91 +207,82 @@ export default function EssaysPage() {
           <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
             All essays
           </div>
-          <hr className="rule animate-fade-up delay-100" style={{ marginBottom: "0" }} />
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "0" }} />
 
-          <div>
-            {rest.map((essay, i) => (
-              <article
-                key={essay.slug}
-                className={`animate-fade-up delay-${(i + 2) * 100}`}
+          {rest.map((essay, i) => (
+            <article
+              key={essay.slug}
+              className={`animate-fade-up delay-${(i + 2) * 100}`}
+              style={{
+                padding: "2.5rem 0",
+                borderBottom: "1px solid var(--color-rule)",
+                cursor: "pointer",
+              }}
+            >
+              <div
                 style={{
-                  padding: "2.5rem 0",
-                  borderBottom: "1px solid var(--color-rule)",
-                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "2rem",
+                  marginBottom: "1rem",
                 }}
               >
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr",
-                    gap: "1rem",
-                  }}
-                >
-                  <div
+                <div style={{ flex: 1 }}>
+                  <span
+                    className="interest-tag"
+                    style={{ marginBottom: "1rem", display: "inline-block" }}
+                  >
+                    {essay.tag}
+                  </span>
+                  <h2
                     style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      justifyContent: "space-between",
-                      gap: "1.5rem",
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
+                      letterSpacing: "-0.015em",
+                      lineHeight: 1.1,
+                      color: "var(--color-ink)",
+                      marginBottom: "0.4rem",
                     }}
                   >
-                    <div style={{ flex: 1 }}>
-                      <span
-                        className="interest-tag"
-                        style={{ marginBottom: "1rem", display: "inline-block" }}
-                      >
-                        {essay.tag}
-                      </span>
-
-                      <h2
-                        style={{
-                          fontFamily: "var(--font-serif)",
-                          fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)",
-                          fontWeight: 700,
-                          color: "var(--color-cream)",
-                          letterSpacing: "-0.015em",
-                          lineHeight: 1.2,
-                          marginBottom: "0.5rem",
-                        }}
-                      >
-                        {essay.title}
-                      </h2>
-
-                      <p
-                        style={{
-                          fontFamily: "var(--font-sans)",
-                          fontStyle: "italic",
-                          color: "var(--color-muted)",
-                          fontSize: "0.95rem",
-                        }}
-                      >
-                        {essay.subtitle}
-                      </p>
-                    </div>
-
-                    <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <div className="folio">{essay.date}</div>
-                      <div className="folio" style={{ marginTop: "0.25rem" }}>
-                        {essay.readTime}
-                      </div>
-                    </div>
-                  </div>
-
+                    {essay.title}
+                  </h2>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
+                      fontFamily: "var(--font-display)",
+                      fontStyle: "italic",
+                      fontWeight: 400,
+                      color: "var(--color-ink-muted)",
                       fontSize: "0.95rem",
-                      lineHeight: 1.75,
-                      color: "var(--color-cream-dim)",
-                      maxWidth: "70ch",
                     }}
                   >
-                    {essay.excerpt}
+                    {essay.subtitle}
                   </p>
                 </div>
-              </article>
-            ))}
-          </div>
+
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <div className="folio">{essay.date}</div>
+                  <div className="folio" style={{ marginTop: "0.3rem" }}>
+                    {essay.readTime}
+                  </div>
+                </div>
+              </div>
+
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.75,
+                  color: "var(--color-ink-soft)",
+                  maxWidth: "70ch",
+                }}
+              >
+                {essay.excerpt}
+              </p>
+            </article>
+          ))}
         </div>
       </section>
     </>

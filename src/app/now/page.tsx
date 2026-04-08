@@ -5,11 +5,10 @@ export const metadata: Metadata = {
   description: "What Austin Armstrong is currently reading, thinking about, and building.",
 };
 
-/* ─── TYPES ──────────────────────────────────────────────────────── */
 interface Book {
   title: string;
   author: string;
-  progress: number; // 0-100
+  progress: number;
   note: string;
   tag: string;
 }
@@ -21,7 +20,6 @@ interface Thought {
   tag: string;
 }
 
-/* ─── STUB DATA (replace with Notion API fetch) ──────────────────── */
 const reading: Book[] = [
   {
     title: "The Structure of Scientific Revolutions",
@@ -64,7 +62,7 @@ const thinking: Thought[] = [
   {
     idea: "The generalist advantage is misunderstood",
     context:
-      "People treat 'generalist' as a polite word for unfocused. But the actual advantage is not breadth of knowledge — it's the ability to transfer mental models across domains before specialists even notice the connection.",
+      "People treat 'generalist' as a polite word for unfocused. But the actual advantage is the ability to transfer mental models across domains before specialists even notice the connection.",
     date: "Mar 2024",
     tag: "Generalists",
   },
@@ -77,16 +75,16 @@ const thinking: Thought[] = [
   },
 ];
 
-/* ─── COMPONENTS ─────────────────────────────────────────────────── */
 function ProgressBar({ value }: { value: number }) {
+  const done = value === 100;
   return (
     <div
       style={{
-        height: "2px",
+        height: "3px",
         background: "var(--color-rule)",
         width: "100%",
-        position: "relative",
         marginTop: "0.75rem",
+        position: "relative",
       }}
     >
       <div
@@ -94,19 +92,14 @@ function ProgressBar({ value }: { value: number }) {
           position: "absolute",
           inset: 0,
           width: `${value}%`,
-          background:
-            value === 100 ? "var(--color-sage)" : "var(--color-gold)",
-          transition: "width 0.4s ease",
+          background: done ? "var(--color-ink)" : "var(--color-yellow)",
         }}
       />
     </div>
   );
 }
 
-/* ─── PAGE ───────────────────────────────────────────────────────── */
 export default function NowPage() {
-  const updatedDate = "April 2024";
-
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
@@ -114,37 +107,35 @@ export default function NowPage() {
         style={{
           paddingTop: "5rem",
           paddingBottom: "4rem",
-          borderBottom: "1px solid var(--color-rule)",
+          borderBottom: "2px solid var(--color-ink)",
         }}
       >
-        <div className="container-editorial">
+        {/* Yellow accent strip */}
+        <div style={{ background: "var(--color-yellow)", height: "4px", marginBottom: "0" }} />
+        <div
+          className="container-editorial"
+          style={{ paddingTop: "4rem" }}
+        >
           <div className="animate-fade-up folio" style={{ marginBottom: "2rem" }}>
-            Updated · {updatedDate}
+            Updated · April 2024
           </div>
-
-          <h1
-            className="text-display animate-fade-up delay-100"
-            style={{ color: "var(--color-cream)" }}
-          >
-            Now
-          </h1>
-
+          <h1 className="text-display animate-fade-up delay-100">Now</h1>
           <p
             className="animate-fade-up delay-200"
             style={{
               marginTop: "2rem",
               maxWidth: "55ch",
-              fontSize: "1.1rem",
+              fontSize: "1.05rem",
               lineHeight: 1.75,
-              color: "var(--color-cream-dim)",
+              color: "var(--color-ink-soft)",
               fontFamily: "var(--font-sans)",
             }}
           >
             A living document. What I'm reading, what's occupying my thinking,
-            and what I'm building. Updated when something shifts.{" "}
-            <span style={{ color: "var(--color-muted)", fontStyle: "italic" }}>
+            and what I'm building.{" "}
+            <em style={{ color: "var(--color-ink-muted)" }}>
               Notion-connected feed coming soon.
-            </span>
+            </em>
           </p>
         </div>
       </section>
@@ -158,133 +149,19 @@ export default function NowPage() {
         }}
       >
         <div className="container-editorial">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "3rem",
-            }}
-          >
-            {/* Section header */}
-            <div>
-              <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-                Currently reading
-              </div>
-              <hr className="rule animate-fade-up delay-100" />
-            </div>
-
-            {/* Book grid */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gap: "2rem",
-              }}
-            >
-              {reading.map((book, i) => (
-                <article
-                  key={book.title}
-                  className={`animate-fade-up delay-${(i + 2) * 100}`}
-                  style={{
-                    borderBottom: "1px solid var(--color-rule)",
-                    paddingBottom: "2rem",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      justifyContent: "space-between",
-                      gap: "1rem",
-                      marginBottom: "0.75rem",
-                    }}
-                  >
-                    <div>
-                      <h2
-                        style={{
-                          fontFamily: "var(--font-serif)",
-                          fontSize: "1.15rem",
-                          fontWeight: 700,
-                          color: "var(--color-cream)",
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {book.title}
-                      </h2>
-                      <p
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.7rem",
-                          color: "var(--color-muted)",
-                          marginTop: "0.2rem",
-                        }}
-                      >
-                        {book.author}
-                      </p>
-                    </div>
-                    <span className="interest-tag" style={{ flexShrink: 0 }}>
-                      {book.tag}
-                    </span>
-                  </div>
-
-                  <ProgressBar value={book.progress} />
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      marginTop: "0.4rem",
-                    }}
-                  >
-                    <span
-                      className="folio"
-                      style={{
-                        color:
-                          book.progress === 100
-                            ? "var(--color-sage)"
-                            : "var(--color-gold-dim)",
-                      }}
-                    >
-                      {book.progress === 100 ? "Finished" : `${book.progress}%`}
-                    </span>
-                  </div>
-
-                  <p
-                    style={{
-                      marginTop: "1rem",
-                      fontSize: "0.95rem",
-                      lineHeight: 1.7,
-                      color: "var(--color-cream-dim)",
-                      fontFamily: "var(--font-sans)",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {book.note}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Thinking ───────────────────────────────────────────── */}
-      <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
-        <div className="container-editorial">
           <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            Currently thinking about
+            Currently reading
           </div>
-          <hr className="rule animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "3rem" }}>
-            {thinking.map((thought, i) => (
+          <div style={{ display: "grid", gap: "0" }}>
+            {reading.map((book, i) => (
               <article
-                key={thought.idea}
+                key={book.title}
                 className={`animate-fade-up delay-${(i + 2) * 100}`}
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr",
-                  gap: "1rem",
+                  padding: "2rem 0",
+                  borderBottom: "1px solid var(--color-rule)",
                 }}
               >
                 <div
@@ -295,15 +172,103 @@ export default function NowPage() {
                     gap: "1rem",
                   }}
                 >
-                  <h2
-                    className="pull-quote"
-                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
-                  >
+                  <div>
+                    <h2
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 700,
+                        fontStyle: "italic",
+                        fontSize: "1.2rem",
+                        color: "var(--color-ink)",
+                        letterSpacing: "-0.01em",
+                        marginBottom: "0.2rem",
+                      }}
+                    >
+                      {book.title}
+                    </h2>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.68rem",
+                        color: "var(--color-ink-muted)",
+                        letterSpacing: "0.06em",
+                      }}
+                    >
+                      {book.author}
+                    </p>
+                  </div>
+
+                  <div style={{ textAlign: "right", flexShrink: 0 }}>
+                    <span className="interest-tag">{book.tag}</span>
+                    <div
+                      className="folio"
+                      style={{
+                        marginTop: "0.5rem",
+                        color:
+                          book.progress === 100
+                            ? "var(--color-ink)"
+                            : "var(--color-ink-muted)",
+                        fontWeight: book.progress === 100 ? 500 : 300,
+                      }}
+                    >
+                      {book.progress === 100 ? "✓ Finished" : `${book.progress}%`}
+                    </div>
+                  </div>
+                </div>
+
+                <ProgressBar value={book.progress} />
+
+                <p
+                  style={{
+                    marginTop: "1.25rem",
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "0.95rem",
+                    lineHeight: 1.7,
+                    color: "var(--color-ink-soft)",
+                    fontStyle: "italic",
+                    maxWidth: "65ch",
+                  }}
+                >
+                  {book.note}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Thinking ───────────────────────────────────────────── */}
+      <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
+        <div className="container-editorial">
+          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
+            Currently thinking about
+          </div>
+          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+
+          <div style={{ display: "grid", gap: "3rem" }}>
+            {thinking.map((thought, i) => (
+              <article
+                key={thought.idea}
+                className={`animate-fade-up delay-${(i + 2) * 100}`}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    gap: "2rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <h2 className="pull-quote" style={{ flex: 1 }}>
                     {thought.idea}
                   </h2>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <div className="folio">{thought.date}</div>
-                    <span className="interest-tag" style={{ display: "inline-block", marginTop: "0.5rem" }}>
+                    <span
+                      className="interest-tag"
+                      style={{ display: "inline-block", marginTop: "0.5rem" }}
+                    >
                       {thought.tag}
                     </span>
                   </div>
@@ -311,44 +276,42 @@ export default function NowPage() {
 
                 <p
                   style={{
+                    fontFamily: "var(--font-sans)",
                     fontSize: "1rem",
                     lineHeight: 1.75,
-                    color: "var(--color-cream-dim)",
-                    fontFamily: "var(--font-sans)",
+                    color: "var(--color-ink-soft)",
                     maxWidth: "65ch",
                   }}
                 >
                   {thought.context}
                 </p>
-
-                <hr className="rule" />
+                <hr className="rule" style={{ marginTop: "2rem" }} />
               </article>
             ))}
           </div>
 
-          {/* Notion API stub notice */}
+          {/* Notion API stub */}
           <div
             style={{
               marginTop: "4rem",
-              padding: "1.5rem",
-              border: "1px solid var(--color-rule)",
-              background: "var(--color-surface)",
+              padding: "1.5rem 2rem",
+              borderLeft: "4px solid var(--color-yellow)",
+              background: "var(--color-bg-warm)",
             }}
           >
-            <div className="folio" style={{ marginBottom: "0.5rem" }}>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
               Coming soon
             </div>
             <p
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "0.9rem",
-                color: "var(--color-muted)",
-                lineHeight: 1.6,
+                color: "var(--color-ink-muted)",
+                lineHeight: 1.65,
               }}
             >
-              This feed will be connected to a Notion database. Once the API
-              integration is live, books, notes, and thoughts will update
-              automatically from my Notion workspace.
+              This feed will connect to a Notion database. Books, notes, and
+              thoughts will update automatically from my Notion workspace.
             </p>
           </div>
         </div>
