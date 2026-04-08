@@ -80,6 +80,15 @@ export default function RootLayout({
         className="min-h-full flex flex-col"
         style={{ background: "var(--color-bg)", color: "var(--color-ink)" }}
       >
+        {/* ── Google Fonts ── */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..900;1,9..40,100..900&family=JetBrains+Mono:wght@300;400;500&display=swap"
+          rel="stylesheet"
+        />
+
         {/* ── Navigation ── */}
         <header
           style={{
