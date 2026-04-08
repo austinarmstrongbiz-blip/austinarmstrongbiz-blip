@@ -1,54 +1,66 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { essays, reading, thinking, interests } from "@/lib/data";
+import {
+  FadeUp,
+  FadeIn,
+  StaggerList,
+  StaggerItem,
+  HeroText,
+  YellowBarReveal,
+} from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
   title: "Austin Armstrong",
 };
 
-const interests = [
-  "Artificial Intelligence",
-  "Personal Development",
-  "Finance",
-  "Economics",
-  "Non-Fiction",
-  "Manchester City",
-  "Soccer",
-  "Entrepreneurship",
-  "Startups",
-  "Generalists",
-  "Cognition",
-  "Individual Thinking",
-  "Mental Immunity",
-  "Barbell Strategy",
-  "Health",
-  "Family",
+// ─── PILLARS ──────────────────────────────────────────────────────────────────
+const pillars = [
+  {
+    id: "lifestyle",
+    label: "Lifestyle Design",
+    color: "var(--color-pillar-lifestyle)",
+    count: 22,
+    desc: "How to architect a life on your own terms — not the template you were handed.",
+    href: "/essays",
+  },
+  {
+    id: "ai",
+    label: "Artificial Intelligence",
+    color: "var(--color-pillar-ai)",
+    count: 18,
+    desc: "What AI actually changes about thinking, working, and what it means to be curious.",
+    href: "/essays",
+  },
+  {
+    id: "finance",
+    label: "Finance",
+    color: "var(--color-pillar-finance)",
+    count: 21,
+    desc: "Money as a tool, not a scoreboard. Wealth psychology, barbell strategy, and risk.",
+    href: "/essays",
+  },
+  {
+    id: "personal-development",
+    label: "Personal Development",
+    color: "var(--color-pillar-personal)",
+    count: 24,
+    desc: "Mental models, cognitive upgrading, and the work of becoming a sharper thinker.",
+    href: "/essays",
+  },
 ];
 
-const sections = [
-  {
-    href: "/now",
-    label: "Now",
-    num: "01",
-    desc: "What I'm reading, thinking about, and working on at this moment.",
-  },
-  {
-    href: "/essays",
-    label: "Essays",
-    num: "02",
-    desc: "Long-form explorations of ideas that won't leave me alone.",
-  },
-  {
-    href: "/resume",
-    label: "Curriculum Vitae",
-    num: "03",
-    desc: "A record of where I've been and what I've built.",
-  },
-];
+// Latest 3 essays (stub — will be live from Notion in Phase 2)
+const latestEssays = essays.slice(0, 3);
+
+// Now strip (stub — will be live from Notion in Phase 2)
+const currentBook = reading.find((b) => b.progress < 100 && b.progress > 0) ?? reading[0];
+const currentThought = thinking[0];
 
 export default function HomePage() {
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section
         style={{
           paddingTop: "5rem",
@@ -57,90 +69,136 @@ export default function HomePage() {
         }}
       >
         <div className="container-editorial">
-          {/* Folio / edition label */}
-          <div className="animate-fade-up folio" style={{ marginBottom: "2.5rem" }}>
-            Personal site · Austin Armstrong
-          </div>
+          {/* Folio */}
+          <HeroText delay={0}>
+            <div className="folio" style={{ marginBottom: "2.5rem" }}>
+              Personal site · Austin Armstrong
+            </div>
+          </HeroText>
 
-          {/* Big display name — Basilia Bold Italic, Pittsburgh yellow highlight */}
-          <h1 className="animate-fade-up delay-100" style={{ marginBottom: "0" }}>
-            {/* "Austin" — plain */}
-            <span
-              style={{
-                display: "block",
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontStyle: "italic",
-                fontSize: "clamp(4rem, 10vw, 9rem)",
-                lineHeight: 0.9,
-                letterSpacing: "-0.025em",
-                color: "var(--color-ink)",
-              }}
-            >
-              Austin
-            </span>
-
-            {/* "Armstrong." — yellow highlight bar behind it, like the logo */}
-            <span
-              style={{
-                display: "inline-block",
-                position: "relative",
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontStyle: "italic",
-                fontSize: "clamp(4rem, 10vw, 9rem)",
-                lineHeight: 1,
-                letterSpacing: "-0.025em",
-                color: "var(--color-ink)",
-              }}
-            >
-              {/* Yellow bar — sits behind the text */}
+          {/* Big display name */}
+          <h1 style={{ marginBottom: 0 }}>
+            {/* "Austin" */}
+            <HeroText delay={0.1} style={{ display: "block" }}>
               <span
-                aria-hidden
                 style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: "0.06em",
-                  height: "0.4em",
-                  background: "var(--color-yellow)",
-                  zIndex: 0,
+                  display: "block",
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  fontSize: "clamp(4rem, 10vw, 9rem)",
+                  lineHeight: 0.9,
+                  letterSpacing: "-0.025em",
+                  color: "var(--color-ink)",
                 }}
-              />
-              <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
-            </span>
+              >
+                Austin
+              </span>
+            </HeroText>
+
+            {/* "Armstrong." — animated yellow bar reveal */}
+            <HeroText delay={0.2} style={{ display: "inline-block" }}>
+              <span
+                style={{
+                  display: "inline-block",
+                  position: "relative",
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  fontSize: "clamp(4rem, 10vw, 9rem)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.025em",
+                  color: "var(--color-ink)",
+                }}
+              >
+                <YellowBarReveal delay={0.45} />
+                <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
+              </span>
+            </HeroText>
           </h1>
 
           {/* Tagline */}
-          <div
-            className="animate-fade-up delay-200"
-            style={{
-              marginTop: "3rem",
-              paddingTop: "2rem",
-              paddingBottom: "4rem",
-              borderTop: "1px solid var(--color-rule)",
-              maxWidth: "60ch",
-            }}
-          >
-            <p
+          <FadeUp delay={0.4}>
+            <div
               style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 400,
-                fontStyle: "italic",
-                fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
-                lineHeight: 1.4,
-                color: "var(--color-ink-soft)",
+                marginTop: "3rem",
+                paddingTop: "2rem",
+                paddingBottom: "4rem",
+                borderTop: "1px solid var(--color-rule)",
+                maxWidth: "60ch",
               }}
             >
-              "I am someone who is curious about the world,
-              <br />
-              here are my notes about what I find."
-            </p>
-          </div>
+              <p
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 400,
+                  fontStyle: "italic",
+                  fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
+                  lineHeight: 1.4,
+                  color: "var(--color-ink-soft)",
+                }}
+              >
+                "I am someone who is curious about the world,
+                <br />
+                here are my notes about what I find."
+              </p>
+            </div>
+          </FadeUp>
         </div>
       </section>
 
-      {/* ── BIO + INTERESTS ──────────────────────────────────────── */}
+      {/* ── THE THESIS ────────────────────────────────────────────────────── */}
+      {/* Full-width yellow band — the brand statement */}
+      <FadeIn>
+        <section
+          style={{
+            background: "var(--color-yellow)",
+            borderBottom: "2px solid var(--color-ink)",
+            padding: "4rem 0",
+          }}
+        >
+          <div className="container-editorial">
+            <FadeUp delay={0.1}>
+              <div className="folio" style={{ color: "var(--color-ink-soft)", marginBottom: "1.5rem" }}>
+                The thesis
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <p
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  fontSize: "clamp(1.75rem, 4.5vw, 3.5rem)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.02em",
+                  color: "var(--color-ink)",
+                  maxWidth: "22ch",
+                }}
+              >
+                Traditional does not get exceptional.
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.3}>
+              <p
+                style={{
+                  marginTop: "1.5rem",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "1rem",
+                  color: "var(--color-ink-soft)",
+                  maxWidth: "52ch",
+                  lineHeight: 1.7,
+                }}
+              >
+                Every piece I write exists to dismantle a blueprint that no longer
+                works and replace it with something you built yourself.
+              </p>
+            </FadeUp>
+          </div>
+        </section>
+      </FadeIn>
+
+      {/* ── BIO ───────────────────────────────────────────────────────────── */}
       <section
         style={{
           paddingTop: "5rem",
@@ -152,19 +210,18 @@ export default function HomePage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
               gap: "4rem",
             }}
           >
-            {/* Bio */}
-            <div className="animate-fade-up delay-200">
+            <FadeUp>
               <div className="text-label" style={{ marginBottom: "1.5rem" }}>
                 About
               </div>
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
-                  fontSize: "1.1rem",
+                  fontSize: "1.05rem",
                   lineHeight: 1.8,
                   color: "var(--color-ink-soft)",
                   marginBottom: "1.25rem",
@@ -179,135 +236,349 @@ export default function HomePage() {
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
-                  fontSize: "1.1rem",
+                  fontSize: "1.05rem",
                   lineHeight: 1.8,
                   color: "var(--color-ink-soft)",
-                  marginBottom: "1.25rem",
                 }}
               >
                 I read obsessively. I think out loud here. If you're drawn to
-                ideas that don't fit neatly into a single domain — finance
-                intersecting with philosophy, AI intersecting with how we form
-                beliefs, soccer intersecting with everything — you'll find
+                ideas that don't fit neatly into a single domain, you'll find
                 something worth your time.
               </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "1.1rem",
-                  lineHeight: 1.8,
-                  color: "var(--color-ink-soft)",
-                }}
-              >
-                Always reading. Deeply invested in my family and the humans
-                around me.
-              </p>
-            </div>
+            </FadeUp>
 
-            {/* Pull quote + interests */}
-            <div className="animate-fade-up delay-300">
-              {/* Pull quote with yellow left-border */}
-              <blockquote
-                className="pull-quote"
-                style={{ marginBottom: "3rem" }}
-              >
+            <FadeUp delay={0.15}>
+              <blockquote className="pull-quote" style={{ marginBottom: "3rem" }}>
                 The generalist sees connections the specialist never will.
               </blockquote>
 
               <div className="text-label" style={{ marginBottom: "1rem" }}>
                 Areas of interest
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
+              <StaggerList style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
                 {interests.map((interest) => (
-                  <span key={interest} className="interest-tag">
-                    {interest}
-                  </span>
+                  <StaggerItem key={interest} as="span">
+                    <span className="interest-tag">{interest}</span>
+                  </StaggerItem>
                 ))}
-              </div>
-            </div>
+              </StaggerList>
+            </FadeUp>
           </div>
         </div>
       </section>
 
-      {/* ── SECTION INDEX ────────────────────────────────────────── */}
+      {/* ── THE PILLARS ───────────────────────────────────────────────────── */}
       <section
         style={{
           paddingTop: "5rem",
-          paddingBottom: "6rem",
+          paddingBottom: "5rem",
+          borderBottom: "1px solid var(--color-rule)",
+          background: "var(--color-bg-warm)",
         }}
       >
         <div className="container-editorial">
-          <div
-            className="text-label animate-fade-up"
-            style={{ marginBottom: "0.5rem" }}
-          >
-            Contents
-          </div>
-          <hr className="rule rule-thick animate-fade-up" style={{ marginBottom: "0", animationDelay: "0.1s" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              §01 · The pillars
+            </div>
+            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
+          </FadeUp>
 
-          {sections.map((section, i) => (
+          <StaggerList
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))",
+              gap: "0",
+            }}
+          >
+            {pillars.map((pillar) => (
+              <StaggerItem key={pillar.id}>
+                <Link
+                  href={pillar.href}
+                  style={{
+                    display: "block",
+                    padding: "2rem",
+                    borderTop: `3px solid ${pillar.color}`,
+                    borderRight: "1px solid var(--color-rule)",
+                    textDecoration: "none",
+                    transition: "background 0.15s ease",
+                  }}
+                  className="pillar-card"
+                >
+                  <div
+                    className="folio"
+                    style={{ color: "var(--color-ink-muted)", marginBottom: "1rem" }}
+                  >
+                    {pillar.count} essays
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "1.2rem",
+                      letterSpacing: "-0.01em",
+                      color: "var(--color-ink)",
+                      lineHeight: 1.1,
+                      marginBottom: "0.75rem",
+                    }}
+                  >
+                    {pillar.label}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.65,
+                      color: "var(--color-ink-soft)",
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    {pillar.desc}
+                  </p>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.62rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--color-ink-muted)",
+                    }}
+                  >
+                    Read essays →
+                  </span>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerList>
+        </div>
+      </section>
+
+      {/* ── LATEST ESSAYS ─────────────────────────────────────────────────── */}
+      <section
+        style={{
+          paddingTop: "5rem",
+          paddingBottom: "5rem",
+          borderBottom: "1px solid var(--color-rule)",
+        }}
+      >
+        <div className="container-editorial">
+          <FadeUp
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <div className="text-label">§02 · Latest essays</div>
             <Link
-              key={section.href}
-              href={section.href}
-              className="animate-fade-up"
+              href="/essays"
+              className="folio"
+              style={{ color: "var(--color-ink-muted)", transition: "color 0.15s" }}
+            >
+              All essays →
+            </Link>
+          </FadeUp>
+          <FadeUp delay={0.05}>
+            <hr className="rule rule-thick" style={{ marginBottom: "0" }} />
+          </FadeUp>
+
+          <StaggerList>
+            {latestEssays.map((essay) => (
+              <StaggerItem key={essay.slug}>
+                <Link
+                  href={`/essays/${essay.slug}`}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr auto",
+                    gap: "2rem",
+                    alignItems: "start",
+                    padding: "2rem 0",
+                    borderBottom: "1px solid var(--color-rule)",
+                    textDecoration: "none",
+                  }}
+                >
+                  <div>
+                    <span className="interest-tag" style={{ marginBottom: "0.75rem", display: "inline-block" }}>
+                      {essay.tag}
+                    </span>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 700,
+                        fontStyle: "italic",
+                        fontSize: "clamp(1.15rem, 2.5vw, 1.5rem)",
+                        letterSpacing: "-0.015em",
+                        lineHeight: 1.1,
+                        color: "var(--color-ink)",
+                        marginBottom: "0.4rem",
+                      }}
+                    >
+                      {essay.title}
+                    </div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontStyle: "italic",
+                        fontWeight: 400,
+                        color: "var(--color-ink-muted)",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {essay.subtitle}
+                    </p>
+                  </div>
+                  <div style={{ textAlign: "right", flexShrink: 0 }}>
+                    <div className="folio">{essay.date}</div>
+                    <div className="folio" style={{ marginTop: "0.3rem" }}>{essay.readTime}</div>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerList>
+        </div>
+      </section>
+
+      {/* ── NOW STRIP ─────────────────────────────────────────────────────── */}
+      <FadeIn>
+        <section
+          style={{
+            paddingTop: "3rem",
+            paddingBottom: "3rem",
+            borderBottom: "2px solid var(--color-ink)",
+            background: "var(--color-ink)",
+          }}
+        >
+          <div className="container-editorial">
+            <div
               style={{
-                animationDelay: `${(i + 2) * 0.1}s`,
                 display: "grid",
-                gridTemplateColumns: "3rem 1fr 1.5rem",
-                gap: "1.5rem",
-                alignItems: "start",
-                padding: "2.25rem 0",
-                borderBottom: "1px solid var(--color-rule)",
-                textDecoration: "none",
-                transition: "background 0.15s ease",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
+                gap: "2rem",
+                alignItems: "center",
               }}
             >
-              <span className="folio" style={{ paddingTop: "0.3rem" }}>
-                {section.num}
-              </span>
-
+              {/* Currently reading */}
               <div>
+                <div
+                  className="folio"
+                  style={{ color: "var(--color-yellow)", marginBottom: "0.5rem" }}
+                >
+                  Currently reading
+                </div>
                 <div
                   style={{
                     fontFamily: "var(--font-display)",
                     fontWeight: 700,
                     fontStyle: "italic",
-                    fontSize: "clamp(1.4rem, 3vw, 2rem)",
-                    lineHeight: 1.05,
-                    letterSpacing: "-0.015em",
-                    color: "var(--color-ink)",
-                    marginBottom: "0.5rem",
+                    fontSize: "1.1rem",
+                    color: "var(--color-bg)",
+                    lineHeight: 1.2,
                   }}
                 >
-                  {section.label}
+                  {currentBook.title}
+                </div>
+                <div
+                  className="folio"
+                  style={{ color: "rgba(249,249,249,0.5)", marginTop: "0.35rem" }}
+                >
+                  {currentBook.author} · {currentBook.progress}%
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div
+                style={{
+                  width: "1px",
+                  height: "4rem",
+                  background: "rgba(249,249,249,0.15)",
+                  justifySelf: "center",
+                }}
+                className="now-divider"
+              />
+
+              {/* Currently thinking */}
+              <div>
+                <div
+                  className="folio"
+                  style={{ color: "var(--color-yellow)", marginBottom: "0.5rem" }}
+                >
+                  Currently thinking about
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 700,
+                    fontStyle: "italic",
+                    fontSize: "1.1rem",
+                    color: "var(--color-bg)",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {currentThought.idea}
+                </div>
+              </div>
+
+              {/* CTA */}
+              <Link
+                href="/now"
+                className="btn-yellow"
+                style={{ justifySelf: "end", whiteSpace: "nowrap" }}
+              >
+                See the full now →
+              </Link>
+            </div>
+          </div>
+        </section>
+      </FadeIn>
+
+      {/* ── CONTACT FOOTER STRIP ──────────────────────────────────────────── */}
+      <FadeUp>
+        <section style={{ paddingTop: "4rem", paddingBottom: "4rem" }}>
+          <div className="container-editorial">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "2rem",
+              }}
+            >
+              <div>
+                <div className="text-label" style={{ marginBottom: "0.75rem" }}>
+                  §03 · Get in touch
                 </div>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "0.9rem",
-                    color: "var(--color-ink-muted)",
+                    fontFamily: "var(--font-display)",
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    fontSize: "1rem",
+                    color: "var(--color-ink-soft)",
+                    maxWidth: "40ch",
                     lineHeight: 1.5,
                   }}
                 >
-                  {section.desc}
+                  Advisory, collaboration, or just a good conversation about ideas.
                 </p>
               </div>
-
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "1rem",
-                  color: "var(--color-ink-muted)",
-                  paddingTop: "0.3rem",
-                }}
-                aria-hidden
-              >
-                →
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <a
+                  href="mailto:hello@austin-armstrong.me"
+                  className="btn-yellow"
+                >
+                  Email me
+                </a>
+                <Link href="/resume" className="btn-outline">
+                  View CV
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </FadeUp>
     </>
   );
 }

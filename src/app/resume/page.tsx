@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
   title: "CV",
@@ -81,15 +82,11 @@ export default function ResumePage() {
       >
         <div style={{ background: "var(--color-yellow)", height: "4px" }} />
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
-          <div className="animate-fade-up folio" style={{ marginBottom: "2rem" }}>
-            Curriculum Vitae
-          </div>
+          <FadeUp><div className="folio" style={{ marginBottom: "2rem" }}>Curriculum Vitae</div></FadeUp>
 
           {/* Name as display type */}
-          <h1
-            className="animate-fade-up delay-100"
-            style={{ marginBottom: "2.5rem" }}
-          >
+          <FadeUp delay={0.1} as="div" style={{ marginBottom: "2.5rem" }}>
+          <h1>
             <span
               style={{
                 display: "block",
@@ -132,8 +129,9 @@ export default function ResumePage() {
               <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
             </span>
           </h1>
+          </FadeUp>
 
-          <div className="animate-fade-up delay-200">
+          <FadeUp delay={0.2}>
             <p
               style={{
                 fontFamily: "var(--font-display)",
@@ -153,7 +151,7 @@ export default function ResumePage() {
               <span className="folio">austin-armstrong.me</span>
               <span className="folio">Available for select advisory</span>
             </div>
-          </div>
+          </FadeUp>
         </div>
       </section>
 
@@ -166,17 +164,16 @@ export default function ResumePage() {
         }}
       >
         <div className="container-editorial">
-          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            Experience
-          </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Experience</div>
+            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
+          </FadeUp>
 
-          {experience.map((job, i) => (
+          <StaggerList>
+          {experience.map((job) => (
+            <StaggerItem key={`${job.role}-${job.company}`} as="article">
             <article
-              key={`${job.role}-${job.company}`}
-              className="animate-fade-up"
               style={{
-                animationDelay: `${(i + 2) * 0.1}s`,
                 paddingBottom: "3rem",
                 marginBottom: "3rem",
                 borderBottom: "1px solid var(--color-rule)",
@@ -270,7 +267,9 @@ export default function ResumePage() {
                 ))}
               </ul>
             </article>
+            </StaggerItem>
           ))}
+          </StaggerList>
         </div>
       </section>
 
@@ -284,20 +283,20 @@ export default function ResumePage() {
         }}
       >
         <div className="container-editorial">
-          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            Competencies
-          </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Competencies</div>
+            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
+          </FadeUp>
 
-          <div
+          <StaggerList
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
               gap: "3rem",
             }}
           >
-            {skills.map((group, i) => (
-              <div key={group.label} className="animate-fade-up" style={{ animationDelay: `${(i + 2) * 0.1}s` }}>
+            {skills.map((group) => (
+              <StaggerItem key={group.label}>
                 <div className="text-label" style={{ marginBottom: "1rem" }}>
                   {group.label}
                 </div>
@@ -318,24 +317,23 @@ export default function ResumePage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
         </div>
       </section>
 
       {/* ── Education ──────────────────────────────────────────── */}
       <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
         <div className="container-editorial">
-          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            Education
-          </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Education</div>
+            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
+          </FadeUp>
 
           {education.map((edu) => (
-            <div
+            <FadeUp delay={0.1}
               key={edu.degree}
-              className="animate-fade-up delay-200"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -381,7 +379,7 @@ export default function ResumePage() {
                 </p>
               </div>
               <div className="folio" style={{ flexShrink: 0 }}>{edu.period}</div>
-            </div>
+            </FadeUp>
           ))}
 
           {/* CTA */}

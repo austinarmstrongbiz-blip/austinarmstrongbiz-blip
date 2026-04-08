@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
   title: "Now",
@@ -116,12 +117,10 @@ export default function NowPage() {
           className="container-editorial"
           style={{ paddingTop: "4rem" }}
         >
-          <div className="animate-fade-up folio" style={{ marginBottom: "2rem" }}>
-            Updated · April 2024
-          </div>
-          <h1 className="text-display animate-fade-up delay-100">Now</h1>
+          <FadeUp><div className="folio" style={{ marginBottom: "2rem" }}>Updated · April 2024</div></FadeUp>
+          <FadeUp delay={0.1}><h1 className="text-display">Now</h1></FadeUp>
+          <FadeUp delay={0.2}>
           <p
-            className="animate-fade-up delay-200"
             style={{
               marginTop: "2rem",
               maxWidth: "55ch",
@@ -137,6 +136,7 @@ export default function NowPage() {
               Notion-connected feed coming soon.
             </em>
           </p>
+          </FadeUp>
         </div>
       </section>
 
@@ -149,18 +149,16 @@ export default function NowPage() {
         }}
       >
         <div className="container-editorial">
-          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            Currently reading
-          </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Currently reading</div>
+            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
+          </FadeUp>
 
-          <div style={{ display: "grid", gap: "0" }}>
-            {reading.map((book, i) => (
+          <StaggerList style={{ display: "grid", gap: "0" }}>
+            {reading.map((book) => (
+              <StaggerItem key={book.title} as="article">
               <article
-                key={book.title}
-                className="animate-fade-up"
                 style={{
-                  animationDelay: `${(i + 2) * 0.1}s`,
                   padding: "2rem 0",
                   borderBottom: "1px solid var(--color-rule)",
                 }}
@@ -233,26 +231,24 @@ export default function NowPage() {
                   {book.note}
                 </p>
               </article>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
         </div>
       </section>
 
       {/* ── Thinking ───────────────────────────────────────────── */}
       <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
         <div className="container-editorial">
-          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            Currently thinking about
-          </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "3rem" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Currently thinking about</div>
+            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
+          </FadeUp>
 
-          <div style={{ display: "grid", gap: "3rem" }}>
-            {thinking.map((thought, i) => (
-              <article
-                key={thought.idea}
-                className="animate-fade-up"
-                style={{ animationDelay: `${(i + 2) * 0.1}s` }}
-              >
+          <StaggerList style={{ display: "grid", gap: "3rem" }}>
+            {thinking.map((thought) => (
+              <StaggerItem key={thought.idea} as="article">
+              <article>
                 <div
                   style={{
                     display: "flex",
@@ -289,8 +285,9 @@ export default function NowPage() {
                 </p>
                 <hr className="rule" style={{ marginTop: "2rem" }} />
               </article>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
 
           {/* Notion API stub */}
           <div

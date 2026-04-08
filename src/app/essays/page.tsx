@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FadeUp, FadeIn, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
   title: "Essays",
@@ -90,12 +91,14 @@ export default function EssaysPage() {
         {/* Top yellow bar */}
         <div style={{ background: "var(--color-yellow)", height: "4px" }} />
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
-          <div className="animate-fade-up folio" style={{ marginBottom: "2rem" }}>
-            {essays.length} essays · Long-form writing
-          </div>
-          <h1 className="text-display animate-fade-up delay-100">Essays</h1>
+          <FadeUp>
+            <div className="folio" style={{ marginBottom: "2rem" }}>
+              {essays.length} essays · Long-form writing
+            </div>
+          </FadeUp>
+          <FadeUp delay={0.1}><h1 className="text-display">Essays</h1></FadeUp>
+          <FadeUp delay={0.2}>
           <p
-            className="animate-fade-up delay-200"
             style={{
               marginTop: "2rem",
               maxWidth: "52ch",
@@ -108,6 +111,7 @@ export default function EssaysPage() {
             Ideas that demanded more than a tweet. Long-form explorations of
             what I'm thinking about — written to understand, not to perform.
           </p>
+          </FadeUp>
         </div>
       </section>
 
@@ -122,11 +126,13 @@ export default function EssaysPage() {
           }}
         >
           <div className="container-editorial">
-            <div className="text-label animate-fade-up" style={{ marginBottom: "2rem", color: "var(--color-ink)" }}>
-              Featured essay
-            </div>
+            <FadeUp>
+              <div className="text-label" style={{ marginBottom: "2rem", color: "var(--color-ink)" }}>
+                Featured essay
+              </div>
+            </FadeUp>
 
-            <article className="animate-fade-up delay-100">
+            <FadeUp delay={0.1} as="article">
               <span
                 style={{
                   fontFamily: "var(--font-mono)",
@@ -196,7 +202,7 @@ export default function EssaysPage() {
               <button className="btn-outline" style={{ borderColor: "var(--color-ink)" }}>
                 Read essay →
               </button>
-            </article>
+            </FadeUp>
           </div>
         </section>
       )}
@@ -204,17 +210,18 @@ export default function EssaysPage() {
       {/* ── All essays ─────────────────────────────────────────── */}
       <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
         <div className="container-editorial">
-          <div className="text-label animate-fade-up" style={{ marginBottom: "0.5rem" }}>
-            All essays
-          </div>
-          <hr className="rule rule-thick animate-fade-up delay-100" style={{ marginBottom: "0" }} />
+          <FadeUp>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              All essays
+            </div>
+            <hr className="rule rule-thick" style={{ marginBottom: "0" }} />
+          </FadeUp>
 
-          {rest.map((essay, i) => (
+          <StaggerList>
+          {rest.map((essay) => (
+            <StaggerItem key={essay.slug} as="article">
             <article
-              key={essay.slug}
-              className="animate-fade-up"
               style={{
-                animationDelay: `${(i + 2) * 0.1}s`,
                 padding: "2.5rem 0",
                 borderBottom: "1px solid var(--color-rule)",
                 cursor: "pointer",
@@ -283,7 +290,9 @@ export default function EssaysPage() {
                 {essay.excerpt}
               </p>
             </article>
+            </StaggerItem>
           ))}
+          </StaggerList>
         </div>
       </section>
     </>

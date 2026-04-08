@@ -318,10 +318,33 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ─── PILLAR COLORS ──────────────────────────────────────────────── */
-/* Used on essay/pillar cards as accent colors */
 :root {
   --color-pillar-lifestyle: #c9a96e;
   --color-pillar-ai:        #6ea5c9;
   --color-pillar-finance:   #6ec98a;
   --color-pillar-personal:  #c96e8a;
+}
+
+/* ─── PILLAR CARD HOVER ──────────────────────────────────────────── */
+.pillar-card:hover {
+  background: var(--color-bg);
+}
+
+/* ─── ESSAY DROP CAP ─────────────────────────────────────────────── */
+/* Applied to the first <p> of an essay body */
+.essay-body > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 4.2em;
+  line-height: 0.75;
+  float: left;
+  margin-right: 0.08em;
+  margin-top: 0.06em;
+  color: var(--color-ink);
+}
+
+/* ─── NOW STRIP RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .now-divider { display: none; }
 }
