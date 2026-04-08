@@ -1,73 +1,68 @@
 @import "tailwindcss";
 
-/* ─── BASILIA LOCAL FONTS ─────────────────────────────────────────
-   Drop your Basilia font files into /public/fonts/ and these
-   @font-face rules will pick them up automatically.
-   Supported filenames (rename yours to match, or update src below):
-   ----------------------------------------------------------------- */
-/* Google Fonts — must come before @font-face blocks */
+/* ─── BASILIA FONTS ──────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..900;1,9..40,100..900&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-Regular.otf") format("opentype"),
-       url("/fonts/Basilia-Regular.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia/Basilia-Reg.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia/Basilia-Reg.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-Italic.otf") format("opentype"),
-       url("/fonts/Basilia-Italic.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Italic/Basilia-RegIta.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Italic/Basilia-RegIta.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-Medium.otf") format("opentype"),
-       url("/fonts/Basilia-Medium.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Medium/Basilia-Med.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Medium/Basilia-Med.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-MediumItalic.otf") format("opentype"),
-       url("/fonts/Basilia-MediumItalic.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Medium Italic/Basilia-MedIta.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Medium Italic/Basilia-MedIta.ttf") format("truetype");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-Bold.otf") format("opentype"),
-       url("/fonts/Basilia-Bold.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Bold/Basilia-Bol.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Bold/Basilia-Bol.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-BoldItalic.otf") format("opentype"),
-       url("/fonts/Basilia-BoldItalic.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Bold Italic/Basilia-BolIta.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Bold Italic/Basilia-BolIta.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-Black.otf") format("opentype"),
-       url("/fonts/Basilia-Black.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Black/Basilia-Bla.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Black/Basilia-Bla.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Basilia-BlackItalic.otf") format("opentype"),
-       url("/fonts/Basilia-BlackItalic.ttf") format("truetype");
+  src: url("/fonts/Web Fonts/Basilia Black Italic/Basilia-BlaIta.woff") format("woff"),
+       url("/fonts/Web Fonts/Basilia Black Italic/Basilia-BlaIta.ttf") format("truetype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
