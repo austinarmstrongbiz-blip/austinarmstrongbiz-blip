@@ -249,6 +249,8 @@ export default function HomePage() {
         }}
       >
         <div className="container-editorial">
+
+          {/* Row 1: photos + bio text */}
           <div
             className="bio-grid"
             style={{
@@ -256,9 +258,10 @@ export default function HomePage() {
               gridTemplateColumns: "280px 280px 1fr",
               gap: "2.5rem",
               alignItems: "start",
+              marginBottom: "3rem",
             }}
           >
-            {/* Photo 1 — intense mid-shot */}
+            {/* Photo 1 */}
             <FadeUp>
               <div style={{ position: "relative", height: "380px", overflow: "hidden" }}>
                 <Image
@@ -271,7 +274,7 @@ export default function HomePage() {
               </div>
             </FadeUp>
 
-            {/* Photo 2 — smiling headshot, offset down */}
+            {/* Photo 2 — offset down */}
             <FadeUp delay={0.12}>
               <div style={{ position: "relative", height: "380px", overflow: "hidden", marginTop: "2rem" }}>
                 <Image
@@ -284,7 +287,7 @@ export default function HomePage() {
               </div>
             </FadeUp>
 
-            {/* Bio text */}
+            {/* Bio text only */}
             <FadeUp delay={0.2}>
               <div className="text-label" style={{ marginBottom: "1rem" }}>About</div>
               <p
@@ -308,26 +311,40 @@ export default function HomePage() {
                   fontSize: "1rem",
                   lineHeight: 1.75,
                   color: "var(--color-ink-soft)",
-                  marginBottom: "1.75rem",
                 }}
               >
                 I read obsessively. I think out loud here. If you're drawn to
                 ideas that don't fit neatly into a single domain, you'll find
                 something worth your time.
               </p>
-
-              <blockquote className="pull-quote" style={{ marginBottom: "1.75rem" }}>
-                The generalist sees connections the specialist never will.
-              </blockquote>
-
-              <div className="text-label" style={{ marginBottom: "0.75rem" }}>Areas of interest</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-                {interests.map((interest) => (
-                  <span key={interest} className="interest-tag">{interest}</span>
-                ))}
-              </div>
             </FadeUp>
           </div>
+
+          {/* Row 2: pull quote — full width */}
+          <FadeUp>
+            <blockquote
+              className="pull-quote"
+              style={{
+                fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)",
+                maxWidth: "none",
+                marginBottom: "2rem",
+                paddingLeft: "1.5rem",
+              }}
+            >
+              The generalist sees connections the specialist never will.
+            </blockquote>
+          </FadeUp>
+
+          {/* Row 3: interest tags — full width */}
+          <FadeUp delay={0.1}>
+            <div className="text-label" style={{ marginBottom: "0.75rem" }}>Areas of interest</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+              {interests.map((interest) => (
+                <span key={interest} className="interest-tag">{interest}</span>
+              ))}
+            </div>
+          </FadeUp>
+
         </div>
       </section>
 
