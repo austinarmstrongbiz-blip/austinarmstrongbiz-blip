@@ -9,6 +9,7 @@ import {
   HeroText,
   YellowBarReveal,
 } from "@/components/ui/Animate";
+import InstagramFeed from "@/components/ui/InstagramFeed";
 
 export const metadata: Metadata = {
   title: "Austin Armstrong",
@@ -533,6 +534,9 @@ export default function HomePage() {
         </section>
       </FadeIn>
 
+      {/* ── INSTAGRAM FEED ────────────────────────────────────────────────── */}
+      <InstagramFeed />
+
       {/* ── CONTACT FOOTER STRIP ──────────────────────────────────────────── */}
       <FadeUp>
         <section style={{ paddingTop: "4rem", paddingBottom: "4rem" }}>
@@ -564,16 +568,34 @@ export default function HomePage() {
                   Advisory, collaboration, or just a good conversation about ideas.
                 </p>
               </div>
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <a
-                  href="mailto:hello@austin-armstrong.me"
-                  className="btn-yellow"
-                >
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
+                <a href="mailto:hello@austin-armstrong.me" className="btn-yellow">
                   Email me
                 </a>
                 <Link href="/resume" className="btn-outline">
                   View CV
                 </Link>
+                <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginLeft: "0.5rem" }}>
+                  <a href="https://www.instagram.com/austinarmstrong20/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="social-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <circle cx="12" cy="12" r="4"/>
+                      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+                    </svg>
+                  </a>
+                  <a href="https://x.com/austin_2020" target="_blank" rel="noopener noreferrer" aria-label="X" className="social-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  </a>
+                  <a href="https://www.linkedin.com/in/austin-armstrong20/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="social-icon">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                      <rect x="2" y="9" width="4" height="12"/>
+                      <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
