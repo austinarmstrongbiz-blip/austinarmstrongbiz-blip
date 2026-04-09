@@ -243,8 +243,8 @@ export default function HomePage() {
       {/* ── BIO ───────────────────────────────────────────────────────────── */}
       <section
         style={{
-          paddingTop: "5rem",
-          paddingBottom: "5rem",
+          paddingTop: "4rem",
+          paddingBottom: "4rem",
           borderBottom: "1px solid var(--color-rule)",
         }}
       >
@@ -253,62 +253,47 @@ export default function HomePage() {
             className="bio-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr 1.2fr",
-              gap: "3rem",
+              gridTemplateColumns: "280px 280px 1fr",
+              gap: "2.5rem",
               alignItems: "start",
             }}
           >
             {/* Photo 1 — intense mid-shot */}
             <FadeUp>
-              <div
-                style={{
-                  position: "relative",
-                  aspectRatio: "3 / 4",
-                  overflow: "hidden",
-                }}
-              >
+              <div style={{ position: "relative", height: "380px", overflow: "hidden" }}>
                 <Image
                   src="/images/Groom_601246415.jpg"
                   alt="Austin Armstrong"
                   fill
-                  style={{ objectFit: "cover", objectPosition: "center top" }}
-                  sizes="(max-width: 768px) 100vw, 25vw"
+                  style={{ objectFit: "cover", objectPosition: "center 15%" }}
+                  sizes="280px"
                 />
               </div>
             </FadeUp>
 
             {/* Photo 2 — smiling headshot, offset down */}
             <FadeUp delay={0.12}>
-              <div
-                style={{
-                  position: "relative",
-                  aspectRatio: "3 / 4",
-                  overflow: "hidden",
-                  marginTop: "3rem",
-                }}
-              >
+              <div style={{ position: "relative", height: "380px", overflow: "hidden", marginTop: "2rem" }}>
                 <Image
                   src="/images/Groom_601246435.jpg"
                   alt="Austin Armstrong"
                   fill
-                  style={{ objectFit: "cover", objectPosition: "center top" }}
-                  sizes="(max-width: 768px) 100vw, 25vw"
+                  style={{ objectFit: "cover", objectPosition: "center 10%" }}
+                  sizes="280px"
                 />
               </div>
             </FadeUp>
 
             {/* Bio text */}
             <FadeUp delay={0.2}>
-              <div className="text-label" style={{ marginBottom: "1.5rem" }}>
-                About
-              </div>
+              <div className="text-label" style={{ marginBottom: "1rem" }}>About</div>
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
-                  fontSize: "1.05rem",
-                  lineHeight: 1.8,
+                  fontSize: "1rem",
+                  lineHeight: 1.75,
                   color: "var(--color-ink-soft)",
-                  marginBottom: "1.25rem",
+                  marginBottom: "1rem",
                 }}
               >
                 I'm a generalist who refuses to stay in a single lane. My
@@ -320,10 +305,10 @@ export default function HomePage() {
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
-                  fontSize: "1.05rem",
-                  lineHeight: 1.8,
+                  fontSize: "1rem",
+                  lineHeight: 1.75,
                   color: "var(--color-ink-soft)",
-                  marginBottom: "2.5rem",
+                  marginBottom: "1.75rem",
                 }}
               >
                 I read obsessively. I think out loud here. If you're drawn to
@@ -331,20 +316,16 @@ export default function HomePage() {
                 something worth your time.
               </p>
 
-              <blockquote className="pull-quote" style={{ marginBottom: "2.5rem" }}>
+              <blockquote className="pull-quote" style={{ marginBottom: "1.75rem" }}>
                 The generalist sees connections the specialist never will.
               </blockquote>
 
-              <div className="text-label" style={{ marginBottom: "1rem" }}>
-                Areas of interest
-              </div>
-              <StaggerList style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
+              <div className="text-label" style={{ marginBottom: "0.75rem" }}>Areas of interest</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
                 {interests.map((interest) => (
-                  <StaggerItem key={interest} as="span">
-                    <span className="interest-tag">{interest}</span>
-                  </StaggerItem>
+                  <span key={interest} className="interest-tag">{interest}</span>
                 ))}
-              </StaggerList>
+              </div>
             </FadeUp>
           </div>
         </div>

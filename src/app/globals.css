@@ -192,20 +192,22 @@ html {
 /* ─── INTEREST TAG ───────────────────────────────────────────────── */
 .interest-tag {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--color-rule);
-  color: var(--color-ink-muted);
+  padding: 0.3rem 0.75rem;
+  background: var(--color-yellow);
+  border: 1px solid var(--color-yellow);
+  color: var(--color-ink);
   transition: all 0.15s ease;
   display: inline-block;
+  font-weight: 600;
 }
 
 .interest-tag:hover {
-  border-color: var(--color-yellow-dim);
-  background: var(--color-yellow);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-yellow);
 }
 
 /* ─── NAV LINK ───────────────────────────────────────────────────── */
@@ -376,7 +378,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ─── BIO GRID RESPONSIVE ────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .bio-grid {
     grid-template-columns: 1fr 1fr !important;
   }
@@ -387,6 +389,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 560px) {
   .bio-grid {
     grid-template-columns: 1fr !important;
+  }
+  .bio-grid > *:nth-child(2) {
+    margin-top: 0 !important;
   }
 }
 
