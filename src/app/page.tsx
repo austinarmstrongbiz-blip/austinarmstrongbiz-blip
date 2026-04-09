@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { essays, reading, thinking, interests } from "@/lib/data";
 import {
   FadeUp,
@@ -64,87 +65,127 @@ export default function HomePage() {
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section
         style={{
-          paddingTop: "5rem",
-          paddingBottom: "0",
           borderBottom: "1px solid var(--color-rule)",
+          overflow: "hidden",
         }}
       >
-        <div className="container-editorial">
-          {/* Folio */}
-          <HeroText delay={0}>
-            <div className="folio" style={{ marginBottom: "2.5rem" }}>
-              Personal site · Austin Armstrong
+        <div
+          className="hero-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 42%",
+            minHeight: "90vh",
+          }}
+        >
+          {/* Left — text */}
+          <div
+            style={{
+              padding: "5rem 4rem 4rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+            className="hero-text-col"
+          >
+            <div>
+              <HeroText delay={0}>
+                <div className="folio" style={{ marginBottom: "2.5rem" }}>
+                  Personal site · Austin Armstrong
+                </div>
+              </HeroText>
+
+              <h1 style={{ marginBottom: 0 }}>
+                <HeroText delay={0.1} style={{ display: "block" }}>
+                  <span
+                    style={{
+                      display: "block",
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "clamp(3.5rem, 7vw, 8rem)",
+                      lineHeight: 0.9,
+                      letterSpacing: "-0.025em",
+                      color: "var(--color-ink)",
+                    }}
+                  >
+                    Austin
+                  </span>
+                </HeroText>
+
+                <HeroText delay={0.2} style={{ display: "inline-block" }}>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      position: "relative",
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "clamp(3.5rem, 7vw, 8rem)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.025em",
+                      color: "var(--color-ink)",
+                    }}
+                  >
+                    <YellowBarReveal delay={0.45} />
+                    <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
+                  </span>
+                </HeroText>
+              </h1>
             </div>
-          </HeroText>
 
-          {/* Big display name */}
-          <h1 style={{ marginBottom: 0 }}>
-            {/* "Austin" */}
-            <HeroText delay={0.1} style={{ display: "block" }}>
-              <span
+            {/* Tagline pinned to bottom of left col */}
+            <FadeUp delay={0.4}>
+              <div
                 style={{
-                  display: "block",
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  fontSize: "clamp(4rem, 10vw, 9rem)",
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.025em",
-                  color: "var(--color-ink)",
+                  paddingTop: "2rem",
+                  borderTop: "1px solid var(--color-rule)",
+                  marginTop: "3rem",
                 }}
               >
-                Austin
-              </span>
-            </HeroText>
+                <p
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 400,
+                    fontStyle: "italic",
+                    fontSize: "clamp(1rem, 1.8vw, 1.35rem)",
+                    lineHeight: 1.5,
+                    color: "var(--color-ink-soft)",
+                    maxWidth: "40ch",
+                    marginBottom: "2rem",
+                  }}
+                >
+                  "I am someone who is curious about the world,
+                  here are my notes about what I find."
+                </p>
+                <div style={{ display: "flex", gap: "0.75rem" }}>
+                  <Link href="/essays" className="btn-yellow" style={{ fontSize: "0.62rem" }}>
+                    Read essays
+                  </Link>
+                  <Link href="/now" className="btn-outline" style={{ fontSize: "0.62rem" }}>
+                    What I'm doing now
+                  </Link>
+                </div>
+              </div>
+            </FadeUp>
+          </div>
 
-            {/* "Armstrong." — animated yellow bar reveal */}
-            <HeroText delay={0.2} style={{ display: "inline-block" }}>
-              <span
-                style={{
-                  display: "inline-block",
-                  position: "relative",
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  fontSize: "clamp(4rem, 10vw, 9rem)",
-                  lineHeight: 1,
-                  letterSpacing: "-0.025em",
-                  color: "var(--color-ink)",
-                }}
-              >
-                <YellowBarReveal delay={0.45} />
-                <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
-              </span>
-            </HeroText>
-          </h1>
-
-          {/* Tagline */}
-          <FadeUp delay={0.4}>
-            <div
-              style={{
-                marginTop: "3rem",
-                paddingTop: "2rem",
-                paddingBottom: "4rem",
-                borderTop: "1px solid var(--color-rule)",
-                maxWidth: "60ch",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontStyle: "italic",
-                  fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
-                  lineHeight: 1.4,
-                  color: "var(--color-ink-soft)",
-                }}
-              >
-                "I am someone who is curious about the world,
-                <br />
-                here are my notes about what I find."
-              </p>
-            </div>
-          </FadeUp>
+          {/* Right — full-body photo */}
+          <div
+            style={{
+              position: "relative",
+              borderLeft: "1px solid var(--color-rule)",
+            }}
+            className="hero-photo-col"
+          >
+            <Image
+              src="/images/Groom_601246405.jpg"
+              alt="Austin Armstrong"
+              fill
+              priority
+              style={{ objectFit: "cover", objectPosition: "center top" }}
+              sizes="(max-width: 768px) 100vw, 42vw"
+            />
+          </div>
         </div>
       </section>
 
@@ -209,13 +250,55 @@ export default function HomePage() {
       >
         <div className="container-editorial">
           <div
+            className="bio-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
-              gap: "4rem",
+              gridTemplateColumns: "1fr 1fr 1.2fr",
+              gap: "3rem",
+              alignItems: "start",
             }}
           >
+            {/* Photo 1 — intense mid-shot */}
             <FadeUp>
+              <div
+                style={{
+                  position: "relative",
+                  aspectRatio: "3 / 4",
+                  overflow: "hidden",
+                }}
+              >
+                <Image
+                  src="/images/Groom_601246415.jpg"
+                  alt="Austin Armstrong"
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "center top" }}
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                />
+              </div>
+            </FadeUp>
+
+            {/* Photo 2 — smiling headshot, offset down */}
+            <FadeUp delay={0.12}>
+              <div
+                style={{
+                  position: "relative",
+                  aspectRatio: "3 / 4",
+                  overflow: "hidden",
+                  marginTop: "3rem",
+                }}
+              >
+                <Image
+                  src="/images/Groom_601246435.jpg"
+                  alt="Austin Armstrong"
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "center top" }}
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                />
+              </div>
+            </FadeUp>
+
+            {/* Bio text */}
+            <FadeUp delay={0.2}>
               <div className="text-label" style={{ marginBottom: "1.5rem" }}>
                 About
               </div>
@@ -240,16 +323,15 @@ export default function HomePage() {
                   fontSize: "1.05rem",
                   lineHeight: 1.8,
                   color: "var(--color-ink-soft)",
+                  marginBottom: "2.5rem",
                 }}
               >
                 I read obsessively. I think out loud here. If you're drawn to
                 ideas that don't fit neatly into a single domain, you'll find
                 something worth your time.
               </p>
-            </FadeUp>
 
-            <FadeUp delay={0.15}>
-              <blockquote className="pull-quote" style={{ marginBottom: "3rem" }}>
+              <blockquote className="pull-quote" style={{ marginBottom: "2.5rem" }}>
                 The generalist sees connections the specialist never will.
               </blockquote>
 
@@ -354,6 +436,61 @@ export default function HomePage() {
           </StaggerList>
         </div>
       </section>
+
+      {/* ── CINEMATIC PHOTO BAND ──────────────────────────────────────────── */}
+      <div
+        style={{
+          position: "relative",
+          height: "clamp(280px, 40vw, 560px)",
+          borderBottom: "2px solid var(--color-ink)",
+          overflow: "hidden",
+        }}
+      >
+        <Image
+          src="/images/Reception_601246639.jpg"
+          alt="Austin Armstrong"
+          fill
+          style={{ objectFit: "cover", objectPosition: "center 30%" }}
+          sizes="100vw"
+        />
+        {/* Subtle dark overlay so the yellow quote pops */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(35,31,32,0.35)",
+          }}
+        />
+        {/* Quote overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "2rem",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontStyle: "italic",
+              fontSize: "clamp(1.5rem, 4vw, 3rem)",
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              color: "#fff",
+              maxWidth: "20ch",
+              borderLeft: "4px solid var(--color-yellow)",
+              paddingLeft: "1.25rem",
+              textAlign: "left",
+            }}
+          >
+            Traditional does not get exceptional.
+          </p>
+        </div>
+      </div>
 
       {/* ── LATEST ESSAYS ─────────────────────────────────────────────────── */}
       <section
