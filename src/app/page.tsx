@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { essays, reading, thinking, interests } from "@/lib/data";
+import { reading, thinking, interests } from "@/lib/data";
+import { getSubstackPosts, SUBSTACK_URL } from "@/lib/substack";
 import {
   FadeUp,
   FadeIn,
@@ -52,14 +53,12 @@ const pillars = [
   },
 ];
 
-// Latest 3 essays (stub — will be live from Notion in Phase 2)
-const latestEssays = essays.slice(0, 3);
-
-// Now strip (stub — will be live from Notion in Phase 2)
+// Now strip
 const currentBook = reading.find((b) => b.progress < 100 && b.progress > 0) ?? reading[0];
 const currentThought = thinking[0];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const substackPosts = await getSubstackPosts(3);
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -508,23 +507,27 @@ export default function HomePage() {
             }}
           >
             <div className="text-label">§02 · Latest essays</div>
-            <Link
-              href="/essays"
+            <a
+              href={SUBSTACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="folio"
               style={{ color: "var(--color-ink-muted)", transition: "color 0.15s" }}
             >
               All essays →
-            </Link>
+            </a>
           </FadeUp>
           <FadeUp delay={0.05}>
             <hr className="rule rule-thick" style={{ marginBottom: "0" }} />
           </FadeUp>
 
           <StaggerList>
-            {latestEssays.map((essay) => (
-              <StaggerItem key={essay.slug}>
-                <Link
-                  href={`/essays/${essay.slug}`}
+            {substackPosts.map((post) => (
+              <StaggerItem key={post.url}>
+                <a
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     display: "grid",
                     gridTemplateColumns: "1fr auto",
@@ -536,9 +539,6 @@ export default function HomePage() {
                   }}
                 >
                   <div>
-                    <span className="interest-tag" style={{ marginBottom: "0.75rem", display: "inline-block" }}>
-                      {essay.tag}
-                    </span>
                     <div
                       style={{
                         fontFamily: "var(--font-display)",
@@ -548,28 +548,30 @@ export default function HomePage() {
                         letterSpacing: "-0.015em",
                         lineHeight: 1.1,
                         color: "var(--color-ink)",
-                        marginBottom: "0.4rem",
+                        marginBottom: "0.5rem",
                       }}
                     >
-                      {essay.title}
+                      {post.title}
                     </div>
                     <p
                       style={{
-                        fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
-                        fontWeight: 400,
+                        fontFamily: "var(--font-sans)",
                         color: "var(--color-ink-muted)",
-                        fontSize: "0.95rem",
+                        fontSize: "0.9rem",
+                        lineHeight: 1.6,
+                        maxWidth: "60ch",
                       }}
                     >
-                      {essay.subtitle}
+                      {post.summary}
                     </p>
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <div className="folio">{essay.date}</div>
-                    <div className="folio" style={{ marginTop: "0.3rem" }}>{essay.readTime}</div>
+                    <div className="folio">{post.dateFormatted}</div>
+                    {post.readTime && (
+                      <div className="folio" style={{ marginTop: "0.3rem" }}>{post.readTime}</div>
+                    )}
                   </div>
-                </Link>
+                </a>
               </StaggerItem>
             ))}
           </StaggerList>
