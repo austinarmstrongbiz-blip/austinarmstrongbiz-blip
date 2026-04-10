@@ -32,9 +32,10 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
-  { href: "/now",    label: "Now"    },
-  { href: "/essays", label: "Essays" },
-  { href: "/resume", label: "CV"     },
+  { href: "/now",      label: "Now"      },
+  { href: "/essays",   label: "Essays"   },
+  { href: "/projects", label: "Projects" },
+  { href: "/resume",   label: "CV"       },
 ];
 
 /* The brand logo — "Austin Armstrong." in Basilia Bold Italic

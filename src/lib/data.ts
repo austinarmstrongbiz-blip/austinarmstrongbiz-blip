@@ -288,3 +288,53 @@ export const education: Education[] = [
     note: "Focus on behavioral economics and decision theory.",
   },
 ];
+
+// ─── FEATURED REPOS ───────────────────────────────────────────────────────────
+// Repo names that get a featured (yellow top border) treatment on /projects.
+// Add new repo names here as more are published.
+export const featuredRepoNames: string[] = [
+  "austinarmstrongbiz-blip",
+];
+
+// ─── STATIC PROJECTS ─────────────────────────────────────────────────────────
+// Non-GitHub projects, case studies, and notable work to show on /projects.
+export interface StaticProject {
+  title: string;
+  description: string;
+  tag: string;
+  tagColor: string;
+  period: string;
+  highlights: string[];
+  link?: string;
+}
+
+export const staticProjects: StaticProject[] = [
+  {
+    title: "IT Financial Management System — Wellstar Health System",
+    description:
+      "Architected a full Apptio TBM implementation managing $250M+ in annual IT spend across 50 staff and 15 business units — automating 40 cost center migrations, 5 budget process automations, and 10+ SQL data feeds.",
+    tag: "Finance · Healthcare",
+    tagColor: "var(--color-pillar-finance)",
+    period: "2022 — Present",
+    highlights: [
+      "$250M+ IT budget under management",
+      "40 cost centers migrated to Apptio",
+      "8 executive dashboards built",
+      "5 process automations deployed",
+    ],
+  },
+  {
+    title: "Enterprise IT Budget Optimization — UPMC Enterprises",
+    description:
+      "Led financial operations for a $400M IT portfolio at one of the nation's largest integrated health systems — overseeing 50+ cost-benefit analyses, RPA-powered reporting, and cross-functional budget governance.",
+    tag: "Finance · Healthcare",
+    tagColor: "var(--color-pillar-finance)",
+    period: "2020 — 2022",
+    highlights: [
+      "$400M IT portfolio managed",
+      "$1M revenue increase via cost analysis",
+      "50+ projects valued at $75M analyzed",
+      "RPA reporting automation",
+    ],
+  },
+];

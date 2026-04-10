@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { reading, thinking, interests } from "@/lib/data";
+import { thinking, interests, featuredRepoNames } from "@/lib/data";
 import { getSubstackPosts, SUBSTACK_URL } from "@/lib/substack";
+import { getReadingList } from "@/lib/notion";
+import { getGitHubRepos } from "@/lib/github";
 import {
   FadeUp,
   FadeIn,
@@ -53,12 +55,19 @@ const pillars = [
   },
 ];
 
-// Now strip
-const currentBook = reading.find((b) => b.progress < 100 && b.progress > 0) ?? reading[0];
 const currentThought = thinking[0];
 
 export default async function HomePage() {
-  const substackPosts = await getSubstackPosts(3);
+  const [substackPosts, books, allRepos] = await Promise.all([
+    getSubstackPosts(3),
+    getReadingList(),
+    getGitHubRepos(),
+  ]);
+  const allPostsForCount = await getSubstackPosts(100);
+  const essayCount = allPostsForCount.length || 85;
+  const bookCount = books.filter((b) => b.status === "Read" || b.status === "Reading").length;
+  const currentBook = books.find((b) => b.status === "Reading") ?? books[0];
+  const featuredRepos = allRepos.filter((r) => featuredRepoNames.includes(r.name)).slice(0, 2);
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -188,6 +197,102 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── START HERE ───────────────────────────────────────────────────── */}
+      <section
+        style={{
+          borderBottom: "1px solid var(--color-rule)",
+          background: "var(--color-bg-warm)",
+        }}
+      >
+        <div className="container-editorial">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+            }}
+            className="start-here-grid"
+          >
+            {[
+              {
+                label: "Recruiter / Partner",
+                headline: "See my credentials",
+                desc: "10+ years in enterprise IT finance. $650M+ managed. Apptio certified. Available for advisory.",
+                href: "/resume",
+                cta: "View CV →",
+              },
+              {
+                label: "Reader",
+                headline: "Explore ideas",
+                desc: "85 essays on AI, finance, lifestyle design, and the generalist mindset.",
+                href: "/essays",
+                cta: "Read essays →",
+              },
+              {
+                label: "Builder",
+                headline: "See what I'm making",
+                desc: "Open-source projects and notable professional work — shipped and in progress.",
+                href: "/projects",
+                cta: "View projects →",
+              },
+            ].map((card, i) => (
+              <FadeUp key={card.label} delay={i * 0.08}>
+                <a
+                  href={card.href}
+                  style={{
+                    display: "block",
+                    padding: "2.5rem 2rem",
+                    borderRight: i < 2 ? "1px solid var(--color-rule)" : "none",
+                    textDecoration: "none",
+                    transition: "background 0.15s ease",
+                  }}
+                  className="pillar-card"
+                >
+                  <div className="folio" style={{ marginBottom: "0.75rem" }}>
+                    {card.label}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "1.15rem",
+                      letterSpacing: "-0.01em",
+                      color: "var(--color-ink)",
+                      lineHeight: 1.1,
+                      marginBottom: "0.6rem",
+                    }}
+                  >
+                    {card.headline}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.65,
+                      color: "var(--color-ink-soft)",
+                      marginBottom: "1.25rem",
+                    }}
+                  >
+                    {card.desc}
+                  </p>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.62rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--color-ink-muted)",
+                    }}
+                  >
+                    {card.cta}
+                  </span>
+                </a>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── THE THESIS ────────────────────────────────────────────────────── */}
       {/* Full-width yellow band — the brand statement */}
       <FadeIn>
@@ -238,6 +343,63 @@ export default async function HomePage() {
           </div>
         </section>
       </FadeIn>
+
+      {/* ── IMPACT NUMBERS ───────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: "var(--color-ink)",
+          borderBottom: "2px solid var(--color-ink)",
+          padding: "3.5rem 0",
+        }}
+      >
+        <div className="container-editorial">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
+              gap: "0",
+            }}
+          >
+            {[
+              { num: "$650M+", label: "IT budgets managed" },
+              { num: "2", label: "Fortune 500 health systems" },
+              { num: `${essayCount}`, label: "essays published" },
+              { num: bookCount > 0 ? `${bookCount}` : "50+", label: "books read or reading" },
+            ].map((stat, i) => (
+              <FadeUp key={stat.label} delay={i * 0.08}>
+                <div
+                  style={{
+                    padding: "1.5rem 2rem",
+                    borderRight: i < 3 ? "1px solid rgba(249,249,249,0.1)" : "none",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.025em",
+                      color: "var(--color-yellow)",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    {stat.num}
+                  </div>
+                  <div
+                    className="folio"
+                    style={{ color: "rgba(249,249,249,0.55)", letterSpacing: "0.1em" }}
+                  >
+                    {stat.label}
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── BIO ───────────────────────────────────────────────────────────── */}
       <section
@@ -434,6 +596,91 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── CURRENTLY BUILDING ───────────────────────────────────────────── */}
+      {featuredRepos.length > 0 && (
+        <section
+          style={{
+            paddingTop: "5rem",
+            paddingBottom: "5rem",
+            borderBottom: "1px solid var(--color-rule)",
+          }}
+        >
+          <div className="container-editorial">
+            <FadeUp style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "0.5rem" }}>
+              <div className="text-label">§03 · Currently building</div>
+              <Link href="/projects" className="folio" style={{ color: "var(--color-ink-muted)" }}>
+                All projects →
+              </Link>
+            </FadeUp>
+            <FadeUp delay={0.05}>
+              <hr className="rule rule-thick" style={{ marginBottom: "2.5rem" }} />
+            </FadeUp>
+
+            <StaggerList
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))",
+                gap: "1.5rem",
+              }}
+            >
+              {featuredRepos.map((repo) => (
+                <StaggerItem key={repo.id}>
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "block",
+                      padding: "2rem",
+                      borderTop: "3px solid var(--color-yellow)",
+                      border: "1px solid var(--color-rule)",
+                      borderTopWidth: "3px",
+                      borderTopColor: "var(--color-yellow)",
+                      textDecoration: "none",
+                      transition: "background 0.15s ease",
+                    }}
+                    className="pillar-card"
+                  >
+                    {repo.language && (
+                      <div className="folio" style={{ marginBottom: "0.75rem" }}>{repo.language}</div>
+                    )}
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 700,
+                        fontStyle: "italic",
+                        fontSize: "1.15rem",
+                        letterSpacing: "-0.01em",
+                        color: "var(--color-ink)",
+                        lineHeight: 1.1,
+                        marginBottom: "0.6rem",
+                      }}
+                    >
+                      {repo.displayName}
+                    </div>
+                    {repo.description && (
+                      <p
+                        style={{
+                          fontFamily: "var(--font-sans)",
+                          fontSize: "0.875rem",
+                          lineHeight: 1.6,
+                          color: "var(--color-ink-soft)",
+                        }}
+                      >
+                        {repo.description}
+                      </p>
+                    )}
+                    <div className="folio" style={{ marginTop: "1rem" }}>
+                      Updated {repo.updatedFormatted}
+                    </div>
+                  </a>
+                </StaggerItem>
+              ))}
+            </StaggerList>
+          </div>
+        </section>
+      )}
+
       {/* ── CINEMATIC PHOTO BAND ──────────────────────────────────────────── */}
       <div
         style={{
@@ -506,7 +753,7 @@ export default async function HomePage() {
               marginBottom: "0.5rem",
             }}
           >
-            <div className="text-label">§02 · Latest essays</div>
+            <div className="text-label">§04 · Latest essays</div>
             <a
               href={SUBSTACK_URL}
               target="_blank"
@@ -615,13 +862,13 @@ export default async function HomePage() {
                     lineHeight: 1.2,
                   }}
                 >
-                  {currentBook.title}
+                  {currentBook?.title ?? "Check back soon"}
                 </div>
                 <div
                   className="folio"
                   style={{ color: "rgba(249,249,249,0.5)", marginTop: "0.35rem" }}
                 >
-                  {currentBook.author} · {currentBook.progress}%
+                  {currentBook?.author}{currentBook?.status === "Reading" ? " · Reading" : ""}
                 </div>
               </div>
 
@@ -689,7 +936,7 @@ export default async function HomePage() {
             >
               <div>
                 <div className="text-label" style={{ marginBottom: "0.75rem" }}>
-                  §03 · Get in touch
+                  §05 · Get in touch
                 </div>
                 <p
                   style={{
