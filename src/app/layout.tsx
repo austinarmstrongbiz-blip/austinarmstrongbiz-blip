@@ -6,11 +6,29 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: {
     template: "%s — Austin Armstrong",
-    default: "Austin Armstrong",
+    default: "Austin Armstrong — IT Financial Analyst, Writer, Builder",
   },
   description:
-    "I am someone who is curious about the world, here are my notes about what I find.",
+    "Austin Armstrong — Senior IT Financial Analyst who managed $650M+ in IT budgets across Fortune 500 health systems. Writer on Lifestyle Design, AI, Finance, and Personal Development.",
   metadataBase: new URL("https://austin-armstrong.me"),
+  keywords: [
+    "Austin Armstrong",
+    "IT Financial Analyst",
+    "IT Budget Management",
+    "Apptio",
+    "Healthcare IT",
+    "Lifestyle Design",
+    "Artificial Intelligence",
+    "Personal Finance",
+    "Personal Development",
+  ],
+  authors: [{ name: "Austin Armstrong", url: "https://austin-armstrong.me" }],
+  alternates: {
+    canonical: "https://austin-armstrong.me",
+    types: {
+      "application/rss+xml": "https://austin-armstrong.me/feed.xml",
+    },
+  },
   openGraph: {
     siteName: "Austin Armstrong",
     locale: "en_US",
@@ -26,8 +44,19 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@austinarmstrong",
+    site: "@austin_2020",
+    creator: "@austin_2020",
     images: ["/og"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

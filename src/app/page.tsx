@@ -57,6 +57,29 @@ const pillars = [
 
 const currentThought = thinking[0];
 
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Austin Armstrong",
+  url: "https://austin-armstrong.me",
+  sameAs: [
+    "https://www.linkedin.com/in/austin-armstrong20/",
+    "https://x.com/austin_2020",
+    "https://www.instagram.com/austinarmstrong20/",
+    "https://austinarmstrong20.substack.com",
+  ],
+  jobTitle: "Senior IT Financial Analyst",
+  description:
+    "IT Financial Analyst and strategic operator with experience managing $650M+ in IT budgets across Fortune 500 health systems. Writer on Lifestyle Design, AI, Finance, and Personal Development.",
+  knowsAbout: [
+    "IT Financial Management",
+    "Artificial Intelligence",
+    "Lifestyle Design",
+    "Personal Finance",
+    "Technology Strategy",
+  ],
+};
+
 export default async function HomePage() {
   const [substackPosts, books, allRepos] = await Promise.all([
     getSubstackPosts(3),
@@ -70,6 +93,10 @@ export default async function HomePage() {
   const featuredRepos = allRepos.filter((r) => featuredRepoNames.includes(r.name)).slice(0, 2);
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section
         style={{
