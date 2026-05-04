@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getCVEntries } from "@/lib/notion";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 import PrintButton from "@/components/ui/PrintButton";
@@ -31,13 +32,14 @@ function extractImpactStat(description: string): { num: string; label: string } 
 }
 
 const competencies = [
-  "IT Financial Management", "ApptioOne", "Power BI", "SQL",
-  "Financial Forecasting", "Cost Optimization", "Variance Analysis",
-  "Contract Analysis", "Vendor Negotiation", "GAAP Compliance",
-  "RFI/RFP Writing", "Process Automation", "RPA", "Executive Dashboards",
-  "Stakeholder Collaboration", "Capital Planning", "Data Migration",
-  "Systems Thinking", "Barbell Strategy", "First Principles", "Mental Models",
-  "Long-Form Writing", "AI / LLMs", "Financial Reporting",
+  "Enterprise Relationship Management", "Consultative Selling", "Go-to-Market Strategy",
+  "Account Management", "RFI/RFP Writing", "Contract Negotiation",
+  "IT Financial Management", "Financial Forecasting", "Cost Optimization",
+  "Variance Analysis", "GAAP Compliance", "Executive Dashboards",
+  "ApptioOne", "Power BI", "HubSpot", "Apollo.io", "LinkedIn Sales Navigator",
+  "SQL", "Process Automation", "RPA", "Data Migration",
+  "AI / LLMs", "AI Positioning & Messaging", "Cross-Functional Stakeholder Alignment",
+  "Long-Form Writing", "Capital Planning", "Financial Reporting",
 ];
 
 export default async function ResumePage() {
@@ -128,8 +130,19 @@ export default async function ResumePage() {
             </p>
             <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "center" }}>
               <span className="folio">austin-armstrong.me</span>
-              <span className="folio">hello@austin-armstrong.me</span>
-              <span className="folio">Available for select advisory</span>
+              <span className="folio">austin@austin-armstrong.me</span>
+              <a
+                href="https://www.linkedin.com/in/austin-armstrong20/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="folio"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                linkedin.com/in/austin-armstrong20
+              </a>
+              <span className="folio" style={{ color: "var(--color-ink)" }}>
+                Open to enterprise partnerships &amp; advisory roles
+              </span>
             </div>
           </FadeUp>
         </div>
@@ -522,10 +535,30 @@ export default async function ResumePage() {
             </FadeUp>
           )}
 
+          {/* Projects callout */}
+          <FadeUp delay={0.1}>
+            <div
+              style={{
+                marginTop: "3rem",
+                padding: "2rem",
+                borderLeft: "4px solid var(--color-yellow)",
+                background: "var(--color-bg-warm)",
+              }}
+              className="no-print"
+            >
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.95rem", color: "var(--color-ink-soft)", marginBottom: "0.75rem" }}>
+                Looking for case studies and builds?
+              </p>
+              <Link href="/projects" className="btn-outline" style={{ display: "inline-block" }}>
+                View Projects &amp; Case Studies →
+              </Link>
+            </div>
+          </FadeUp>
+
           {/* Print CTA */}
           <div
             style={{
-              marginTop: "4rem",
+              marginTop: "3rem",
               paddingTop: "3rem",
               borderTop: "1px solid var(--color-rule)",
               display: "flex",
@@ -537,11 +570,11 @@ export default async function ResumePage() {
             className="no-print"
           >
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.9rem", color: "var(--color-ink-muted)" }}>
-              Print this page or save as PDF from your browser.
+              Save as PDF — File → Print → Save as PDF in your browser.
             </p>
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
               <PrintButton />
-              <a href="mailto:hello@austin-armstrong.me" className="btn-outline">
+              <a href="mailto:austin@austin-armstrong.me" className="btn-outline">
                 Get in touch →
               </a>
             </div>
