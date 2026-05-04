@@ -68,9 +68,9 @@ const personSchema = {
     "https://www.instagram.com/austinarmstrong20/",
     "https://austinarmstrong20.substack.com",
   ],
-  jobTitle: "Senior IT Financial Analyst",
+  jobTitle: "Senior IT Business Analyst",
   description:
-    "IT Financial Analyst and strategic operator with experience managing $650M+ in IT budgets across Fortune 500 health systems. Writer on Lifestyle Design, AI, Finance, and Personal Development.",
+    "Generalist operator at the intersection of enterprise IT finance, AI go-to-market, and organizational change. Experience managing $650M+ in IT budgets across Fortune 500 health systems. Writer on Lifestyle Design, AI, Finance, and Personal Development.",
   knowsAbout: [
     "IT Financial Management",
     "Artificial Intelligence",

@@ -122,9 +122,9 @@ export default async function ResumePage() {
                 marginBottom: "1.5rem",
               }}
             >
-              IT Financial Analyst · Generalist · Builder. I manage enterprise-scale
-              technology budgets and write about AI, finance, and the art of thinking
-              across disciplines.
+              Generalist operator at the intersection of enterprise IT finance, AI go-to-market,
+              and organizational change. I bridge technical and executive teams across health systems,
+              AI startups, and founder-led product teams.
             </p>
             <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "center" }}>
               <span className="folio">austin-armstrong.me</span>

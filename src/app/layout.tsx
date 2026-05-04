@@ -6,10 +6,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: {
     template: "%s — Austin Armstrong",
-    default: "Austin Armstrong — IT Financial Analyst, Writer, Builder",
+    default: "Austin Armstrong — Generalist Operator, Writer, Builder",
   },
   description:
-    "Austin Armstrong — Senior IT Financial Analyst who managed $650M+ in IT budgets across Fortune 500 health systems. Writer on Lifestyle Design, AI, Finance, and Personal Development.",
+    "Austin Armstrong — Generalist operator at the intersection of enterprise IT finance, AI go-to-market, and organizational change. Writer on Lifestyle Design, AI, Finance, and Personal Development.",
   metadataBase: new URL("https://austin-armstrong.me"),
   keywords: [
     "Austin Armstrong",
