@@ -56,14 +56,18 @@ export default async function ResumePage() {
       <section
         style={{
           paddingTop: "0",
-          paddingBottom: "4rem",
-          borderBottom: "2px solid var(--color-ink)",
+          paddingBottom: "5rem",
+          background: "var(--color-ink)",
         }}
         className="print-header"
       >
         <div style={{ background: "var(--color-yellow)", height: "4px" }} />
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
-          <FadeUp><div className="folio" style={{ marginBottom: "2rem" }}>Curriculum Vitae</div></FadeUp>
+          <FadeUp>
+            <div className="folio" style={{ marginBottom: "2rem", color: "var(--color-ink-muted)" }}>
+              Curriculum Vitae
+            </div>
+          </FadeUp>
 
           <FadeUp delay={0.1} as="div" style={{ marginBottom: "2.5rem" }}>
             <h1>
@@ -76,7 +80,7 @@ export default async function ResumePage() {
                   fontSize: "clamp(3rem, 8vw, 7rem)",
                   lineHeight: 0.92,
                   letterSpacing: "-0.025em",
-                  color: "var(--color-ink)",
+                  color: "#f9f9f9",
                 }}
               >
                 Austin
@@ -91,7 +95,7 @@ export default async function ResumePage() {
                   fontSize: "clamp(3rem, 8vw, 7rem)",
                   lineHeight: 1,
                   letterSpacing: "-0.025em",
-                  color: "var(--color-ink)",
+                  color: "#f9f9f9",
                 }}
               >
                 <span
@@ -118,10 +122,10 @@ export default async function ResumePage() {
                 fontStyle: "italic",
                 fontWeight: 400,
                 fontSize: "1.15rem",
-                color: "var(--color-ink-soft)",
-                maxWidth: "50ch",
-                lineHeight: 1.5,
-                marginBottom: "1.5rem",
+                color: "rgba(249,249,249,0.65)",
+                maxWidth: "52ch",
+                lineHeight: 1.6,
+                marginBottom: "2rem",
               }}
             >
               Generalist operator at the intersection of enterprise IT finance, AI go-to-market,
@@ -129,18 +133,25 @@ export default async function ResumePage() {
               AI startups, and founder-led product teams.
             </p>
             <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "center" }}>
-              <span className="folio">austin-armstrong.me</span>
-              <span className="folio">austin@austin-armstrong.me</span>
+              <span className="folio" style={{ color: "rgba(249,249,249,0.45)" }}>austin-armstrong.me</span>
+              <span className="folio" style={{ color: "rgba(249,249,249,0.45)" }}>austin@austin-armstrong.me</span>
               <a
                 href="https://www.linkedin.com/in/austin-armstrong20/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="folio"
-                style={{ color: "inherit", textDecoration: "none" }}
+                style={{ color: "rgba(249,249,249,0.45)", textDecoration: "none" }}
               >
                 linkedin.com/in/austin-armstrong20
               </a>
-              <span className="folio" style={{ color: "var(--color-ink)" }}>
+              <span
+                className="folio"
+                style={{
+                  color: "var(--color-yellow)",
+                  borderBottom: "1px solid var(--color-yellow)",
+                  paddingBottom: "1px",
+                }}
+              >
                 Open to enterprise partnerships &amp; advisory roles
               </span>
             </div>
@@ -154,6 +165,7 @@ export default async function ResumePage() {
           style={{
             paddingTop: "4rem",
             paddingBottom: "4rem",
+            background: "var(--color-bg)",
             borderBottom: "1px solid var(--color-rule)",
           }}
         >
@@ -177,9 +189,10 @@ export default async function ResumePage() {
                   <StaggerItem key={job.id} as="article">
                     <article
                       style={{
-                        paddingBottom: "3.5rem",
-                        marginBottom: "3.5rem",
-                        borderBottom: "1px solid var(--color-rule)",
+                        padding: "2.5rem",
+                        marginBottom: "1.5rem",
+                        background: "var(--color-bg-warm)",
+                        borderLeft: "4px solid var(--color-yellow)",
                       }}
                     >
                       {/* Role header with impact callout */}
@@ -322,20 +335,31 @@ export default async function ResumePage() {
         style={{
           paddingTop: "4rem",
           paddingBottom: "4rem",
-          borderBottom: "1px solid var(--color-rule)",
-          background: "var(--color-bg-warm)",
+          background: "var(--color-ink)",
         }}
       >
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Competencies</div>
-            <hr className="rule rule-thick" style={{ marginBottom: "2rem" }} />
+            <div className="text-label" style={{ marginBottom: "0.5rem", color: "rgba(249,249,249,0.45)" }}>Core Competencies</div>
+            <hr style={{ border: "none", borderTop: "2px solid var(--color-yellow)", marginBottom: "2rem" }} />
           </FadeUp>
 
           <FadeUp delay={0.1}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
               {competencies.map((skill) => (
-                <span key={skill} className="interest-tag">
+                <span
+                  key={skill}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    padding: "0.35rem 0.75rem",
+                    border: "1px solid rgba(249,249,249,0.2)",
+                    color: "rgba(249,249,249,0.75)",
+                    background: "transparent",
+                  }}
+                >
                   {skill}
                 </span>
               ))}
