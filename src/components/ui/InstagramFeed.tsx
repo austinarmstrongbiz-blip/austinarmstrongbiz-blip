@@ -74,7 +74,7 @@ export default async function InstagramFeed() {
             marginBottom: "0.5rem",
           }}
         >
-          <div className="text-label">§04 · On Instagram</div>
+          <div className="text-label">§05 · On Instagram</div>
           <a
             href="https://www.instagram.com/austinarmstrong20/"
             target="_blank"

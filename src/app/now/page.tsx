@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { getReadingList } from "@/lib/notion";
-import { thinking } from "@/lib/data";
+import { getReadingList, getThinkingList } from "@/lib/notion";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
@@ -40,7 +39,7 @@ function statusToProgress(status: string): number {
 }
 
 export default async function NowPage() {
-  const books = await getReadingList();
+  const [books, thinking] = await Promise.all([getReadingList(), getThinkingList()]);
 
   // Prioritise "Reading" first, then "Read", skip "Want to Read" for display
   const displayBooks = [
@@ -244,7 +243,7 @@ export default async function NowPage() {
                       {thought.idea}
                     </h2>
                     <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <div className="folio">{thought.date}</div>
+                      <div className="folio">{thought.dateFormatted}</div>
                       <span
                         className="interest-tag"
                         style={{ display: "inline-block", marginTop: "0.5rem" }}

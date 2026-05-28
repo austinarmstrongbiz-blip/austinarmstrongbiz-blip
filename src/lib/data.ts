@@ -202,25 +202,25 @@ export const reading: Book[] = [
 
 export const thinking: Thought[] = [
   {
-    idea: "Mental immunity as a trainable skill",
+    idea: "AI agents aren't automating tasks — they're replacing entire job functions",
     context:
-      "We talk about critical thinking but rarely about the emotional infrastructure that allows you to actually change your mind when confronted with good evidence. That's the real bottleneck.",
-    date: "Apr 2024",
-    tag: "Mental Immunity",
+      "The narrative is still 'AI helps you work faster.' That's wrong. Agents handle workflows end-to-end without humans in the loop. The question isn't how to use AI tools — it's which functions disappear first and how to position around that.",
+    date: "May 2026",
+    tag: "AI in Business",
   },
   {
-    idea: "The generalist advantage is misunderstood",
+    idea: "Systems are the moat, not skills",
     context:
-      "People treat 'generalist' as a polite word for unfocused. But the actual advantage is the ability to transfer mental models across domains before specialists even notice the connection.",
-    date: "Mar 2024",
-    tag: "Generalists",
+      "Individual skills are increasingly commoditized — AI can replicate most of them. What can't be copied is a repeatable system built around your specific context, relationships, and judgment. The operators who win are the ones who build processes, not just improve themselves.",
+    date: "May 2026",
+    tag: "Systems",
   },
   {
-    idea: "AI will change what it means to think for yourself",
+    idea: "The barbell career is the only rational response to economic volatility",
     context:
-      "When synthesis is cheap, the scarce resource becomes the quality of the questions you ask. Original curiosity becomes the moat.",
-    date: "Mar 2024",
-    tag: "AI",
+      "Stable income funding asymmetric bets on the side — that structure survives recessions, AI disruption, and industry shifts that a single-bet career can't. The goal isn't to escape the day job. It's to use it as the foundation that lets you take real risks everywhere else.",
+    date: "Apr 2026",
+    tag: "Barbell Strategy",
   },
 ];
 
@@ -315,7 +315,7 @@ export const staticProjects: StaticProject[] = [
       "Architected a full Apptio TBM implementation managing $250M+ in annual IT spend across 50 staff and 15 business units — automating 40 cost center migrations, 5 budget process automations, and 10+ SQL data feeds.",
     tag: "Finance · Healthcare",
     tagColor: "var(--color-pillar-finance)",
-    period: "2022 — Present",
+    period: "2022 — 2024",
     highlights: [
       "$250M+ IT budget under management",
       "40 cost centers migrated to Apptio",

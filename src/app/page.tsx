@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { thinking, interests, featuredRepoNames } from "@/lib/data";
+import { interests, featuredRepoNames } from "@/lib/data";
 import { getSubstackPosts, SUBSTACK_URL } from "@/lib/substack";
-import { getReadingList } from "@/lib/notion";
+import { getReadingList, getThinkingList } from "@/lib/notion";
 import { getGitHubRepos } from "@/lib/github";
 import {
   FadeUp,
@@ -55,8 +55,6 @@ const pillars = [
   },
 ];
 
-const currentThought = thinking[0];
-
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -81,11 +79,13 @@ const personSchema = {
 };
 
 export default async function HomePage() {
-  const [substackPosts, books, allRepos] = await Promise.all([
+  const [substackPosts, books, allRepos, thinkingItems] = await Promise.all([
     getSubstackPosts(3),
     getReadingList(),
     getGitHubRepos(),
+    getThinkingList(),
   ]);
+  const currentThought = thinkingItems[0];
   const allPostsForCount = await getSubstackPosts(100);
   const essayCount = allPostsForCount.length || 85;
   const bookCount = books.filter((b) => b.status === "Read" || b.status === "Reading").length;
@@ -928,7 +928,7 @@ export default async function HomePage() {
                     lineHeight: 1.2,
                   }}
                 >
-                  {currentThought.idea}
+                  {currentThought?.idea ?? "Check back soon"}
                 </div>
               </div>
 
@@ -963,7 +963,7 @@ export default async function HomePage() {
             >
               <div>
                 <div className="text-label" style={{ marginBottom: "0.75rem" }}>
-                  §05 · Get in touch
+                  §06 · Get in touch
                 </div>
                 <p
                   style={{

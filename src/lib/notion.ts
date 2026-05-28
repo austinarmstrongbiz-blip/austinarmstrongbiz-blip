@@ -171,3 +171,53 @@ export async function getCVEntries(): Promise<NotionCVEntry[]> {
     return [];
   }
 }
+
+// ─── CURRENTLY THINKING ───────────────────────────────────────────────────────
+
+export interface NotionThought {
+  id: string;
+  idea: string;
+  context: string;
+  tag: string;
+  date: string;
+  dateFormatted: string;
+}
+
+export async function getThinkingList(): Promise<NotionThought[]> {
+  const dbId = process.env.NOTION_THINKING_DB;
+  if (!dbId) return [];
+
+  try {
+    const res = await fetch(`${NOTION_API}/databases/${dbId}/query`, {
+      method: "POST",
+      headers: notionHeaders(),
+      body: JSON.stringify({
+        filter: { property: "Active", checkbox: { equals: true } },
+        sorts: [{ property: "Date", direction: "descending" }],
+      }),
+      next: { revalidate: 3600 },
+    });
+
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    return (data.results ?? [])
+      .map((page: Record<string, unknown>) => {
+        const props = page.properties as Record<string, unknown>;
+        const dateStr = getDate(props.Date as Parameters<typeof getDate>[0]);
+        return {
+          id: page.id as string,
+          idea: getTitle(props.Idea as Parameters<typeof getTitle>[0]),
+          context: getText(props.Context as Parameters<typeof getText>[0]),
+          tag: getText(props.Tag as Parameters<typeof getText>[0]),
+          date: dateStr ?? "",
+          dateFormatted: dateStr
+            ? new Date(dateStr).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+            : "",
+        };
+      })
+      .filter((t: NotionThought) => t.idea);
+  } catch {
+    return [];
+  }
+}
