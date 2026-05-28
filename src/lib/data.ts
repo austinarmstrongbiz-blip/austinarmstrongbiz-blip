@@ -84,7 +84,7 @@ export const interests: string[] = [
 export const navSections: NavSection[] = [
   {
     href: "/now",
-    label: "Now",
+    label: "Field Notes",
     num: "01",
     desc: "What I'm reading, thinking about, and working on at this moment.",
   },

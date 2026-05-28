@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const navItems = [
-  { href: "/now",    label: "Now"    },
+  { href: "/now",    label: "Field Notes" },
   { href: "/essays", label: "Essays" },
   { href: "/resume", label: "CV"     },
 ];

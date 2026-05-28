@@ -3,7 +3,7 @@ import { getReadingList, getThinkingList } from "@/lib/notion";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
-  title: "Now",
+  title: "Field Notes",
   description: "What Austin Armstrong is currently reading, thinking about, and building.",
 };
 
@@ -66,7 +66,7 @@ export default async function NowPage() {
               Updated · {lastUpdated}
             </div>
           </FadeUp>
-          <FadeUp delay={0.1}><h1 className="text-display">Now</h1></FadeUp>
+          <FadeUp delay={0.1}><h1 className="text-display">Field Notes</h1></FadeUp>
           <FadeUp delay={0.2}>
             <p
               style={{
@@ -226,6 +226,7 @@ export default async function NowPage() {
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
 
+          {thinking.length > 0 ? (
           <StaggerList style={{ display: "grid", gap: "3rem" }}>
             {thinking.map((thought) => (
               <StaggerItem key={thought.idea} as="article">
@@ -269,6 +270,18 @@ export default async function NowPage() {
               </StaggerItem>
             ))}
           </StaggerList>
+          ) : (
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                color: "var(--color-ink-muted)",
+                fontSize: "0.95rem",
+                paddingTop: "1rem",
+              }}
+            >
+              Thoughts loading from Notion — check back soon.
+            </p>
+          )}
         </div>
       </section>
     </>

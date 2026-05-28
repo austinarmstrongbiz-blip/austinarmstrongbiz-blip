@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
-  { href: "/now",      label: "Now"      },
+  { href: "/now",      label: "Field Notes" },
   { href: "/essays",   label: "Essays"   },
   { href: "/projects", label: "Projects" },
   { href: "/resume",   label: "CV"       },
