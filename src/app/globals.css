@@ -297,6 +297,34 @@ html {
 .animate-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .animate-fade-in  { animation: fadeIn 0.8s ease both; }
 
+/* ─── FOCUS VISIBLE ──────────────────────────────────────────────── */
+/* Keyboard users get a clear yellow ring; mouse clicks stay clean. */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-ink);
+  box-shadow: 0 0 0 4px var(--color-yellow);
+}
+
+/* ─── REDUCED MOTION ─────────────────────────────────────────────── */
+/* Honors the OS "reduce motion" setting. Framer Motion is handled
+   separately via <MotionConfig reducedMotion="user">; this covers the
+   CSS keyframe utilities and any transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 .delay-100 { animation-delay: 0.10s; }
 .delay-200 { animation-delay: 0.20s; }
 .delay-300 { animation-delay: 0.30s; }

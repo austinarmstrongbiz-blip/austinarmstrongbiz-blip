@@ -1,7 +1,12 @@
 /**
  * Notion API client.
  * Fetches Reading List and CV data, ISR-cached for 1 hour.
+ * On API failure (expired key, unshared DB, rate limit, network) the
+ * reading/thinking fetchers log loudly and fall back to the static
+ * arrays in data.ts so sections degrade gracefully instead of going blank.
  */
+
+import { reading as staticReading, thinking as staticThinking } from "./data";
 
 const NOTION_API = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
@@ -84,6 +89,34 @@ function formatPeriod(start: string | null, end: string | null, current: boolean
   return s && e ? `${s} — ${e}` : s || e;
 }
 
+// ─── STATIC FALLBACKS ─────────────────────────────────────────────────────────
+// Used only when the Notion API errors — keeps sections populated instead of blank.
+
+function readingFallback(): NotionBook[] {
+  return staticReading.map((b, i) => ({
+    id: `static-reading-${i}`,
+    title: b.title,
+    author: b.author,
+    status: b.progress >= 100 ? "Read" : b.progress > 0 ? "Reading" : "Want to Read",
+    genre: b.tag ? [b.tag] : [],
+    notes: b.note,
+    rating: null,
+    type: "",
+    link: null,
+  }));
+}
+
+function thinkingFallback(): NotionThought[] {
+  return staticThinking.map((t, i) => ({
+    id: `static-thinking-${i}`,
+    idea: t.idea,
+    context: t.context,
+    tag: t.tag,
+    date: "",
+    dateFormatted: t.date,
+  }));
+}
+
 // ─── READING LIST ─────────────────────────────────────────────────────────────
 
 export async function getReadingList(): Promise<NotionBook[]> {
@@ -100,7 +133,10 @@ export async function getReadingList(): Promise<NotionBook[]> {
       next: { revalidate: 3600 },
     });
 
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[notion] getReadingList failed: ${res.status} ${res.statusText} — using fallback`);
+      return readingFallback();
+    }
 
     const data = await res.json();
     return (data.results ?? [])
@@ -119,8 +155,9 @@ export async function getReadingList(): Promise<NotionBook[]> {
         };
       })
       .filter((b: NotionBook) => b.title);
-  } catch {
-    return [];
+  } catch (err) {
+    console.error("[notion] getReadingList error — using fallback:", err);
+    return readingFallback();
   }
 }
 
@@ -143,7 +180,10 @@ export async function getCVEntries(): Promise<NotionCVEntry[]> {
       next: { revalidate: 3600 },
     });
 
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[notion] getCVEntries failed: ${res.status} ${res.statusText}`);
+      return [];
+    }
 
     const data = await res.json();
     return (data.results ?? [])
@@ -167,7 +207,8 @@ export async function getCVEntries(): Promise<NotionCVEntry[]> {
         };
       })
       .filter((e: NotionCVEntry & { period: string }) => e.role);
-  } catch {
+  } catch (err) {
+    console.error("[notion] getCVEntries error:", err);
     return [];
   }
 }
@@ -198,7 +239,10 @@ export async function getThinkingList(): Promise<NotionThought[]> {
       next: { revalidate: 3600 },
     });
 
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[notion] getThinkingList failed: ${res.status} ${res.statusText} — using fallback`);
+      return thinkingFallback();
+    }
 
     const data = await res.json();
     return (data.results ?? [])
@@ -217,7 +261,8 @@ export async function getThinkingList(): Promise<NotionThought[]> {
         };
       })
       .filter((t: NotionThought) => t.idea);
-  } catch {
-    return [];
+  } catch (err) {
+    console.error("[notion] getThinkingList error — using fallback:", err);
+    return thinkingFallback();
   }
 }

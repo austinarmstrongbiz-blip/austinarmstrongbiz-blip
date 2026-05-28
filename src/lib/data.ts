@@ -33,26 +33,6 @@ export interface Thought {
   tag: string;
 }
 
-export interface Job {
-  role: string;
-  company: string;
-  period: string;
-  location: string;
-  bullets: string[];
-}
-
-export interface SkillGroup {
-  label: string;
-  items: string[];
-}
-
-export interface Education {
-  degree: string;
-  institution: string;
-  period: string;
-  note: string;
-}
-
 export interface NavSection {
   href: string;
   label: string;
@@ -221,71 +201,6 @@ export const thinking: Thought[] = [
       "Stable income funding asymmetric bets on the side — that structure survives recessions, AI disruption, and industry shifts that a single-bet career can't. The goal isn't to escape the day job. It's to use it as the foundation that lets you take real risks everywhere else.",
     date: "Apr 2026",
     tag: "Barbell Strategy",
-  },
-];
-
-// ─── RESUME / CV ───────────────────────────────────────────────────────────────
-
-export const experience: Job[] = [
-  {
-    role: "Founder & CEO",
-    company: "Blip",
-    period: "2022 — Present",
-    location: "Remote",
-    bullets: [
-      "Building AI-powered tools for knowledge workers and curious generalists.",
-      "Raised pre-seed funding; grew to early user base across multiple cohorts.",
-      "Responsible for product strategy, fundraising, hiring, and culture.",
-    ],
-  },
-  {
-    role: "Head of Growth",
-    company: "Previous Company",
-    period: "2020 — 2022",
-    location: "San Francisco, CA",
-    bullets: [
-      "Owned full-funnel growth strategy from acquisition through retention.",
-      "Built and led a cross-functional growth team of 8 across marketing, data, and engineering.",
-      "Scaled revenue 3× in 18 months through systematic experimentation.",
-    ],
-  },
-  {
-    role: "Entrepreneur in Residence",
-    company: "Venture Studio",
-    period: "2019 — 2020",
-    location: "New York, NY",
-    bullets: [
-      "Ideated, validated, and killed 4 concepts before finding product-market fit signal.",
-      "Developed thesis on AI applications in knowledge management.",
-    ],
-  },
-];
-
-export const skills: SkillGroup[] = [
-  {
-    label: "Strategy & Vision",
-    items: ["Product strategy", "Go-to-market", "Fundraising", "Team building"],
-  },
-  {
-    label: "Thinking Frameworks",
-    items: ["Systems thinking", "Barbell strategy", "First principles", "Mental models"],
-  },
-  {
-    label: "Domain Knowledge",
-    items: ["AI / LLMs", "Consumer growth", "B2B SaaS", "FinTech"],
-  },
-  {
-    label: "Communication",
-    items: ["Long-form writing", "Public speaking", "Investor narrative", "Team alignment"],
-  },
-];
-
-export const education: Education[] = [
-  {
-    degree: "B.S., Economics",
-    institution: "University Name",
-    period: "2012 — 2016",
-    note: "Focus on behavioral economics and decision theory.",
   },
 ];
 
