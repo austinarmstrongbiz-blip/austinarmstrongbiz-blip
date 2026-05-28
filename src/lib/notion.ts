@@ -31,6 +31,7 @@ export interface NotionBook {
   rating: number | null;
   type: string;
   link: string | null;
+  cover: string | null;
 }
 
 export interface NotionCVEntry {
@@ -103,6 +104,7 @@ function readingFallback(): NotionBook[] {
     rating: null,
     type: "",
     link: null,
+    cover: null,
   }));
 }
 
@@ -139,7 +141,7 @@ export async function getReadingList(): Promise<NotionBook[]> {
     }
 
     const data = await res.json();
-    return (data.results ?? [])
+    const books: NotionBook[] = (data.results ?? [])
       .map((page: Record<string, unknown>) => {
         const props = page.properties as Record<string, unknown>;
         return {
@@ -152,13 +154,43 @@ export async function getReadingList(): Promise<NotionBook[]> {
           rating: getNumber(props.Rating as Parameters<typeof getNumber>[0]),
           type: getSelect(props.Type as Parameters<typeof getSelect>[0]),
           link: getUrl(props.Link as Parameters<typeof getUrl>[0]),
+          cover: getUrl(props.Cover as Parameters<typeof getUrl>[0]),
         };
       })
       .filter((b: NotionBook) => b.title);
+
+    return attachCovers(books);
   } catch (err) {
     console.error("[notion] getReadingList error — using fallback:", err);
     return readingFallback();
   }
+}
+
+// ─── BOOK COVERS ──────────────────────────────────────────────────────────────
+// Cover comes from a "Cover" URL property in Notion if set, otherwise looked up
+// by title+author from Open Library (free, no key). Cached 24h — covers don't change.
+
+async function lookupCover(title: string, author: string): Promise<string | null> {
+  if (!title) return null;
+  try {
+    const params = new URLSearchParams({ title, limit: "1", fields: "cover_i" });
+    if (author) params.set("author", author);
+    const res = await fetch(`https://openlibrary.org/search.json?${params}`, {
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const coverId = data.docs?.[0]?.cover_i;
+    return coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
+  } catch {
+    return null;
+  }
+}
+
+async function attachCovers(books: NotionBook[]): Promise<NotionBook[]> {
+  return Promise.all(
+    books.map(async (b) => (b.cover ? b : { ...b, cover: await lookupCover(b.title, b.author) })),
+  );
 }
 
 // ─── CV / RESUME ──────────────────────────────────────────────────────────────

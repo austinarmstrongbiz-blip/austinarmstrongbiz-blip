@@ -110,8 +110,27 @@ export default async function NowPage() {
                       style={{
                         padding: "2rem 0",
                         borderBottom: "1px solid var(--color-rule)",
+                        display: "flex",
+                        gap: "1.5rem",
+                        alignItems: "flex-start",
                       }}
                     >
+                      {book.cover && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={book.cover}
+                          alt={`${book.title} cover`}
+                          loading="lazy"
+                          style={{
+                            width: "64px",
+                            height: "auto",
+                            flexShrink: 0,
+                            borderRadius: "2px",
+                            boxShadow: "0 2px 12px rgba(35,31,32,0.18)",
+                          }}
+                        />
+                      )}
+                      <div style={{ flex: 1, minWidth: 0 }}>
                       <div
                         style={{
                           display: "flex",
@@ -198,6 +217,7 @@ export default async function NowPage() {
                           {book.notes}
                         </p>
                       )}
+                      </div>
                     </article>
                   </StaggerItem>
                 );
