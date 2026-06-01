@@ -980,11 +980,11 @@ export default async function HomePage() {
                 </p>
               </div>
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
-                <a href="mailto:hello@austin-armstrong.me" className="btn-yellow">
+                <a href="mailto:austin@austin-armstrong.me" className="btn-yellow">
                   Email me
                 </a>
-                <Link href="/resume" className="btn-outline">
-                  View CV
+                <Link href="/work" className="btn-outline">
+                  Work with me
                 </Link>
                 <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginLeft: "0.5rem" }}>
                   <a href="https://www.instagram.com/austinarmstrong20/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="social-icon">

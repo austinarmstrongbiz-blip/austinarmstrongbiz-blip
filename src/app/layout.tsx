@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import MobileNav from "@/components/ui/MobileNav";
 import MotionProvider from "@/components/ui/MotionProvider";
+import NewsletterForm from "@/components/ui/NewsletterForm";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -67,6 +68,7 @@ const navItems = [
   { href: "/now",      label: "Field Notes" },
   { href: "/essays",   label: "Essays"   },
   { href: "/projects", label: "Projects" },
+  { href: "/work",     label: "Work"     },
   { href: "/resume",   label: "CV"       },
 ];
 
@@ -200,6 +202,19 @@ export default function RootLayout({
         >
           {/* Yellow accent strip */}
           <div style={{ height: "4px", background: "var(--color-yellow)" }} />
+
+          {/* Newsletter capture */}
+          <div
+            className="container-editorial"
+            style={{
+              paddingTop: "3rem",
+              paddingBottom: "2.5rem",
+              borderBottom: "1px solid var(--color-rule)",
+            }}
+          >
+            <NewsletterForm variant="light" />
+          </div>
+
           <div
             className="container-editorial"
             style={{

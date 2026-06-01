@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getSubstackPosts, SUBSTACK_URL } from "@/lib/substack";
 import { FadeUp, FadeIn, StaggerList, StaggerItem } from "@/components/ui/Animate";
+import NewsletterForm from "@/components/ui/NewsletterForm";
 
 export const metadata: Metadata = {
   title: "Essays",
@@ -254,33 +255,12 @@ export default async function EssaysPage() {
               marginTop: "4rem",
               paddingTop: "3rem",
               borderTop: "1px solid var(--color-rule)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "1.5rem",
-              flexWrap: "wrap",
             }}
           >
-            <p
-              style={{
-                fontFamily: "var(--font-display)",
-                fontStyle: "italic",
-                fontWeight: 400,
-                fontSize: "1rem",
-                color: "var(--color-ink-muted)",
-                maxWidth: "40ch",
-              }}
-            >
-              New essays published regularly. Subscribe so you don't miss them.
-            </p>
-            <a
-              href={SUBSTACK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-yellow"
-            >
-              Subscribe on Substack →
-            </a>
+            <NewsletterForm
+              variant="light"
+              blurb="New essays published regularly. Drop your email — Substack delivers them straight to your inbox."
+            />
           </div>
         </div>
       </section>

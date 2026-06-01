@@ -75,9 +75,15 @@ export const navSections: NavSection[] = [
     desc: "Long-form explorations of ideas that won't leave me alone.",
   },
   {
+    href: "/work",
+    label: "Work With Me",
+    num: "03",
+    desc: "Fractional AI and go-to-market operating for founders building technical products.",
+  },
+  {
     href: "/resume",
     label: "Curriculum Vitae",
-    num: "03",
+    num: "04",
     desc: "A record of where I've been and what I've built.",
   },
 ];
