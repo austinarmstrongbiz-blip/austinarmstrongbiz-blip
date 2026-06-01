@@ -7,8 +7,7 @@ export const metadata: Metadata = {
     "Fractional AI and go-to-market operator for founders building technical products. Positioning, GTM, and the systems that make it repeatable.",
 };
 
-// TODO(Austin): replace with your real booking link (Cal.com / Calendly).
-const BOOKING_URL = "https://cal.com/austin-armstrong";
+const BOOKING_URL = "https://calendar.notion.so/meet/aarmstrongbusiness/introductions";
 const EMAIL = "austin@austin-armstrong.me";
 
 const services = [
