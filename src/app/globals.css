@@ -456,3 +456,73 @@ a { color: inherit; text-decoration: none; }
   /* Collapse to 2 columns on mobile */
   .ig-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
+
+/* ─── ESSAY BODY (mirrored Substack HTML) ────────────────────────── */
+.essay-body > * + * { margin-top: 1.5rem; }
+.essay-body p { margin: 0 0 1.5rem; }
+.essay-body p:last-child { margin-bottom: 0; }
+.essay-body h1,
+.essay-body h2,
+.essay-body h3,
+.essay-body h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin: 2.5rem 0 1rem;
+}
+.essay-body h1 { font-size: 1.9rem; }
+.essay-body h2 { font-size: 1.55rem; }
+.essay-body h3 { font-size: 1.3rem; }
+.essay-body h4 { font-size: 1.1rem; }
+.essay-body a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-yellow);
+  text-underline-offset: 2px;
+}
+.essay-body strong { color: var(--color-ink); font-weight: 700; }
+.essay-body em { font-style: italic; }
+.essay-body ul,
+.essay-body ol { margin: 0 0 1.5rem 1.25rem; padding: 0; }
+.essay-body li { margin-bottom: 0.5rem; }
+.essay-body blockquote {
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  border-left: 4px solid var(--color-yellow);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+.essay-body img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2rem 0;
+}
+.essay-body figure { margin: 2rem 0; }
+.essay-body figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-muted);
+  margin-top: 0.5rem;
+}
+.essay-body hr {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+  margin: 2.5rem 0;
+}
+.essay-body pre {
+  background: var(--color-bg-warm);
+  border: 1px solid var(--color-rule);
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+.essay-body code { font-family: var(--font-mono); font-size: 0.9em; }

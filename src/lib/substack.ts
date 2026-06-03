@@ -8,12 +8,23 @@ const SUBSTACK_URL = "https://austinarmstrong20.substack.com";
 
 export interface SubstackPost {
   title: string;
-  url: string;
+  slug: string;         // last path segment, e.g. "the-generalist-edge"
+  url: string;          // canonical Substack URL
   date: string;         // ISO string
   dateFormatted: string; // "April 2025"
   summary: string;
   imageUrl: string | null;
   readTime: string | null;
+  bodyHtml: string;     // full article HTML from <content:encoded>
+}
+
+// Derive a URL-safe slug from a Substack post URL (.../p/<slug>)
+function slugFromUrl(url: string): string {
+  const match = url.match(/\/p\/([^/?#]+)/);
+  if (match) return match[1];
+  // Fallback: last non-empty path segment
+  const parts = url.split("?")[0].split("#")[0].split("/").filter(Boolean);
+  return parts[parts.length - 1] ?? "";
 }
 
 // Extract image from content:encoded or enclosure
@@ -85,12 +96,14 @@ export async function getSubstackPosts(limit = 20): Promise<SubstackPost[]> {
 
       posts.push({
         title,
+        slug: slugFromUrl(url),
         url,
         date,
         dateFormatted: formatDate(date),
         summary,
         imageUrl,
         readTime,
+        bodyHtml: contentRaw,
       });
     }
 
@@ -98,6 +111,14 @@ export async function getSubstackPosts(limit = 20): Promise<SubstackPost[]> {
   } catch {
     return [];
   }
+}
+
+// Fetch a single post by its slug (for the on-site /essays/[slug] pages).
+export async function getSubstackPostBySlug(
+  slug: string
+): Promise<SubstackPost | null> {
+  const posts = await getSubstackPosts(100);
+  return posts.find((p) => p.slug === slug) ?? null;
 }
 
 export { SUBSTACK_URL };

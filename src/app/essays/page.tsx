@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getSubstackPosts, SUBSTACK_URL } from "@/lib/substack";
 import { FadeUp, FadeIn, StaggerList, StaggerItem } from "@/components/ui/Animate";
 import NewsletterForm from "@/components/ui/NewsletterForm";
@@ -155,14 +156,12 @@ export default async function EssaysPage() {
                 {featured.summary}
               </p>
 
-              <a
-                href={featured.url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href={`/essays/${featured.slug}`}
                 className="btn-yellow"
               >
                 Read essay →
-              </a>
+              </Link>
             </FadeUp>
           </div>
         </section>
@@ -182,10 +181,8 @@ export default async function EssaysPage() {
             <StaggerList>
               {rest.map((post) => (
                 <StaggerItem key={post.url} as="article">
-                  <a
-                    href={post.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href={`/essays/${post.slug}`}
                     style={{
                       display: "grid",
                       gridTemplateColumns: "1fr auto",
@@ -232,7 +229,7 @@ export default async function EssaysPage() {
                         </div>
                       )}
                     </div>
-                  </a>
+                  </Link>
                 </StaggerItem>
               ))}
             </StaggerList>

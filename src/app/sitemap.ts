@@ -45,13 +45,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Substack posts — point to the live Substack URLs for indexing signal
-  const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: post.url,
-    lastModified: new Date(post.date),
-    changeFrequency: "yearly" as const,
-    priority: 0.6,
-  }));
+  // Essays — point to the on-site mirrored pages so Google indexes our domain
+  const postRoutes: MetadataRoute.Sitemap = posts
+    .filter((post) => post.slug)
+    .map((post) => ({
+      url: `${BASE_URL}/essays/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
 
   return [...staticRoutes, ...postRoutes];
 }
