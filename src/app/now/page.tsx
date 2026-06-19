@@ -7,37 +7,6 @@ export const metadata: Metadata = {
   description: "What Austin Armstrong is currently reading, thinking about, and building.",
 };
 
-function ProgressBar({ value }: { value: number }) {
-  const done = value === 100;
-  return (
-    <div
-      style={{
-        height: "3px",
-        background: "var(--color-rule)",
-        width: "100%",
-        marginTop: "0.75rem",
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: `${value}%`,
-          background: done ? "var(--color-ink)" : "var(--color-yellow)",
-        }}
-      />
-    </div>
-  );
-}
-
-// Status → progress mapping when no explicit % is available
-function statusToProgress(status: string): number {
-  if (status === "Read") return 100;
-  if (status === "Reading") return 50;
-  return 0;
-}
-
 export default async function NowPage() {
   const [books, thinking] = await Promise.all([getReadingList(), getThinkingList()]);
 
@@ -102,7 +71,6 @@ export default async function NowPage() {
           {displayBooks.length > 0 ? (
             <StaggerList style={{ display: "grid", gap: "0" }}>
               {displayBooks.map((book) => {
-                const progress = statusToProgress(book.status);
                 const done = book.status === "Read";
                 return (
                   <StaggerItem key={book.id} as="article">
@@ -199,8 +167,6 @@ export default async function NowPage() {
                           )}
                         </div>
                       </div>
-
-                      <ProgressBar value={progress} />
 
                       {book.notes && (
                         <p

@@ -25,7 +25,6 @@ const pillars = [
     id: "lifestyle",
     label: "Lifestyle Design",
     color: "var(--color-pillar-lifestyle)",
-    count: 22,
     desc: "How to architect a life on your own terms — not the template you were handed.",
     href: "/essays",
   },
@@ -33,7 +32,6 @@ const pillars = [
     id: "ai",
     label: "Artificial Intelligence",
     color: "var(--color-pillar-ai)",
-    count: 18,
     desc: "What AI actually changes about thinking, working, and what it means to be curious.",
     href: "/essays",
   },
@@ -41,7 +39,6 @@ const pillars = [
     id: "finance",
     label: "Finance",
     color: "var(--color-pillar-finance)",
-    count: 21,
     desc: "Money as a tool, not a scoreboard. Wealth psychology, barbell strategy, and risk.",
     href: "/essays",
   },
@@ -49,7 +46,6 @@ const pillars = [
     id: "personal-development",
     label: "Personal Development",
     color: "var(--color-pillar-personal)",
-    count: 24,
     desc: "Mental models, cognitive upgrading, and the work of becoming a sharper thinker.",
     href: "/essays",
   },
@@ -87,7 +83,7 @@ export default async function HomePage() {
   ]);
   const currentThought = thinkingItems[0];
   const allPostsForCount = await getSubstackPosts(100);
-  const essayCount = allPostsForCount.length || 85;
+  const essayCount = allPostsForCount.length;
   const bookCount = books.filter((b) => b.status === "Read" || b.status === "Reading").length;
   const currentBook = books.find((b) => b.status === "Reading") ?? books[0];
   const featuredRepos = allRepos.filter((r) => featuredRepoNames.includes(r.name)).slice(0, 2);
@@ -250,7 +246,7 @@ export default async function HomePage() {
               {
                 label: "Reader",
                 headline: "Explore ideas",
-                desc: "85 essays on AI, finance, lifestyle design, and the generalist mindset.",
+                desc: `${essayCount} essays on AI, finance, lifestyle design, and the generalist mindset.`,
                 href: "/essays",
                 cta: "Read essays →",
               },
@@ -390,7 +386,7 @@ export default async function HomePage() {
             {[
               { num: "$650M+", label: "IT budgets managed" },
               { num: "2", label: "Fortune 500 health systems" },
-              { num: `${essayCount}`, label: "essays published" },
+              { num: essayCount > 0 ? `${essayCount}` : "—", label: "essays published" },
               { num: bookCount > 0 ? `${bookCount}` : "50+", label: "books read or reading" },
             ].map((stat, i) => (
               <FadeUp key={stat.label} delay={i * 0.08}>
@@ -578,7 +574,7 @@ export default async function HomePage() {
                     className="folio"
                     style={{ color: "var(--color-ink-muted)", marginBottom: "1rem" }}
                   >
-                    {pillar.count} essays
+                    Essays
                   </div>
                   <div
                     style={{

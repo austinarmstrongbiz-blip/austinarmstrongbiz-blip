@@ -30,22 +30,16 @@ const services = [
 
 const proof = [
   {
-    org: "Doxci",
-    role: "Head of Strategy & Go-to-Market",
-    body: "Repositioned an OCR vendor as an enterprise cognitive-automation platform. Sold two contracts over $100K, grew ARR ~50%, validated 60% higher extraction accuracy with the anchor client, and authored the NSF grant positioning Doxci as foundational AI infrastructure.",
-    tag: "Enterprise AI",
+    org: "Autonomi (Books + Doxci)",
+    role: "Chief Revenue Officer",
+    body: "Repositioned Doxci from an OCR vendor to an enterprise cognitive-automation platform — sold two contracts over $100K, grew ARR ~50%, validated 60% higher extraction accuracy with the anchor client, and authored the NSF grant. Built white-label bookkeeping partnerships scaling CPA firm capacity 3–5x without added headcount, and developed the \"Capacity Economics\" positioning that reframes outsourcing from a cost to a margin driver.",
+    tag: "Enterprise AI · GTM",
   },
   {
     org: "Jaba AI",
     role: "Business Operations Specialist",
     body: "Lead BD, sales, and CRM for an NIL-industry AI startup. Built HubSpot reporting and automation that surfaces high-signal accounts, and generated the investor decks targeting a $1.2M seed close.",
     tag: "NIL · Startups",
-  },
-  {
-    org: "Autonomi Books",
-    role: "Business Development & Strategic Partnerships",
-    body: "Built white-label bookkeeping partnerships that scale CPA firm capacity 3–5x without added headcount. Developed the \"Capacity Economics\" positioning — reframing outsourcing from a cost to a margin driver — and ran the pipeline from discovery to close.",
-    tag: "GTM · Partnerships",
   },
 ];
 
