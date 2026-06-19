@@ -22,13 +22,14 @@ function formatPeriod(
   return s && e ? `${s} — ${e}` : s || e;
 }
 
-// Pull the headline number out of a description for the impact callout
-function extractImpactStat(description: string): { num: string; label: string } | null {
-  const match = description.match(/\$[\d,.]+[BMK+]*/);
-  if (match) {
-    return { num: match[0], label: "managed" };
-  }
-  return null;
+// Pull the headline number out of the first bullet and label it by context.
+function extractImpactStat(firstBullet: string): { num: string; label: string } | null {
+  const match = firstBullet.match(/\$[\d,.]+[BMK+]*/);
+  if (!match) return null;
+  let label = "managed";
+  if (/budget/i.test(firstBullet)) label = "IT budget managed";
+  else if (/contract|sold|arr|revenue/i.test(firstBullet)) label = "contracts sold";
+  return { num: match[0], label };
 }
 
 const competencies = [
@@ -46,6 +47,12 @@ export default async function ResumePage() {
   const entries = await getCVEntries();
 
   const work = entries.filter((e) => e.type === "Work");
+  // Pin Chief Revenue Officer to the top; stable sort keeps the rest date-ordered.
+  work.sort(
+    (a, b) =>
+      (/chief revenue officer/i.test(a.role) ? 0 : 1) -
+      (/chief revenue officer/i.test(b.role) ? 0 : 1)
+  );
   const education = entries.filter((e) => e.type === "Education");
   const awards = entries.filter((e) => e.type === "Award");
   const projects = entries.filter((e) => e.type === "Project" || e.type === "Volunteer");
@@ -274,7 +281,7 @@ export default async function ResumePage() {
                               className="folio"
                               style={{ marginTop: "0.25rem", color: "var(--color-ink-muted)" }}
                             >
-                              IT budget managed
+                              {impactStat.label}
                             </div>
                           </div>
                         )}

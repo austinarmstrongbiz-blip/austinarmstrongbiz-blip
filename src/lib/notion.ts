@@ -50,7 +50,10 @@ export interface NotionCVEntry {
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 
 function getText(prop: { rich_text?: { plain_text: string }[] } | undefined): string {
-  return prop?.rich_text?.[0]?.plain_text ?? "";
+  // Notion splits rich text into multiple array elements at every link/format
+  // boundary — join them all, or long fields (e.g. CV Description) truncate
+  // at the first link.
+  return prop?.rich_text?.map((t) => t.plain_text).join("") ?? "";
 }
 
 function getTitle(prop: { title?: { plain_text: string }[] } | undefined): string {
