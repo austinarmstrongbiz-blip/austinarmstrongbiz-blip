@@ -10,21 +10,28 @@ export const metadata: Metadata = {
 const BOOKING_URL = "https://calendar.notion.so/meet/aarmstrongbusiness/introductions";
 const EMAIL = "austin@austin-armstrong.me";
 
+const metrics = [
+  { num: "$100K+", label: "enterprise contracts closed" },
+  { num: "~50%", label: "ARR growth driven" },
+  { num: "60%", label: "higher extraction accuracy validated" },
+  { num: "4,989", label: "leads in 30 days → pilot closed in 1hr" },
+];
+
 const services = [
   {
     title: "AI Go-to-Market",
     color: "var(--color-pillar-ai)",
-    body: "Positioning, messaging, and outbound for technical products. Turning capability into a narrative buyers act on — ICP, sales enablement, and consultative sequencing that closes enterprise deals.",
+    body: "Your capability becomes a story buyers act on. ICP, positioning, sales enablement, and the consultative sequencing that closes enterprise deals — not demos that go nowhere.",
   },
   {
     title: "Systems & Automation",
     color: "var(--color-pillar-finance)",
-    body: "The operating layer underneath the pitch. CRM, reporting, and workflow automation that surfaces the right accounts, shortens response time, and makes the whole motion repeatable instead of heroic.",
+    body: "Pipeline that runs without heroics. CRM, reporting, and workflow automation that surface the right accounts and shorten response time — so deals don't depend on you remembering to follow up.",
   },
   {
     title: "Fractional Operator",
     color: "var(--color-pillar-lifestyle)",
-    body: "Embedded with the founding team — strategy, BD, and execution without the full-time hire. I do the work and build the system that outlives me, so the next person inherits a machine, not a mess.",
+    body: "A senior operator embedded with your team — strategy, BD, and execution without the full-time hire. I do the work and build the system that outlives me. You inherit a machine, not a mess.",
   },
 ];
 
@@ -54,7 +61,7 @@ export default function WorkPage() {
             <div className="text-label" style={{ marginBottom: "2rem" }}>Work with me</div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-display">Fractional AI &amp; GTM operator.</h1>
+            <h1 className="text-display">You built the product.<br />I make it sell.</h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p
@@ -67,11 +74,10 @@ export default function WorkPage() {
                 fontFamily: "var(--font-sans)",
               }}
             >
-              I embed with founders building technical products and own the part most teams
-              fumble: turning what you&apos;ve built into a go-to-market motion that actually
-              closes — and the systems that make it run without me. Enterprise AI deals, NIL
-              startups, CPA-firm automation. Same playbook: position sharp, sell consultative,
-              automate the rest.
+              Most technical founders can build anything except a way to sell it. I&apos;m the
+              operator who turns what you built into deals that close — then hands you the system
+              so it runs without me. Enterprise AI. NIL startups. CPA automation. Same playbook
+              each time: position sharp, sell direct, automate the rest.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
@@ -80,6 +86,58 @@ export default function WorkPage() {
               <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-outline">Book a call</a>
             </div>
           </FadeUp>
+          <FadeUp delay={0.4}>
+            <a
+              href="/playbook"
+              className="folio"
+              style={{ display: "inline-block", marginTop: "1.5rem", color: "var(--color-ink-muted)" }}
+            >
+              Not ready to talk? See the exact outbound system →
+            </a>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ── Proof metrics ──────────────────────────────────────── */}
+      <section style={{ background: "var(--color-ink)", borderBottom: "2px solid var(--color-ink)", padding: "3.5rem 0" }}>
+        <div className="container-editorial">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))",
+              gap: "0",
+            }}
+          >
+            {metrics.map((m, i) => (
+              <FadeUp key={m.label} delay={i * 0.08}>
+                <div
+                  style={{
+                    padding: "1.5rem 2rem",
+                    borderRight: i < metrics.length - 1 ? "1px solid rgba(249,249,249,0.1)" : "none",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontStyle: "italic",
+                      fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.025em",
+                      color: "var(--color-yellow)",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    {m.num}
+                  </div>
+                  <div className="folio" style={{ color: "rgba(249,249,249,0.55)", letterSpacing: "0.1em" }}>
+                    {m.label}
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
         </div>
       </section>
 
