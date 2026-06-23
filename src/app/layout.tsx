@@ -69,7 +69,7 @@ const navItems = [
   { href: "/essays",   label: "Essays"   },
   { href: "/projects", label: "Projects" },
   { href: "/work",     label: "Work"     },
-  { href: "/playbook", label: "Playbook" },
+  { href: "/playbook", label: "Resources for the Homies" },
   { href: "/resume",   label: "CV"       },
 ];
 
