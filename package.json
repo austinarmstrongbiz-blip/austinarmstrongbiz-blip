@@ -11,7 +11,6 @@
   "dependencies": {
     "@fontsource-variable/playfair-display": "^5.2.8",
     "@fontsource/dm-serif-display": "^5.2.8",
-    "@notionhq/client": "^5.17.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "^12.38.0",

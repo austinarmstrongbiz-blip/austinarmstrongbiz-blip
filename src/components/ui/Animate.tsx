@@ -175,23 +175,3 @@ export function YellowBarReveal({
     />
   );
 }
-
-// ─── NavSlideDown ──────────────────────────────────────────────────────────
-// Subtle nav entrance on mount.
-export function NavSlideDown({
-  children,
-  className,
-  style,
-}: Omit<FadeUpProps, "as" | "delay">) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease }}
-      className={className}
-      style={style}
-    >
-      {children}
-    </motion.div>
-  );
-}
