@@ -9,20 +9,18 @@ const GITHUB_API = "https://api.github.com";
 export interface GitHubRepo {
   id: number;
   name: string;
-  displayName: string;       // human-readable name (spaces, title case)
+  displayName: string; // human-readable name (spaces, title case)
   description: string | null;
   html_url: string;
   language: string | null;
   stargazers_count: number;
   topics: string[];
   updated_at: string;
-  updatedFormatted: string;  // "April 2024"
+  updatedFormatted: string; // "April 2024"
 }
 
 function toDisplayName(name: string): string {
-  return name
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function formatDate(dateStr: string): string {
@@ -39,7 +37,7 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
       {
         headers: { Accept: "application/vnd.github+json" },
         next: { revalidate: 3600 },
-      }
+      },
     );
     if (!res.ok) return [];
 

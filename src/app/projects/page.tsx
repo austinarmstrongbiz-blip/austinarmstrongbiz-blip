@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getGitHubRepos, GITHUB_USERNAME } from "@/lib/github";
 import { featuredRepoNames, staticProjects } from "@/lib/data";
-import { FadeUp, FadeIn, StaggerList, StaggerItem } from "@/components/ui/Animate";
+import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -40,7 +40,9 @@ export default async function ProjectsPage() {
               Open source · Professional work · @{GITHUB_USERNAME}
             </div>
           </FadeUp>
-          <FadeUp delay={0.1}><h1 className="text-display">Projects</h1></FadeUp>
+          <FadeUp delay={0.1}>
+            <h1 className="text-display">Projects</h1>
+          </FadeUp>
           <FadeUp delay={0.2}>
             <p
               style={{
@@ -52,8 +54,8 @@ export default async function ProjectsPage() {
                 fontFamily: "var(--font-sans)",
               }}
             >
-              What I'm building and what I've shipped. Open-source repos live
-              on GitHub; notable professional projects are documented below.
+              What I&apos;m building and what I&apos;ve shipped. Open-source repos live on GitHub;
+              notable professional projects are documented below.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
@@ -82,7 +84,9 @@ export default async function ProjectsPage() {
         >
           <div className="container-editorial">
             <FadeUp>
-              <div className="text-label" style={{ marginBottom: "0.5rem" }}>Featured</div>
+              <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+                Featured
+              </div>
               <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
             </FadeUp>
 
@@ -153,7 +157,14 @@ export default async function ProjectsPage() {
                         </p>
                       )}
                       {repo.topics.length > 0 && (
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginBottom: "1rem" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "0.35rem",
+                            marginBottom: "1rem",
+                          }}
+                        >
                           {repo.topics.map((t) => (
                             <span key={t} className="interest-tag" style={{ fontSize: "0.58rem" }}>
                               {t}
@@ -196,7 +207,9 @@ export default async function ProjectsPage() {
         >
           <div className="container-editorial">
             <FadeUp>
-              <div className="text-label" style={{ marginBottom: "0.5rem" }}>All repositories</div>
+              <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+                All repositories
+              </div>
               <hr className="rule rule-thick" style={{ marginBottom: "0" }} />
             </FadeUp>
 
@@ -270,7 +283,9 @@ export default async function ProjectsPage() {
       <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Notable professional work</div>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              Notable professional work
+            </div>
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
 
@@ -357,7 +372,14 @@ export default async function ProjectsPage() {
                       ))}
                     </ul>
                   </div>
-                  <div className="folio" style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--color-rule)" }}>
+                  <div
+                    className="folio"
+                    style={{
+                      marginTop: "1.5rem",
+                      paddingTop: "1rem",
+                      borderTop: "1px solid var(--color-rule)",
+                    }}
+                  >
                     {proj.period}
                   </div>
                 </div>

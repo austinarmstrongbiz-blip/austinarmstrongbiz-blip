@@ -4,64 +4,72 @@
 
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia/Basilia-Reg.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia/Basilia-Reg.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia/Basilia-Reg.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia/Basilia-Reg.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Italic/Basilia-RegIta.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Italic/Basilia-RegIta.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Italic/Basilia-RegIta.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Italic/Basilia-RegIta.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Medium/Basilia-Med.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Medium/Basilia-Med.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Medium/Basilia-Med.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Medium/Basilia-Med.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Medium Italic/Basilia-MedIta.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Medium Italic/Basilia-MedIta.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Medium Italic/Basilia-MedIta.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Medium Italic/Basilia-MedIta.ttf") format("truetype");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Bold/Basilia-Bol.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Bold/Basilia-Bol.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Bold/Basilia-Bol.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Bold/Basilia-Bol.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Bold Italic/Basilia-BolIta.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Bold Italic/Basilia-BolIta.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Bold Italic/Basilia-BolIta.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Bold Italic/Basilia-BolIta.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Black/Basilia-Bla.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Black/Basilia-Bla.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Black/Basilia-Bla.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Black/Basilia-Bla.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Basilia";
-  src: url("/fonts/Web Fonts/Basilia Black Italic/Basilia-BlaIta.woff") format("woff"),
-       url("/fonts/Web Fonts/Basilia Black Italic/Basilia-BlaIta.ttf") format("truetype");
+  src:
+    url("/fonts/Web Fonts/Basilia Black Italic/Basilia-BlaIta.woff") format("woff"),
+    url("/fonts/Web Fonts/Basilia Black Italic/Basilia-BlaIta.ttf") format("truetype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -70,23 +78,25 @@
 /* ─── DESIGN TOKENS ──────────────────────────────────────────────── */
 @theme {
   /* Brand colors */
-  --color-yellow:      #fbd601;
-  --color-yellow-dim:  #e8c400;
-  --color-ink:         #231f20;
-  --color-ink-soft:    #4a4547;
-  --color-ink-muted:   #7a7577;
-  --color-bg:          #f9f9f9;
-  --color-bg-warm:     #ffffff;
-  --color-rule:        #e4e0db;
+  --color-yellow: #fbd601;
+  --color-yellow-dim: #e8c400;
+  --color-ink: #231f20;
+  --color-ink-soft: #4a4547;
+  --color-ink-muted: #7a7577;
+  --color-bg: #f9f9f9;
+  --color-bg-warm: #ffffff;
+  --color-rule: #e4e0db;
 
   /* Typography */
   --font-display: "Basilia", "Bodoni MT", "Didot", Georgia, serif;
-  --font-sans:    "DM Sans", system-ui, sans-serif;
-  --font-mono:    "JetBrains Mono", "Fira Code", monospace;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
 /* ─── RESET & BASE ───────────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -243,10 +253,14 @@ html {
 }
 
 @media (min-width: 768px) {
-  .container-editorial { padding-inline: 4rem; }
+  .container-editorial {
+    padding-inline: 4rem;
+  }
 }
 @media (min-width: 1200px) {
-  .container-editorial { padding-inline: 6rem; }
+  .container-editorial {
+    padding-inline: 6rem;
+  }
 }
 
 /* ─── YELLOW BUTTON ──────────────────────────────────────────────── */
@@ -264,7 +278,9 @@ html {
   display: inline-block;
   font-weight: 500;
 }
-.btn-yellow:hover { background: var(--color-yellow-dim); }
+.btn-yellow:hover {
+  background: var(--color-yellow-dim);
+}
 
 .btn-outline {
   font-family: var(--font-mono);
@@ -286,16 +302,30 @@ html {
 
 /* ─── ANIMATIONS ─────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.animate-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.animate-fade-in  { animation: fadeIn 0.8s ease both; }
+.animate-fade-up {
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-fade-in {
+  animation: fadeIn 0.8s ease both;
+}
 
 /* ─── FOCUS VISIBLE ──────────────────────────────────────────────── */
 /* Keyboard users get a clear yellow ring; mouse clicks stay clean. */
@@ -325,34 +355,61 @@ button:focus-visible {
   }
 }
 
-.delay-100 { animation-delay: 0.10s; }
-.delay-200 { animation-delay: 0.20s; }
-.delay-300 { animation-delay: 0.30s; }
-.delay-400 { animation-delay: 0.40s; }
-.delay-500 { animation-delay: 0.50s; }
-.delay-600 { animation-delay: 0.60s; }
+.delay-100 {
+  animation-delay: 0.1s;
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
+.delay-600 {
+  animation-delay: 0.6s;
+}
 
 /* ─── SCROLLBAR ──────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb { background: var(--color-rule); }
-::-webkit-scrollbar-thumb:hover { background: var(--color-ink-muted); }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-rule);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-muted);
+}
 
 /* ─── LINKS ──────────────────────────────────────────────────────── */
-a { color: inherit; text-decoration: none; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
 /* ─── MOBILE NAV ─────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .desktop-nav { display: none !important; }
-  .mobile-menu-btn { display: flex !important; }
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+  }
 }
 
 /* ─── PILLAR COLORS ──────────────────────────────────────────────── */
 :root {
   --color-pillar-lifestyle: #c9a96e;
-  --color-pillar-ai:        #6ea5c9;
-  --color-pillar-finance:   #6ec98a;
-  --color-pillar-personal:  #c96e8a;
+  --color-pillar-ai: #6ea5c9;
+  --color-pillar-finance: #6ec98a;
+  --color-pillar-personal: #c96e8a;
 }
 
 /* ─── PILLAR CARD HOVER ──────────────────────────────────────────── */
@@ -376,7 +433,9 @@ a { color: inherit; text-decoration: none; }
 
 /* ─── NOW STRIP RESPONSIVE ───────────────────────────────────────── */
 @media (max-width: 768px) {
-  .now-divider { display: none; }
+  .now-divider {
+    display: none;
+  }
 }
 
 /* ─── SOCIAL ICONS ───────────────────────────────────────────────── */
@@ -386,7 +445,9 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   transition: color 0.15s ease;
 }
-.social-icon:hover { color: var(--color-ink); }
+.social-icon:hover {
+  color: var(--color-ink);
+}
 
 /* ─── HERO GRID RESPONSIVE ───────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -439,28 +500,62 @@ a { color: inherit; text-decoration: none; }
 
 /* ─── PRINT STYLES ───────────────────────────────────────────────── */
 @media print {
-  header, footer, .no-print { display: none !important; }
-  body { background: #fff !important; color: #000 !important; font-size: 11pt; }
-  .container-editorial { padding-inline: 1rem !important; }
-  section { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
-  a { color: inherit !important; text-decoration: none !important; }
-  .interest-tag { border: 1px solid #ccc !important; background: transparent !important; color: #000 !important; }
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+  .container-editorial {
+    padding-inline: 1rem !important;
+  }
+  section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+  .interest-tag {
+    border: 1px solid #ccc !important;
+    background: transparent !important;
+    color: #000 !important;
+  }
 }
 
 /* ─── INSTAGRAM GRID ─────────────────────────────────────────────── */
-.ig-photo:hover .ig-photo-img { transform: scale(1.04); }
-.ig-photo:hover .ig-overlay   { background: rgba(35,31,32,0.45) !important; }
-.ig-photo:hover .ig-caption   { opacity: 1 !important; }
+.ig-photo:hover .ig-photo-img {
+  transform: scale(1.04);
+}
+.ig-photo:hover .ig-overlay {
+  background: rgba(35, 31, 32, 0.45) !important;
+}
+.ig-photo:hover .ig-caption {
+  opacity: 1 !important;
+}
 
 @media (max-width: 640px) {
   /* Collapse to 2 columns on mobile */
-  .ig-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .ig-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 /* ─── ESSAY BODY (mirrored Substack HTML) ────────────────────────── */
-.essay-body > * + * { margin-top: 1.5rem; }
-.essay-body p { margin: 0 0 1.5rem; }
-.essay-body p:last-child { margin-bottom: 0; }
+.essay-body > * + * {
+  margin-top: 1.5rem;
+}
+.essay-body p {
+  margin: 0 0 1.5rem;
+}
+.essay-body p:last-child {
+  margin-bottom: 0;
+}
 .essay-body h1,
 .essay-body h2,
 .essay-body h3,
@@ -473,21 +568,39 @@ a { color: inherit; text-decoration: none; }
   color: var(--color-ink);
   margin: 2.5rem 0 1rem;
 }
-.essay-body h1 { font-size: 1.9rem; }
-.essay-body h2 { font-size: 1.55rem; }
-.essay-body h3 { font-size: 1.3rem; }
-.essay-body h4 { font-size: 1.1rem; }
+.essay-body h1 {
+  font-size: 1.9rem;
+}
+.essay-body h2 {
+  font-size: 1.55rem;
+}
+.essay-body h3 {
+  font-size: 1.3rem;
+}
+.essay-body h4 {
+  font-size: 1.1rem;
+}
 .essay-body a {
   color: var(--color-ink);
   text-decoration: underline;
   text-decoration-color: var(--color-yellow);
   text-underline-offset: 2px;
 }
-.essay-body strong { color: var(--color-ink); font-weight: 700; }
-.essay-body em { font-style: italic; }
+.essay-body strong {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+.essay-body em {
+  font-style: italic;
+}
 .essay-body ul,
-.essay-body ol { margin: 0 0 1.5rem 1.25rem; padding: 0; }
-.essay-body li { margin-bottom: 0.5rem; }
+.essay-body ol {
+  margin: 0 0 1.5rem 1.25rem;
+  padding: 0;
+}
+.essay-body li {
+  margin-bottom: 0.5rem;
+}
 .essay-body blockquote {
   margin: 2rem 0;
   padding-left: 1.25rem;
@@ -504,7 +617,9 @@ a { color: inherit; text-decoration: none; }
   display: block;
   margin: 2rem 0;
 }
-.essay-body figure { margin: 2rem 0; }
+.essay-body figure {
+  margin: 2rem 0;
+}
 .essay-body figcaption {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -525,4 +640,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.9rem;
   margin: 1.5rem 0;
 }
-.essay-body code { font-family: var(--font-mono); font-size: 0.9em; }
+.essay-body code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}

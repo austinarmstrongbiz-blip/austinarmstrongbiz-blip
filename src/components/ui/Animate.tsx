@@ -15,13 +15,7 @@ interface FadeUpProps {
   as?: "div" | "section" | "article" | "span" | "p" | "li" | "header" | "footer";
 }
 
-export function FadeUp({
-  children,
-  delay = 0,
-  className,
-  style,
-  as = "div",
-}: FadeUpProps) {
+export function FadeUp({ children, delay = 0, className, style, as = "div" }: FadeUpProps) {
   const Tag = motion[as] as typeof motion.div;
   return (
     <Tag
@@ -39,12 +33,7 @@ export function FadeUp({
 
 // ─── FadeIn ────────────────────────────────────────────────────────────────
 // Fade only — no Y movement. Good for background bands, images.
-export function FadeIn({
-  children,
-  delay = 0,
-  className,
-  style,
-}: Omit<FadeUpProps, "as">) {
+export function FadeIn({ children, delay = 0, className, style }: Omit<FadeUpProps, "as">) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -110,12 +99,7 @@ interface StaggerItemProps {
   as?: "div" | "li" | "article" | "span";
 }
 
-export function StaggerItem({
-  children,
-  className,
-  style,
-  as = "div",
-}: StaggerItemProps) {
+export function StaggerItem({ children, className, style, as = "div" }: StaggerItemProps) {
   const Tag = motion[as] as typeof motion.div;
   return (
     <Tag variants={staggerItem} className={className} style={style}>
@@ -126,12 +110,7 @@ export function StaggerItem({
 
 // ─── HeroText ──────────────────────────────────────────────────────────────
 // For the hero name: animates on mount (not scroll), fast and impactful.
-export function HeroText({
-  children,
-  delay = 0,
-  className,
-  style,
-}: Omit<FadeUpProps, "as">) {
+export function HeroText({ children, delay = 0, className, style }: Omit<FadeUpProps, "as">) {
   return (
     <motion.span
       initial={{ opacity: 0, y: 24 }}

@@ -14,15 +14,15 @@ The resume page at `/resume` fetches from the Notion CV database (`022275c8-be64
 and renders each entry's `Description` field as a **bullet list**.
 
 **Parsing logic (from `src/app/resume/page.tsx`):**
+
 ```ts
-const bullets = job.description
-  ? job.description.split("\n").filter(Boolean)
-  : [];
+const bullets = job.description ? job.description.split("\n").filter(Boolean) : [];
 ```
 
 Each newline = one bullet on the website. The site adds the bullet dot automatically.
 
 ### ✅ Correct format for Description field
+
 ```
 Managed and executed a $250M+ IT budget across 50 staff and 15 business units
 Led IT contract reviews determining renewal, extension, or cancellation for 20+ vendors
@@ -30,6 +30,7 @@ Automated data migration for 40 cost centers into Apptio
 ```
 
 ### ❌ Wrong — site will render the bullet characters as text
+
 ```
 • Managed and executed a $250M+ IT budget across 50 staff and 15 business units
 • Led IT contract reviews determining renewal, extension, or cancellation for 20+ vendors
@@ -45,12 +46,14 @@ When adding a new achievement to an existing role, the SKILL fetches the current
 Description and appends a new line. The website will render all lines as bullets.
 
 When appending, ensure:
+
 1. Fetch the current Description text first
 2. Add a single newline between existing content and new bullet
 3. No trailing newlines
 4. No bullet characters
 
 Example append:
+
 ```
 [existing content]
 Developed the 2025 Apptio roadmap focusing on capital project prioritization and financial reporting
@@ -73,6 +76,7 @@ function extractImpactStat(description: string): { num: string; label: string } 
 **If the first bullet contains a dollar figure, it becomes the hero number for that job.**
 
 Example — Wellstar entry's first bullet:
+
 > "Managed and executed a $250M+ IT budget..."
 
 This renders as `$250M+` in large Basilia type next to the role header.
@@ -84,6 +88,7 @@ Keep the highest-impact, most quantified bullet first in each Description.
 ## Live Update Timing
 
 After the SKILL writes to Notion:
+
 - **Automatic:** The website refreshes within **1 hour** (ISR revalidation)
 - **Immediate:** Trigger a Vercel redeploy — Austin can do this from the Vercel dashboard
 
@@ -108,17 +113,17 @@ them batch-push on Monday without opening a Claude session.
 **Database ID:** `022275c8-be64-4aa4-8d3c-571eaf613d5a`
 **Collection:** `collection://e80906a0-cfa0-4feb-8a14-95b6689b4d8d`
 
-| Field | Type | Notes |
-|-------|------|-------|
-| Role | Title | Job title or project name |
-| Organization | Rich Text | Company name |
-| Type | Select | Work / Education / Project / Volunteer / Award |
-| Current | Checkbox | True = "Present" in the period display |
-| Start Date | Date | ISO date |
-| End Date | Date | ISO date (leave empty if Current = true) |
-| Location | Rich Text | City or "Remote" |
-| Description | Rich Text | **One achievement per line. No bullet chars. First line = impact callout.** |
-| Skills | Multi-select | Leadership / Marketing / Sales / AI / Strategy / Content / Technology |
+| Field        | Type         | Notes                                                                       |
+| ------------ | ------------ | --------------------------------------------------------------------------- |
+| Role         | Title        | Job title or project name                                                   |
+| Organization | Rich Text    | Company name                                                                |
+| Type         | Select       | Work / Education / Project / Volunteer / Award                              |
+| Current      | Checkbox     | True = "Present" in the period display                                      |
+| Start Date   | Date         | ISO date                                                                    |
+| End Date     | Date         | ISO date (leave empty if Current = true)                                    |
+| Location     | Rich Text    | City or "Remote"                                                            |
+| Description  | Rich Text    | **One achievement per line. No bullet chars. First line = impact callout.** |
+| Skills       | Multi-select | Leadership / Marketing / Sales / AI / Strategy / Content / Technology       |
 
 ---
 
@@ -146,8 +151,8 @@ Valid values: `Leadership`, `Marketing`, `Sales`, `AI`, `Strategy`, `Content`, `
 
 The scheduled skill does everything right. The only additions it needs:
 
-| Gap | Fix |
-|-----|-----|
-| Description format | No `•` chars, one achievement per line |
-| First bullet priority | Highest dollar/metric figure goes first |
-| After writing | Tell Austin the site updates in ≤1 hour, or redeploy now |
+| Gap                   | Fix                                                      |
+| --------------------- | -------------------------------------------------------- |
+| Description format    | No `•` chars, one achievement per line                   |
+| First bullet priority | Highest dollar/metric figure goes first                  |
+| After writing         | Tell Austin the site updates in ≤1 hour, or redeploy now |

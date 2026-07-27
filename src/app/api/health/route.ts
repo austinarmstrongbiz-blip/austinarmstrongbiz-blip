@@ -35,12 +35,18 @@ async function probe(env: string) {
 
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      return { status: "error", detail: `${res.status} ${res.statusText}: ${body.message ?? ""}`.trim() };
+      return {
+        status: "error",
+        detail: `${res.status} ${res.statusText}: ${body.message ?? ""}`.trim(),
+      };
     }
 
     const data = await res.json();
     const count = (data.results ?? []).length;
-    return { status: count > 0 ? "ok" : "empty", detail: count > 0 ? "reachable, has rows" : "reachable, no rows" };
+    return {
+      status: count > 0 ? "ok" : "empty",
+      detail: count > 0 ? "reachable, has rows" : "reachable, no rows",
+    };
   } catch (err) {
     return { status: "error", detail: err instanceof Error ? err.message : String(err) };
   }

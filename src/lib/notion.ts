@@ -139,7 +139,9 @@ export async function getReadingList(): Promise<NotionBook[]> {
     });
 
     if (!res.ok) {
-      console.error(`[notion] getReadingList failed: ${res.status} ${res.statusText} — using fallback`);
+      console.error(
+        `[notion] getReadingList failed: ${res.status} ${res.statusText} — using fallback`,
+      );
       return readingFallback();
     }
 
@@ -151,7 +153,9 @@ export async function getReadingList(): Promise<NotionBook[]> {
           id: page.id as string,
           title: getTitle(props.Title as Parameters<typeof getTitle>[0]),
           author: getText(props.Author as Parameters<typeof getText>[0]),
-          status: getSelect(props.Status as Parameters<typeof getSelect>[0]) as NotionBook["status"],
+          status: getSelect(
+            props.Status as Parameters<typeof getSelect>[0],
+          ) as NotionBook["status"],
           genre: getMultiSelect(props.Genre as Parameters<typeof getMultiSelect>[0]),
           notes: getText(props.Notes as Parameters<typeof getText>[0]),
           rating: getNumber(props.Rating as Parameters<typeof getNumber>[0]),
@@ -275,7 +279,9 @@ export async function getThinkingList(): Promise<NotionThought[]> {
     });
 
     if (!res.ok) {
-      console.error(`[notion] getThinkingList failed: ${res.status} ${res.statusText} — using fallback`);
+      console.error(
+        `[notion] getThinkingList failed: ${res.status} ${res.statusText} — using fallback`,
+      );
       return thinkingFallback();
     }
 

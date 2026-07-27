@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const navItems = [
-  { href: "/now",    label: "Field Notes" },
+  { href: "/now", label: "Field Notes" },
   { href: "/essays", label: "Essays" },
   { href: "/projects", label: "Projects" },
-  { href: "/work",   label: "Work" },
-  { href: "/resume", label: "CV"     },
+  { href: "/work", label: "Work" },
+  { href: "/resume", label: "CV" },
 ];
 
 export default function MobileNav() {
@@ -17,12 +17,16 @@ export default function MobileNav() {
   // Lock body scroll when drawer is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   // Close on Escape
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
@@ -35,7 +39,7 @@ export default function MobileNav() {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         style={{
-          display: "none",          // hidden by default; CSS below overrides on mobile
+          display: "none", // hidden by default; CSS below overrides on mobile
           background: "none",
           border: "none",
           cursor: "pointer",

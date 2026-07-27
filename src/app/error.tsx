@@ -45,7 +45,7 @@ export default function Error({
               marginBottom: "1.5rem",
             }}
           >
-            Well, that's unexpected.
+            Well, that&apos;s unexpected.
           </h1>
 
           <p
@@ -58,8 +58,7 @@ export default function Error({
               marginBottom: "3rem",
             }}
           >
-            An error occurred loading this page. Try refreshing — if it
-            persists, it's on us.
+            An error occurred loading this page. Try refreshing — if it persists, it&apos;s on us.
           </p>
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>

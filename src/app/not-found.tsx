@@ -63,8 +63,8 @@ export default function NotFound() {
               marginBottom: "3rem",
             }}
           >
-            This page doesn't exist — or it moved. Either way, the map is
-            wrong. Let's get you back somewhere real.
+            This page doesn&apos;t exist — or it moved. Either way, the map is wrong. Let&apos;s get
+            you back somewhere real.
           </p>
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>

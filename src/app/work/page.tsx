@@ -39,7 +39,7 @@ const proof = [
   {
     org: "Autonomi (Books + Doxci)",
     role: "Chief Revenue Officer",
-    body: "Repositioned Doxci from an OCR vendor to an enterprise cognitive-automation platform — sold two contracts over $100K, grew ARR ~50%, validated 60% higher extraction accuracy with the anchor client, and authored the NSF grant. Built white-label bookkeeping partnerships scaling CPA firm capacity 3–5x without added headcount, and developed the \"Capacity Economics\" positioning that reframes outsourcing from a cost to a margin driver.",
+    body: 'Repositioned Doxci from an OCR vendor to an enterprise cognitive-automation platform — sold two contracts over $100K, grew ARR ~50%, validated 60% higher extraction accuracy with the anchor client, and authored the NSF grant. Built white-label bookkeeping partnerships scaling CPA firm capacity 3–5x without added headcount, and developed the "Capacity Economics" positioning that reframes outsourcing from a cost to a margin driver.',
     tag: "Enterprise AI · GTM",
   },
   {
@@ -54,14 +54,25 @@ export default function WorkPage() {
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
-      <section style={{ paddingTop: "5rem", paddingBottom: "4rem", borderBottom: "2px solid var(--color-ink)" }}>
+      <section
+        style={{
+          paddingTop: "5rem",
+          paddingBottom: "4rem",
+          borderBottom: "2px solid var(--color-ink)",
+        }}
+      >
         <div style={{ background: "var(--color-yellow)", height: "4px" }} />
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "2rem" }}>Work with me</div>
+            <div className="text-label" style={{ marginBottom: "2rem" }}>
+              Work with me
+            </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-display">You built the product.<br />I make it sell.</h1>
+            <h1 className="text-display">
+              You built the product.
+              <br />I make it sell.
+            </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p
@@ -75,22 +86,35 @@ export default function WorkPage() {
               }}
             >
               Most technical founders can build anything except a way to sell it. I&apos;m the
-              operator who turns what you built into deals that close — then hands you the system
-              so it runs without me. Enterprise AI. NIL startups. CPA automation. Same playbook
-              each time: position sharp, sell direct, automate the rest.
+              operator who turns what you built into deals that close — then hands you the system so
+              it runs without me. Enterprise AI. NIL startups. CPA automation. Same playbook each
+              time: position sharp, sell direct, automate the rest.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
             <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <a href={`mailto:${EMAIL}`} className="btn-yellow">Start a conversation →</a>
-              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-outline">Book a call</a>
+              <a href={`mailto:${EMAIL}`} className="btn-yellow">
+                Start a conversation →
+              </a>
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                Book a call
+              </a>
             </div>
           </FadeUp>
           <FadeUp delay={0.4}>
             <a
               href="/playbook"
               className="folio"
-              style={{ display: "inline-block", marginTop: "1.5rem", color: "var(--color-ink-muted)" }}
+              style={{
+                display: "inline-block",
+                marginTop: "1.5rem",
+                color: "var(--color-ink-muted)",
+              }}
             >
               Not ready to talk? See the exact outbound system →
             </a>
@@ -99,7 +123,13 @@ export default function WorkPage() {
       </section>
 
       {/* ── Proof metrics ──────────────────────────────────────── */}
-      <section style={{ background: "var(--color-ink)", borderBottom: "2px solid var(--color-ink)", padding: "3.5rem 0" }}>
+      <section
+        style={{
+          background: "var(--color-ink)",
+          borderBottom: "2px solid var(--color-ink)",
+          padding: "3.5rem 0",
+        }}
+      >
         <div className="container-editorial">
           <div
             style={{
@@ -113,7 +143,8 @@ export default function WorkPage() {
                 <div
                   style={{
                     padding: "1.5rem 2rem",
-                    borderRight: i < metrics.length - 1 ? "1px solid rgba(249,249,249,0.1)" : "none",
+                    borderRight:
+                      i < metrics.length - 1 ? "1px solid rgba(249,249,249,0.1)" : "none",
                     textAlign: "center",
                   }}
                 >
@@ -131,7 +162,10 @@ export default function WorkPage() {
                   >
                     {m.num}
                   </div>
-                  <div className="folio" style={{ color: "rgba(249,249,249,0.55)", letterSpacing: "0.1em" }}>
+                  <div
+                    className="folio"
+                    style={{ color: "rgba(249,249,249,0.55)", letterSpacing: "0.1em" }}
+                  >
                     {m.label}
                   </div>
                 </div>
@@ -142,10 +176,18 @@ export default function WorkPage() {
       </section>
 
       {/* ── Services ───────────────────────────────────────────── */}
-      <section style={{ paddingTop: "4rem", paddingBottom: "4rem", borderBottom: "1px solid var(--color-rule)" }}>
+      <section
+        style={{
+          paddingTop: "4rem",
+          paddingBottom: "4rem",
+          borderBottom: "1px solid var(--color-rule)",
+        }}
+      >
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>What I do</div>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              What I do
+            </div>
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
           <StaggerList
@@ -157,8 +199,17 @@ export default function WorkPage() {
           >
             {services.map((s) => (
               <StaggerItem key={s.title} as="article">
-                <article style={{ borderTop: `3px solid ${s.color}`, paddingTop: "1.5rem", height: "100%" }}>
-                  <h2 className="text-subhead" style={{ color: "var(--color-ink)", marginBottom: "0.9rem" }}>
+                <article
+                  style={{
+                    borderTop: `3px solid ${s.color}`,
+                    paddingTop: "1.5rem",
+                    height: "100%",
+                  }}
+                >
+                  <h2
+                    className="text-subhead"
+                    style={{ color: "var(--color-ink)", marginBottom: "0.9rem" }}
+                  >
                     {s.title}
                   </h2>
                   <p
@@ -179,10 +230,18 @@ export default function WorkPage() {
       </section>
 
       {/* ── Proof ──────────────────────────────────────────────── */}
-      <section style={{ paddingTop: "4rem", paddingBottom: "4rem", borderBottom: "1px solid var(--color-rule)" }}>
+      <section
+        style={{
+          paddingTop: "4rem",
+          paddingBottom: "4rem",
+          borderBottom: "1px solid var(--color-rule)",
+        }}
+      >
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Selected proof</div>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              Selected proof
+            </div>
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
           <StaggerList style={{ display: "grid", gap: "0" }}>
@@ -224,7 +283,9 @@ export default function WorkPage() {
                         {p.role}
                       </p>
                     </div>
-                    <span className="interest-tag" style={{ flexShrink: 0 }}>{p.tag}</span>
+                    <span className="interest-tag" style={{ flexShrink: 0 }}>
+                      {p.tag}
+                    </span>
                   </div>
                   <p
                     style={{
@@ -249,7 +310,8 @@ export default function WorkPage() {
         <div className="container-editorial">
           <FadeUp>
             <h2 className="text-headline" style={{ color: "var(--color-ink)", maxWidth: "20ch" }}>
-              Building something that needs to <span className="brand-highlight">find its market?</span>
+              Building something that needs to{" "}
+              <span className="brand-highlight">find its market?</span>
             </h2>
             <p
               style={{
@@ -261,12 +323,22 @@ export default function WorkPage() {
                 color: "var(--color-ink-soft)",
               }}
             >
-              Tell me what you&apos;re building and where it&apos;s stuck. If it&apos;s a fit, we&apos;ll
-              map the first 30 days. If it&apos;s not, I&apos;ll point you at someone better.
+              Tell me what you&apos;re building and where it&apos;s stuck. If it&apos;s a fit,
+              we&apos;ll map the first 30 days. If it&apos;s not, I&apos;ll point you at someone
+              better.
             </p>
             <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <a href={`mailto:${EMAIL}`} className="btn-yellow">{EMAIL}</a>
-              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-outline">Book a 30-min call</a>
+              <a href={`mailto:${EMAIL}`} className="btn-yellow">
+                {EMAIL}
+              </a>
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                Book a 30-min call
+              </a>
             </div>
           </FadeUp>
         </div>

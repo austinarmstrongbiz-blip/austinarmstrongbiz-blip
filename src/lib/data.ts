@@ -104,9 +104,7 @@ export const thinking: Thought[] = [
 // ─── FEATURED REPOS ───────────────────────────────────────────────────────────
 // Repo names that get a featured (yellow top border) treatment on /projects.
 // Add new repo names here as more are published.
-export const featuredRepoNames: string[] = [
-  "austinarmstrongbiz-blip",
-];
+export const featuredRepoNames: string[] = ["austinarmstrongbiz-blip"];
 
 // ─── STATIC PROJECTS ─────────────────────────────────────────────────────────
 // Non-GitHub projects, case studies, and notable work to show on /projects.

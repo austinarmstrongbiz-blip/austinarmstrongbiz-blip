@@ -14,7 +14,7 @@ export async function GET() {
       <guid isPermaLink="true">${post.url}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <description><![CDATA[${post.summary}]]></description>
-    </item>`
+    </item>`,
     )
     .join("\n");
 

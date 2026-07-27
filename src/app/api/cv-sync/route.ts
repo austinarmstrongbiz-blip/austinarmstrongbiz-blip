@@ -101,9 +101,7 @@ export async function GET(req: NextRequest) {
             Type: { select: { name: cvType } },
             Description: { rich_text: [{ text: { content: description } }] },
             Current: { checkbox: false },
-            ...(weekStart
-              ? { "Start Date": { date: { start: weekStart } } }
-              : {}),
+            ...(weekStart ? { "Start Date": { date: { start: weekStart } } } : {}),
           },
         }),
       });
@@ -125,8 +123,8 @@ export async function GET(req: NextRequest) {
               Pushed: { checkbox: true },
             },
           }),
-        })
-      )
+        }),
+      ),
     );
 
     return NextResponse.json({
@@ -134,9 +132,6 @@ export async function GET(req: NextRequest) {
       synced,
     });
   } catch (err) {
-    return NextResponse.json(
-      { error: "Unexpected error", detail: String(err) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Unexpected error", detail: String(err) }, { status: 500 });
   }
 }

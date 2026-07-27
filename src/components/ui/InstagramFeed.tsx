@@ -39,12 +39,7 @@ async function getFeed(): Promise<BeholdFeed | null> {
 
 function getImageUrl(post: BeholdPost): string {
   // Videos and reels use thumbnailUrl; images use mediaUrl or sizes
-  return (
-    post.thumbnailUrl ??
-    post.sizes?.medium?.url ??
-    post.sizes?.large?.url ??
-    post.mediaUrl
-  );
+  return post.thumbnailUrl ?? post.sizes?.medium?.url ?? post.sizes?.large?.url ?? post.mediaUrl;
 }
 
 export default async function InstagramFeed() {

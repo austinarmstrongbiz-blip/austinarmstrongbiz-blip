@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { interests, featuredRepoNames } from "@/lib/data";
-import { getSubstackPosts, SUBSTACK_URL } from "@/lib/substack";
+import { getSubstackPosts } from "@/lib/substack";
 import { getReadingList, getThinkingList } from "@/lib/notion";
 import { getGitHubRepos } from "@/lib/github";
 import {
@@ -185,15 +185,15 @@ export default async function HomePage() {
                     marginBottom: "2rem",
                   }}
                 >
-                  "I am someone who is curious about the world,
-                  here are my notes about what I find."
+                  &ldquo;I am someone who is curious about the world, here are my notes about what I
+                  find.&rdquo;
                 </p>
                 <div style={{ display: "flex", gap: "0.75rem" }}>
                   <Link href="/essays" className="btn-yellow" style={{ fontSize: "0.62rem" }}>
                     Read essays
                   </Link>
                   <Link href="/now" className="btn-outline" style={{ fontSize: "0.62rem" }}>
-                    What I'm doing now
+                    What I&apos;m doing now
                   </Link>
                 </div>
               </div>
@@ -328,7 +328,10 @@ export default async function HomePage() {
         >
           <div className="container-editorial">
             <FadeUp delay={0.1}>
-              <div className="folio" style={{ color: "var(--color-ink-soft)", marginBottom: "1.5rem" }}>
+              <div
+                className="folio"
+                style={{ color: "var(--color-ink-soft)", marginBottom: "1.5rem" }}
+              >
                 The thesis
               </div>
             </FadeUp>
@@ -359,8 +362,8 @@ export default async function HomePage() {
                   lineHeight: 1.7,
                 }}
               >
-                Every piece I write exists to dismantle a blueprint that no longer
-                works and replace it with something you built yourself.
+                Every piece I write exists to dismantle a blueprint that no longer works and replace
+                it with something you built yourself.
               </p>
             </FadeUp>
           </div>
@@ -433,7 +436,6 @@ export default async function HomePage() {
         }}
       >
         <div className="container-editorial">
-
           {/* Row 1: photos + bio text */}
           <div
             className="bio-grid"
@@ -460,7 +462,14 @@ export default async function HomePage() {
 
             {/* Photo 2 — offset down */}
             <FadeUp delay={0.12}>
-              <div style={{ position: "relative", height: "380px", overflow: "hidden", marginTop: "2rem" }}>
+              <div
+                style={{
+                  position: "relative",
+                  height: "380px",
+                  overflow: "hidden",
+                  marginTop: "2rem",
+                }}
+              >
                 <Image
                   src="/images/Groom_601246435.jpg"
                   alt="Austin Armstrong"
@@ -473,7 +482,9 @@ export default async function HomePage() {
 
             {/* Bio text only */}
             <FadeUp delay={0.2}>
-              <div className="text-label" style={{ marginBottom: "1rem" }}>About</div>
+              <div className="text-label" style={{ marginBottom: "1rem" }}>
+                About
+              </div>
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
@@ -483,10 +494,9 @@ export default async function HomePage() {
                   marginBottom: "1rem",
                 }}
               >
-                I'm a generalist who refuses to stay in a single lane. My
-                thinking moves across disciplines — from the mechanics of
-                cognition and how ideas become immune to criticism, to the
-                mathematics of risk in barbell strategies, to what it means to
+                I&apos;m a generalist who refuses to stay in a single lane. My thinking moves across
+                disciplines — from the mechanics of cognition and how ideas become immune to
+                criticism, to the mathematics of risk in barbell strategies, to what it means to
                 build a company worth building.
               </p>
               <p
@@ -497,9 +507,9 @@ export default async function HomePage() {
                   color: "var(--color-ink-soft)",
                 }}
               >
-                I read obsessively. I think out loud here. If you're drawn to
-                ideas that don't fit neatly into a single domain, you'll find
-                something worth your time.
+                I read obsessively. I think out loud here. If you&apos;re drawn to ideas that
+                don&apos;t fit neatly into a single domain, you&apos;ll find something worth your
+                time.
               </p>
             </FadeUp>
           </div>
@@ -521,14 +531,17 @@ export default async function HomePage() {
 
           {/* Row 3: interest tags — full width */}
           <FadeUp delay={0.1}>
-            <div className="text-label" style={{ marginBottom: "0.75rem" }}>Areas of interest</div>
+            <div className="text-label" style={{ marginBottom: "0.75rem" }}>
+              Areas of interest
+            </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
               {interests.map((interest) => (
-                <span key={interest} className="interest-tag">{interest}</span>
+                <span key={interest} className="interest-tag">
+                  {interest}
+                </span>
               ))}
             </div>
           </FadeUp>
-
         </div>
       </section>
 
@@ -629,7 +642,14 @@ export default async function HomePage() {
           }}
         >
           <div className="container-editorial">
-            <FadeUp style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "0.5rem" }}>
+            <FadeUp
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                marginBottom: "0.5rem",
+              }}
+            >
               <div className="text-label">§03 · Currently building</div>
               <Link href="/projects" className="folio" style={{ color: "var(--color-ink-muted)" }}>
                 All projects →
@@ -665,7 +685,9 @@ export default async function HomePage() {
                     className="pillar-card"
                   >
                     {repo.language && (
-                      <div className="folio" style={{ marginBottom: "0.75rem" }}>{repo.language}</div>
+                      <div className="folio" style={{ marginBottom: "0.75rem" }}>
+                        {repo.language}
+                      </div>
                     )}
                     <div
                       style={{
@@ -777,15 +799,13 @@ export default async function HomePage() {
             }}
           >
             <div className="text-label">§04 · Latest essays</div>
-            <a
-              href={SUBSTACK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/essays"
               className="folio"
               style={{ color: "var(--color-ink-muted)", transition: "color 0.15s" }}
             >
               All essays →
-            </a>
+            </Link>
           </FadeUp>
           <FadeUp delay={0.05}>
             <hr className="rule rule-thick" style={{ marginBottom: "0" }} />
@@ -838,7 +858,9 @@ export default async function HomePage() {
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <div className="folio">{post.dateFormatted}</div>
                     {post.readTime && (
-                      <div className="folio" style={{ marginTop: "0.3rem" }}>{post.readTime}</div>
+                      <div className="folio" style={{ marginTop: "0.3rem" }}>
+                        {post.readTime}
+                      </div>
                     )}
                   </div>
                 </a>
@@ -891,7 +913,8 @@ export default async function HomePage() {
                   className="folio"
                   style={{ color: "rgba(249,249,249,0.5)", marginTop: "0.35rem" }}
                 >
-                  {currentBook?.author}{currentBook?.status === "Reading" ? " · Reading" : ""}
+                  {currentBook?.author}
+                  {currentBook?.status === "Reading" ? " · Reading" : ""}
                 </div>
               </div>
 
@@ -982,24 +1005,67 @@ export default async function HomePage() {
                 <Link href="/work" className="btn-outline">
                   Work with me
                 </Link>
-                <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginLeft: "0.5rem" }}>
-                  <a href="https://www.instagram.com/austinarmstrong20/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="social-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                      <circle cx="12" cy="12" r="4"/>
-                      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    alignItems: "center",
+                    marginLeft: "0.5rem",
+                  }}
+                >
+                  <a
+                    href="https://www.instagram.com/austinarmstrong20/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="social-icon"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
                     </svg>
                   </a>
-                  <a href="https://x.com/austin_2020" target="_blank" rel="noopener noreferrer" aria-label="X" className="social-icon">
+                  <a
+                    href="https://x.com/austin_2020"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="X"
+                    className="social-icon"
+                  >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
                   </a>
-                  <a href="https://www.linkedin.com/in/austin-armstrong20/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="social-icon">
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                      <rect x="2" y="9" width="4" height="12"/>
-                      <circle cx="4" cy="4" r="2"/>
+                  <a
+                    href="https://www.linkedin.com/in/austin-armstrong20/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className="social-icon"
+                  >
+                    <svg
+                      width="19"
+                      height="19"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                      <rect x="2" y="9" width="4" height="12" />
+                      <circle cx="4" cy="4" r="2" />
                     </svg>
                   </a>
                 </div>

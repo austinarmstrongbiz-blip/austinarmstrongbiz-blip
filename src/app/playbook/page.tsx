@@ -40,14 +40,25 @@ export default function PlaybookPage() {
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
-      <section style={{ paddingTop: "5rem", paddingBottom: "4rem", borderBottom: "2px solid var(--color-ink)" }}>
+      <section
+        style={{
+          paddingTop: "5rem",
+          paddingBottom: "4rem",
+          borderBottom: "2px solid var(--color-ink)",
+        }}
+      >
         <div style={{ background: "var(--color-yellow)", height: "4px" }} />
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "2rem" }}>The Outbound Playbook</div>
+            <div className="text-label" style={{ marginBottom: "2rem" }}>
+              The Outbound Playbook
+            </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-display">4,989 leads in 30 days.<br />A pilot closed in one hour.</h1>
+            <h1 className="text-display">
+              4,989 leads in 30 days.
+              <br />A pilot closed in one hour.
+            </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p
@@ -60,20 +71,28 @@ export default function PlaybookPage() {
                 fontFamily: "var(--font-sans)",
               }}
             >
-              Outbound fails when you blast generic messages at a list that never asked. This
-              does the opposite: a tight list built on buy signals, setup that lands in the inbox,
-              two channels at once, and a pipeline that never goes cold. The whole system, start
-              to finish.
+              Outbound fails when you blast generic messages at a list that never asked. This does
+              the opposite: a tight list built on buy signals, setup that lands in the inbox, two
+              channels at once, and a pipeline that never goes cold. The whole system, start to
+              finish.
             </p>
           </FadeUp>
         </div>
       </section>
 
       {/* ── The system ─────────────────────────────────────────── */}
-      <section style={{ paddingTop: "4rem", paddingBottom: "4rem", borderBottom: "1px solid var(--color-rule)" }}>
+      <section
+        style={{
+          paddingTop: "4rem",
+          paddingBottom: "4rem",
+          borderBottom: "1px solid var(--color-rule)",
+        }}
+      >
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>The system — five steps</div>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              The system — five steps
+            </div>
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
           <StaggerList style={{ display: "grid", gap: "0" }}>
@@ -141,7 +160,8 @@ export default function PlaybookPage() {
         <div className="container-editorial">
           <FadeUp>
             <h2 className="text-headline" style={{ color: "var(--color-ink)", maxWidth: "22ch" }}>
-              The system gets you the meeting. <span className="brand-highlight">Positioning closes it.</span>
+              The system gets you the meeting.{" "}
+              <span className="brand-highlight">Positioning closes it.</span>
             </h2>
             <p
               style={{
@@ -154,9 +174,9 @@ export default function PlaybookPage() {
                 marginBottom: "2.5rem",
               }}
             >
-              I break down the frameworks behind the offers, positioning, and outbound that
-              actually convert in <em>None of the Above</em> — every week, no fluff. Drop your
-              email and I&apos;ll send the next one.
+              I break down the frameworks behind the offers, positioning, and outbound that actually
+              convert in <em>None of the Above</em> — every week, no fluff. Drop your email and
+              I&apos;ll send the next one.
             </p>
             <NewsletterForm
               variant="light"

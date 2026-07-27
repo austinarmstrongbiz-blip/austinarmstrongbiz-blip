@@ -62,7 +62,11 @@ export default function NewsletterForm({
             outlineOffset: "2px",
           }}
         />
-        <button type="submit" className="btn-yellow" style={{ flexShrink: 0, cursor: "pointer", border: "none" }}>
+        <button
+          type="submit"
+          className="btn-yellow"
+          style={{ flexShrink: 0, cursor: "pointer", border: "none" }}
+        >
           Subscribe →
         </button>
       </form>

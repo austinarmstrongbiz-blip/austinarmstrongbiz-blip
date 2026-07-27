@@ -35,7 +35,9 @@ export default async function NowPage() {
               Updated · {lastUpdated}
             </div>
           </FadeUp>
-          <FadeUp delay={0.1}><h1 className="text-display">Field Notes</h1></FadeUp>
+          <FadeUp delay={0.1}>
+            <h1 className="text-display">Field Notes</h1>
+          </FadeUp>
           <FadeUp delay={0.2}>
             <p
               style={{
@@ -47,8 +49,8 @@ export default async function NowPage() {
                 fontFamily: "var(--font-sans)",
               }}
             >
-              A living document. What I'm reading, what's occupying my thinking,
-              and what I'm building. Connected to Notion — updates automatically.
+              A living document. What I&apos;m reading, what&apos;s occupying my thinking, and what
+              I&apos;m building. Connected to Notion — updates automatically.
             </p>
           </FadeUp>
         </div>
@@ -64,7 +66,9 @@ export default async function NowPage() {
       >
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Currently reading</div>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              Currently reading
+            </div>
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
 
@@ -99,90 +103,91 @@ export default async function NowPage() {
                         />
                       )}
                       <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
-                          gap: "1rem",
-                        }}
-                      >
-                        <div>
-                          <h2
-                            style={{
-                              fontFamily: "var(--font-display)",
-                              fontWeight: 700,
-                              fontStyle: "italic",
-                              fontSize: "1.2rem",
-                              color: "var(--color-ink)",
-                              letterSpacing: "-0.01em",
-                              marginBottom: "0.2rem",
-                            }}
-                          >
-                            {book.link ? (
-                              <a
-                                href={book.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ color: "inherit" }}
-                              >
-                                {book.title}
-                              </a>
-                            ) : (
-                              book.title
-                            )}
-                          </h2>
-                          {book.author && (
-                            <p
-                              style={{
-                                fontFamily: "var(--font-mono)",
-                                fontSize: "0.68rem",
-                                color: "var(--color-ink-muted)",
-                                letterSpacing: "0.06em",
-                              }}
-                            >
-                              {book.author}
-                            </p>
-                          )}
-                        </div>
-
-                        <div style={{ textAlign: "right", flexShrink: 0 }}>
-                          {book.genre.length > 0 && (
-                            <span className="interest-tag">{book.genre[0]}</span>
-                          )}
-                          <div
-                            className="folio"
-                            style={{
-                              marginTop: "0.5rem",
-                              color: done ? "var(--color-ink)" : "var(--color-ink-muted)",
-                              fontWeight: done ? 500 : 300,
-                            }}
-                          >
-                            {done ? "✓ Finished" : book.status}
-                          </div>
-                          {book.rating && (
-                            <div className="folio" style={{ marginTop: "0.25rem" }}>
-                              {"★".repeat(Math.round(book.rating))}{"☆".repeat(5 - Math.round(book.rating))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {book.notes && (
-                        <p
+                        <div
                           style={{
-                            marginTop: "1.25rem",
-                            fontFamily: "var(--font-sans)",
-                            fontSize: "0.95rem",
-                            lineHeight: 1.7,
-                            color: "var(--color-ink-soft)",
-                            fontStyle: "italic",
-                            maxWidth: "65ch",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            gap: "1rem",
                           }}
                         >
-                          {book.notes}
-                        </p>
-                      )}
+                          <div>
+                            <h2
+                              style={{
+                                fontFamily: "var(--font-display)",
+                                fontWeight: 700,
+                                fontStyle: "italic",
+                                fontSize: "1.2rem",
+                                color: "var(--color-ink)",
+                                letterSpacing: "-0.01em",
+                                marginBottom: "0.2rem",
+                              }}
+                            >
+                              {book.link ? (
+                                <a
+                                  href={book.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{ color: "inherit" }}
+                                >
+                                  {book.title}
+                                </a>
+                              ) : (
+                                book.title
+                              )}
+                            </h2>
+                            {book.author && (
+                              <p
+                                style={{
+                                  fontFamily: "var(--font-mono)",
+                                  fontSize: "0.68rem",
+                                  color: "var(--color-ink-muted)",
+                                  letterSpacing: "0.06em",
+                                }}
+                              >
+                                {book.author}
+                              </p>
+                            )}
+                          </div>
+
+                          <div style={{ textAlign: "right", flexShrink: 0 }}>
+                            {book.genre.length > 0 && (
+                              <span className="interest-tag">{book.genre[0]}</span>
+                            )}
+                            <div
+                              className="folio"
+                              style={{
+                                marginTop: "0.5rem",
+                                color: done ? "var(--color-ink)" : "var(--color-ink-muted)",
+                                fontWeight: done ? 500 : 300,
+                              }}
+                            >
+                              {done ? "✓ Finished" : book.status}
+                            </div>
+                            {book.rating && (
+                              <div className="folio" style={{ marginTop: "0.25rem" }}>
+                                {"★".repeat(Math.round(book.rating))}
+                                {"☆".repeat(5 - Math.round(book.rating))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {book.notes && (
+                          <p
+                            style={{
+                              marginTop: "1.25rem",
+                              fontFamily: "var(--font-sans)",
+                              fontSize: "0.95rem",
+                              lineHeight: 1.7,
+                              color: "var(--color-ink-soft)",
+                              fontStyle: "italic",
+                              maxWidth: "65ch",
+                            }}
+                          >
+                            {book.notes}
+                          </p>
+                        )}
                       </div>
                     </article>
                   </StaggerItem>
@@ -208,54 +213,56 @@ export default async function NowPage() {
       <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
         <div className="container-editorial">
           <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>Currently thinking about</div>
+            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
+              Currently thinking about
+            </div>
             <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
           </FadeUp>
 
           {thinking.length > 0 ? (
-          <StaggerList style={{ display: "grid", gap: "3rem" }}>
-            {thinking.map((thought) => (
-              <StaggerItem key={thought.idea} as="article">
-                <article>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      gap: "2rem",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <h2 className="pull-quote" style={{ flex: 1 }}>
-                      {thought.idea}
-                    </h2>
-                    <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <div className="folio">{thought.dateFormatted}</div>
-                      <span
-                        className="interest-tag"
-                        style={{ display: "inline-block", marginTop: "0.5rem" }}
-                      >
-                        {thought.tag}
-                      </span>
+            <StaggerList style={{ display: "grid", gap: "3rem" }}>
+              {thinking.map((thought) => (
+                <StaggerItem key={thought.idea} as="article">
+                  <article>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        gap: "2rem",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <h2 className="pull-quote" style={{ flex: 1 }}>
+                        {thought.idea}
+                      </h2>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div className="folio">{thought.dateFormatted}</div>
+                        <span
+                          className="interest-tag"
+                          style={{ display: "inline-block", marginTop: "0.5rem" }}
+                        >
+                          {thought.tag}
+                        </span>
+                      </div>
                     </div>
-                  </div>
 
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "1rem",
-                      lineHeight: 1.75,
-                      color: "var(--color-ink-soft)",
-                      maxWidth: "65ch",
-                    }}
-                  >
-                    {thought.context}
-                  </p>
-                  <hr className="rule" style={{ marginTop: "2rem" }} />
-                </article>
-              </StaggerItem>
-            ))}
-          </StaggerList>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontSize: "1rem",
+                        lineHeight: 1.75,
+                        color: "var(--color-ink-soft)",
+                        maxWidth: "65ch",
+                      }}
+                    >
+                      {thought.context}
+                    </p>
+                    <hr className="rule" style={{ marginTop: "2rem" }} />
+                  </article>
+                </StaggerItem>
+              ))}
+            </StaggerList>
           ) : (
             <p
               style={{

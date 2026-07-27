@@ -32,7 +32,9 @@ export default async function EssaysPage() {
               {posts.length > 0 ? `${posts.length} essays` : "Essays"} · Published on Substack
             </div>
           </FadeUp>
-          <FadeUp delay={0.1}><h1 className="text-display">Essays</h1></FadeUp>
+          <FadeUp delay={0.1}>
+            <h1 className="text-display">Essays</h1>
+          </FadeUp>
           <FadeUp delay={0.2}>
             <p
               style={{
@@ -44,8 +46,8 @@ export default async function EssaysPage() {
                 fontFamily: "var(--font-sans)",
               }}
             >
-              Ideas that demanded more than a tweet. Long-form explorations of
-              what I'm thinking about — written to understand, not to perform.
+              Ideas that demanded more than a tweet. Long-form explorations of what I&apos;m
+              thinking about — written to understand, not to perform.
             </p>
           </FadeUp>
         </div>
@@ -117,7 +119,14 @@ export default async function EssaysPage() {
             </FadeUp>
 
             <FadeUp delay={0.1}>
-              <div style={{ display: "flex", gap: "1.5rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1.5rem",
+                  marginBottom: "1.25rem",
+                  flexWrap: "wrap",
+                }}
+              >
                 <span className="folio" style={{ color: "var(--color-ink-soft)" }}>
                   {featured.dateFormatted}
                 </span>
@@ -156,10 +165,7 @@ export default async function EssaysPage() {
                 {featured.summary}
               </p>
 
-              <Link
-                href={`/essays/${featured.slug}`}
-                className="btn-yellow"
-              >
+              <Link href={`/essays/${featured.slug}`} className="btn-yellow">
                 Read essay →
               </Link>
             </FadeUp>

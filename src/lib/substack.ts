@@ -8,14 +8,14 @@ const SUBSTACK_URL = "https://austinarmstrong20.substack.com";
 
 export interface SubstackPost {
   title: string;
-  slug: string;         // last path segment, e.g. "the-generalist-edge"
-  url: string;          // canonical Substack URL
-  date: string;         // ISO string
+  slug: string; // last path segment, e.g. "the-generalist-edge"
+  url: string; // canonical Substack URL
+  date: string; // ISO string
   dateFormatted: string; // "April 2025"
   summary: string;
   imageUrl: string | null;
   readTime: string | null;
-  bodyHtml: string;     // full article HTML from <content:encoded>
+  bodyHtml: string; // full article HTML from <content:encoded>
 }
 
 // Derive a URL-safe slug from a Substack post URL (.../p/<slug>)
@@ -50,7 +50,10 @@ function formatDate(dateStr: string): string {
 
 // Strip HTML tags and truncate
 function cleanSummary(raw: string, maxLen = 180): string {
-  const stripped = raw.replace(/<[^>]+>/g, "").replace(/&[a-z]+;/gi, " ").trim();
+  const stripped = raw
+    .replace(/<[^>]+>/g, "")
+    .replace(/&[a-z]+;/gi, " ")
+    .trim();
   return stripped.length > maxLen ? stripped.slice(0, maxLen).trim() + "…" : stripped;
 }
 
@@ -71,21 +74,23 @@ export async function getSubstackPosts(limit = 20): Promise<SubstackPost[]> {
       if (posts.length >= limit) break;
       const item = match[1];
 
-      const title = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1]
-        ?? item.match(/<title>(.*?)<\/title>/)?.[1]
-        ?? "";
+      const title =
+        item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1] ??
+        item.match(/<title>(.*?)<\/title>/)?.[1] ??
+        "";
 
-      const url = item.match(/<link>(.*?)<\/link>/)?.[1]
-        ?? item.match(/<guid[^>]*>(.*?)<\/guid>/)?.[1]
-        ?? "";
+      const url =
+        item.match(/<link>(.*?)<\/link>/)?.[1] ?? item.match(/<guid[^>]*>(.*?)<\/guid>/)?.[1] ?? "";
 
       const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] ?? "";
 
-      const descriptionRaw = item.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/)?.[1]
-        ?? item.match(/<description>([\s\S]*?)<\/description>/)?.[1]
-        ?? "";
+      const descriptionRaw =
+        item.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/)?.[1] ??
+        item.match(/<description>([\s\S]*?)<\/description>/)?.[1] ??
+        "";
 
-      const contentRaw = item.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/)?.[1] ?? "";
+      const contentRaw =
+        item.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/)?.[1] ?? "";
 
       if (!title || !url) continue;
 
@@ -114,9 +119,7 @@ export async function getSubstackPosts(limit = 20): Promise<SubstackPost[]> {
 }
 
 // Fetch a single post by its slug (for the on-site /essays/[slug] pages).
-export async function getSubstackPostBySlug(
-  slug: string
-): Promise<SubstackPost | null> {
+export async function getSubstackPostBySlug(slug: string): Promise<SubstackPost | null> {
   const posts = await getSubstackPosts(100);
   return posts.find((p) => p.slug === slug) ?? null;
 }

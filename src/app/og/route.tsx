@@ -6,17 +6,14 @@ export const runtime = "edge";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
 
-  const title    = searchParams.get("title") ?? "";
+  const title = searchParams.get("title") ?? "";
   const subtitle = searchParams.get("subtitle") ?? "";
-  const tag      = searchParams.get("tag") ?? "";
-  const isHome   = !title;
+  const tag = searchParams.get("tag") ?? "";
+  const isHome = !title;
 
   // ── Load Basilia Bold Italic font ────────────────────────────────────────
   const fontRes = await fetch(
-    new URL(
-      "/fonts/Web%20Fonts/Basilia%20Bold%20Italic/Basilia-BolIta.woff",
-      origin
-    )
+    new URL("/fonts/Web%20Fonts/Basilia%20Bold%20Italic/Basilia-BolIta.woff", origin),
   );
   const fontData = await fontRes.arrayBuffer();
 
@@ -321,6 +318,6 @@ export async function GET(request: NextRequest) {
           weight: 700,
         },
       ],
-    }
+    },
   );
 }
