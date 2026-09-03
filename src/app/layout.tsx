@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { navItems } from "@/lib/nav";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -63,15 +64,6 @@ export const metadata: Metadata = {
     },
   },
 };
-
-const navItems = [
-  { href: "/now", label: "Field Notes" },
-  { href: "/essays", label: "Essays" },
-  { href: "/projects", label: "Projects" },
-  { href: "/work", label: "Work" },
-  { href: "/playbook", label: "The Homies" },
-  { href: "/resume", label: "CV" },
-];
 
 /* The brand logo — "Austin Armstrong." in Basilia Bold Italic
    with the yellow highlight bar sitting under "Armstrong." */

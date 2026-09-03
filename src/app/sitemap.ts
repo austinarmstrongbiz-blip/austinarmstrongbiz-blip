@@ -1,10 +1,12 @@
 import { MetadataRoute } from "next";
 import { getSubstackPosts } from "@/lib/substack";
+import { getRants } from "@/lib/rants";
 
 const BASE_URL = "https://austin-armstrong.me";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getSubstackPosts(100);
+  const rants = getRants();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -49,6 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/rants`,
+      lastModified: rants[0] ? new Date(rants[0].date) : new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 
   // Essays — point to the on-site mirrored pages so Google indexes our domain
@@ -61,5 +69,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  return [...staticRoutes, ...postRoutes];
+  const rantRoutes: MetadataRoute.Sitemap = rants.map((rant) => ({
+    url: `${BASE_URL}/rants/${rant.slug}`,
+    lastModified: new Date(rant.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...rantRoutes];
 }
