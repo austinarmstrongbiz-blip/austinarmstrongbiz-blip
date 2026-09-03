@@ -224,9 +224,10 @@ export default async function ResumePage() {
                     >
                       {/* Role header with impact callout */}
                       <div
+                        className="resume-role-header"
                         style={{
                           display: "grid",
-                          gridTemplateColumns: impactStat ? "1fr auto" : "1fr",
+                          gridTemplateColumns: impactStat ? "minmax(0, 1fr) auto" : "1fr",
                           gap: "2rem",
                           alignItems: "start",
                           marginBottom: "1.5rem",
@@ -523,6 +524,7 @@ export default async function ResumePage() {
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
+                          flexWrap: "wrap",
                           gap: "1.5rem",
                           marginBottom: "0.5rem",
                         }}
@@ -592,6 +594,7 @@ export default async function ResumePage() {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
+                        flexWrap: "wrap",
                         alignItems: "flex-start",
                         gap: "2rem",
                         paddingBottom: "2rem",
@@ -657,6 +660,7 @@ export default async function ResumePage() {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
+                  flexWrap: "wrap",
                   alignItems: "flex-start",
                   gap: "2rem",
                 }}

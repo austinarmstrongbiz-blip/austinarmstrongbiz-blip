@@ -404,6 +404,20 @@ a {
   }
 }
 
+/* ─── RESUME ROLE HEADER ─────────────────────────────────────────── */
+/* Role title beside a big impact number ("$100K") overflows a phone. Stack it,
+   same approach as .hero-grid below. !important because the page sets these
+   inline, which is this repo's convention. */
+@media (max-width: 640px) {
+  .resume-role-header {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .resume-role-header > div:last-child {
+    text-align: left !important;
+  }
+}
+
 /* ─── PILLAR COLORS ──────────────────────────────────────────────── */
 :root {
   --color-pillar-lifestyle: #c9a96e;
