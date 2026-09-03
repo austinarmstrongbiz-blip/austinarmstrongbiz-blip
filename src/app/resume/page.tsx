@@ -216,7 +216,7 @@ export default async function ResumePage() {
                   <StaggerItem key={job.id} as="article">
                     <article
                       style={{
-                        padding: "2.5rem",
+                        padding: "clamp(1.25rem, 5vw, 2.5rem)",
                         marginBottom: "1.5rem",
                         background: "var(--color-bg-warm)",
                         borderLeft: "4px solid var(--color-yellow)",
@@ -450,7 +450,7 @@ export default async function ResumePage() {
                 <StaggerItem key={award.id}>
                   <div
                     style={{
-                      padding: "1.5rem 2rem",
+                      padding: "clamp(1.1rem, 4vw, 1.5rem) clamp(1.25rem, 5vw, 2rem)",
                       borderLeft: "4px solid var(--color-yellow)",
                       background: "var(--color-bg-warm)",
                     }}
@@ -700,7 +700,7 @@ export default async function ResumePage() {
             <div
               style={{
                 marginTop: "3rem",
-                padding: "2rem",
+                padding: "clamp(1.25rem, 5vw, 2rem)",
                 borderLeft: "4px solid var(--color-yellow)",
                 background: "var(--color-bg-warm)",
               }}
