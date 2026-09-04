@@ -404,6 +404,18 @@ a {
   }
 }
 
+/* ─── COLLAGE LANDING RESPONSIVE ─────────────────────────────────── */
+/* Separate hand-placed mobile layout, not a reflow of the desktop absolute
+   positions — same swap convention as .desktop-nav / .mobile-menu-btn above. */
+@media (max-width: 640px) {
+  .collage-desktop {
+    display: none !important;
+  }
+  .collage-mobile {
+    display: flex !important;
+  }
+}
+
 /* ─── RESUME ROLE HEADER ─────────────────────────────────────────── */
 /* Role title beside a big impact number ("$100K") overflows a phone. Stack it,
    same approach as .hero-grid below. !important because the page sets these

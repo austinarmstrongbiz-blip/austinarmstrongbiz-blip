@@ -2,11 +2,24 @@
  * CollageLanding — the clickable image collage for the homepage.
  *
  * Server component. Every tile is a real <Link> with a real href, so it is
- * keyboard-reachable and crawlable out of the box. Full keyboard / screen-reader
- * polish (reading order, focus treatment) is a separate task.
+ * keyboard-reachable and crawlable out of the box. Each Link also carries an
+ * explicit aria-label from tile.label, since the visible placeholder text is
+ * going away once real art swaps in — the accessible name can't depend on it.
+ * `collageTiles` in tiles.ts is already ordered top-to-bottom, left-to-right,
+ * so DOM order (this .map()) matches reading order regardless of the absolute
+ * x/y placement below. The visible focus ring comes from the site-wide
+ * a:focus-visible rule in globals.css — nothing tile-specific suppresses it.
  *
  * Tiles render as bordered placeholders for now. The real-image swap is a
  * separate task — see the PLACEHOLDER block below and `imageSrc` in tiles.ts.
+ *
+ * Two genuinely separate layouts below 640px, not a CSS reflow of the desktop
+ * percentages: the absolute-position collage (".collage-desktop", tiles.ts
+ * coordinates untouched) and a hand-placed single-column list of the same
+ * nine tiles (".collage-mobile"). The swap is pure CSS — same convention as
+ * .desktop-nav / .mobile-menu-btn in globals.css: inline style sets the
+ * desktop-visible default, the max-width:640px media query flips both with
+ * !important. No client JS needed.
  *
  * Not wired to "/" yet. Preview it at /collage-preview.
  */
@@ -22,7 +35,9 @@ export default function CollageLanding() {
         padding: "2rem 1.5rem 3rem",
       }}
     >
+      {/* ── Desktop collage (>=640px) — absolute-position, tiles.ts coords ── */}
       <div
+        className="collage-desktop"
         style={{
           position: "relative",
           width: "100%",
@@ -35,6 +50,7 @@ export default function CollageLanding() {
           <Link
             key={tile.href}
             href={tile.href}
+            aria-label={tile.label}
             style={{
               position: "absolute",
               left: `${tile.x}%`,
@@ -100,6 +116,73 @@ export default function CollageLanding() {
           </Link>
         ))}
       </div>
+
+      {/* ── Mobile list (<640px) — hand-placed single column, same 9 tiles ── */}
+      <ul
+        className="collage-mobile"
+        style={{
+          display: "none", // shown by the max-width:640px rule in globals.css
+          flexDirection: "column",
+          listStyle: "none",
+          margin: 0,
+          padding: 0,
+          maxWidth: "480px",
+          marginInline: "auto",
+        }}
+      >
+        {collageTiles.map((tile, i) => (
+          <li key={tile.href} style={{ borderBottom: "1px solid var(--color-rule)" }}>
+            <Link
+              href={tile.href}
+              aria-label={tile.label}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "1rem",
+                minHeight: "44px",
+                minWidth: "44px",
+                padding: "0.875rem 0.25rem",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.14em",
+                    color: "var(--color-ink-muted)",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontStyle: "italic",
+                    fontWeight: 700,
+                    fontSize: "1.25rem",
+                    lineHeight: 1.1,
+                    color: "var(--color-ink)",
+                  }}
+                >
+                  {tile.label}
+                </span>
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.8rem",
+                  color: "var(--color-ink-muted)",
+                  flexShrink: 0,
+                }}
+              >
+                →
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
