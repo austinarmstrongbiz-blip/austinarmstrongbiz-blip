@@ -26,10 +26,15 @@
  * the list twice. The hidden one is display:none, which removes it from the
  * accessibility tree, so only one is ever exposed.
  *
+ * Rendered inside the (bare) route group: no header, no footer. The collage
+ * is the navigation, and the social row below it is the page's only other
+ * chrome.
+ *
  * Not wired to "/" yet. Preview it at /collage-preview.
  */
 
 import Link from "next/link";
+import SocialLinks from "@/components/ui/SocialLinks";
 import { CANVAS, MOBILE_CANVAS, collageTiles } from "./tiles";
 import type { CollageTile, TilePlacement } from "./tiles";
 
@@ -125,6 +130,13 @@ function TilePlaceholder({ tile, index }: { tile: CollageTile; index: number }) 
   );
 }
 
+/**
+ * Vertical space the collage is not allowed to use on the wide canvas: the
+ * wrapper's padding plus the social row. Phones are left to scroll — squeezing
+ * the tall mobile zigzag into one screen would shrink the tiles to nothing.
+ */
+const CHROME_RESERVE = "9rem";
+
 function linkStyle(p: TilePlacement): React.CSSProperties {
   return {
     position: "absolute",
@@ -146,8 +158,15 @@ export default function CollageLanding() {
   return (
     <div
       style={{
+        // The collage is the whole page: no header above it, no footer below.
+        // Fill the viewport and centre the canvas so it never floats in a
+        // corner on a tall screen, but let it grow past 100dvh if the canvas
+        // needs more room than the viewport has.
+        minHeight: "100dvh",
+        display: "flex",
+        flexDirection: "column",
         // Breathing room so rotated tiles near the edges don't get clipped.
-        padding: "2rem 1.5rem 3rem",
+        padding: "2rem 1.5rem 1.5rem",
       }}
     >
       {/* ── Wide collage (>=640px) — each tile's `desktop` placement ── */}
@@ -155,10 +174,14 @@ export default function CollageLanding() {
         className="collage-desktop"
         style={{
           position: "relative",
+          margin: "auto",
           width: "100%",
-          maxWidth: `${CANVAS.width}px`,
+          // Cap by height as well as width so the canvas and the social row
+          // below it both fit one screen on a short laptop, instead of pushing
+          // the socials under the fold. CHROME_RESERVE is the padding above and
+          // below plus the social row itself.
+          maxWidth: `min(${CANVAS.width}px, calc((100dvh - ${CHROME_RESERVE}) * ${CANVAS.width / CANVAS.height}))`,
           aspectRatio: `${CANVAS.width} / ${CANVAS.height}`,
-          marginInline: "auto",
         }}
       >
         {collageTiles.map((tile, i) => (
@@ -174,10 +197,10 @@ export default function CollageLanding() {
         style={{
           display: "none", // shown by the max-width:640px rule in globals.css
           position: "relative",
+          margin: "auto",
           width: "100%",
           maxWidth: `${MOBILE_CANVAS.width}px`,
           aspectRatio: `${MOBILE_CANVAS.width} / ${MOBILE_CANVAS.height}`,
-          marginInline: "auto",
         }}
       >
         {collageTiles.map((tile, i) => (
@@ -185,6 +208,18 @@ export default function CollageLanding() {
             <TilePlaceholder tile={tile} index={i} />
           </TileLink>
         ))}
+      </div>
+
+      {/* ── Socials ── the page has no footer, so these sit under the collage. */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          paddingTop: "2rem",
+          flexShrink: 0,
+        }}
+      >
+        <SocialLinks gap="1.75rem" />
       </div>
     </div>
   );

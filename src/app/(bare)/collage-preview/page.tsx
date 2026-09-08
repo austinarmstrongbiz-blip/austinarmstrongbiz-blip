@@ -16,11 +16,22 @@ export const metadata: Metadata = {
 
 export default function CollagePreviewPage() {
   return (
-    <section style={{ paddingTop: "3rem", paddingBottom: "4rem" }}>
-      <div className="container-editorial" style={{ marginBottom: "2rem" }}>
-        <p className="text-label">Preview — not the live homepage</p>
-      </div>
+    <>
+      {/* Preview-only banner. Absolutely positioned so it does not push the
+          collage down and change the full-height layout being reviewed. */}
+      <p
+        className="text-label"
+        style={{
+          position: "absolute",
+          top: "1rem",
+          left: "1.5rem",
+          zIndex: 20,
+          color: "var(--color-ink-muted)",
+        }}
+      >
+        Preview — not the live homepage
+      </p>
       <CollageLanding />
-    </section>
+    </>
   );
 }
