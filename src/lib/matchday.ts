@@ -1,9 +1,9 @@
 /**
- * Rants — Austin's opinion writing, held as Markdown files in this repo rather
- * than in Notion or Substack. Man City match reactions and hit pieces share one
- * section and are separated by tag.
+ * Matchday — Austin's match writing, held as Markdown files in this repo rather
+ * than in Notion or Substack. Manchester City is the main beat, but any match he
+ * watches belongs here; posts are separated by tag.
  *
- * A post is `content/rants/<slug>.md`. The filename is the slug, so the URL is
+ * A post is `content/matchday/<slug>.md`. The filename is the slug, so the URL is
  * decided by whatever the file is called. Frontmatter is a small fixed set of
  * `key: value` lines between `---` fences; there is no frontmatter library
  * because the shape never varies.
@@ -16,9 +16,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
 
-const RANTS_DIR = path.join(process.cwd(), "content", "rants");
+const POSTS_DIR = path.join(process.cwd(), "content", "matchday");
 
-export interface Rant {
+export interface MatchdayPost {
   slug: string;
   title: string;
   date: string; // ISO, YYYY-MM-DD
@@ -32,13 +32,14 @@ export interface Rant {
 }
 
 /** Tag slugs the section knows about, in the order the filter bar shows them. */
-export const RANT_TAGS = [
+export const MATCHDAY_TAGS = [
   { slug: "man-city", label: "Man City" },
+  { slug: "other-clubs", label: "Everyone Else" },
   { slug: "hit-piece", label: "Hit Pieces" },
 ] as const;
 
 export function tagLabel(slug: string): string {
-  return RANT_TAGS.find((t) => t.slug === slug)?.label ?? slug;
+  return MATCHDAY_TAGS.find((t) => t.slug === slug)?.label ?? slug;
 }
 
 // Mirrors the reading-time and date formatting used for Substack essays so the
@@ -88,7 +89,7 @@ function parseFrontmatter(raw: string): Parsed {
   return { meta, body: match[2] };
 }
 
-function toRant(slug: string, raw: string): Rant {
+function toPost(slug: string, raw: string): MatchdayPost {
   const { meta, body } = parseFrontmatter(raw);
   const bodyHtml = marked.parse(body, { async: false }) as string;
   const date = meta.date || "1970-01-01";
@@ -110,24 +111,24 @@ function toRant(slug: string, raw: string): Rant {
 }
 
 /**
- * Every published rant, newest first. Returns an empty list if the directory is
+ * Every published post, newest first. Returns an empty list if the directory is
  * missing so a fresh clone (or a deploy before the first post is written) still
  * builds and renders the section's empty state.
  */
-export function getRants(): Rant[] {
+export function getMatchdayPosts(): MatchdayPost[] {
   let files: string[];
   try {
-    files = fs.readdirSync(RANTS_DIR);
+    files = fs.readdirSync(POSTS_DIR);
   } catch {
     return [];
   }
 
   return files
     .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
-    .map((f) => toRant(f.replace(/\.md$/, ""), fs.readFileSync(path.join(RANTS_DIR, f), "utf8")))
+    .map((f) => toPost(f.replace(/\.md$/, ""), fs.readFileSync(path.join(POSTS_DIR, f), "utf8")))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
-export function getRantBySlug(slug: string): Rant | null {
-  return getRants().find((r) => r.slug === slug) ?? null;
+export function getMatchdayPostBySlug(slug: string): MatchdayPost | null {
+  return getMatchdayPosts().find((p) => p.slug === slug) ?? null;
 }

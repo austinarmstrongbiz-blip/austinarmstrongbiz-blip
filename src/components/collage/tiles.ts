@@ -1,3 +1,5 @@
+import { SUBSTACK_URL } from "@/lib/substack";
+
 /**
  * Collage landing tiles — desktop layout config.
  *
@@ -14,8 +16,10 @@
  */
 
 export interface CollageTile {
-  /** Route this tile links to. */
+  /** Route this tile links to, or an absolute URL when `external` is set. */
   href: string;
+  /** True when href leaves the site — rendered as a plain anchor, new tab. */
+  external?: boolean;
   /** Human label — shown on the placeholder, and the link's accessible name. */
   label: string;
   /** Left edge, as a percent of canvas width. */
@@ -46,8 +50,8 @@ export interface CollageTile {
 export const CANVAS = { width: 960, height: 760 } as const;
 
 /**
- * Nine tiles: the seven real nav routes (src/lib/nav.ts), plus /about, plus one
- * signature tile.
+ * Ten tiles: the seven real nav routes (src/lib/nav.ts), plus /about, plus the
+ * newsletter (the only outbound link), plus one signature tile.
  *
  * Layout logic, roughly: three across the top, three through the middle band,
  * three along the bottom, each row offset from the one above so the tiles
@@ -58,7 +62,7 @@ export const collageTiles: CollageTile[] = [
   // ── Top band ──────────────────────────────────────────────
   { href: "/now", label: "Field Notes", x: 2, y: 4, w: 30, aspect: 1.35, rotate: -4, z: 3 },
   { href: "/essays", label: "Essays", x: 30, y: 0, w: 26, aspect: 0.78, rotate: 3, z: 5 },
-  { href: "/rants", label: "Rants", x: 57, y: 6, w: 30, aspect: 1.5, rotate: -6, z: 2 },
+  { href: "/matchday", label: "Matchday", x: 57, y: 6, w: 30, aspect: 1.5, rotate: -6, z: 2 },
 
   // ── Middle band ───────────────────────────────────────────
   { href: "/projects", label: "Projects", x: 4, y: 34, w: 27, aspect: 1.1, rotate: 5, z: 6 },
@@ -69,16 +73,30 @@ export const collageTiles: CollageTile[] = [
   // ── Bottom band ───────────────────────────────────────────
   { href: "/playbook", label: "The Homies", x: 12, y: 64, w: 28, aspect: 1.4, rotate: -3, z: 7 },
   { href: "/resume", label: "CV", x: 42, y: 62, w: 24, aspect: 1.6, rotate: 6, z: 5 },
-  // Ninth tile: Austin's signature phrase as a sticker. Points back at "/" —
-  // it's an easter egg, not navigation, so it doesn't need its own route.
+  // The newsletter is the one tile that leaves the site.
+  {
+    href: SUBSTACK_URL,
+    label: "None of the Above",
+    external: true,
+    x: 66,
+    y: 66,
+    w: 26,
+    aspect: 1.3,
+    rotate: 7,
+    z: 6,
+  },
+
+  // ── Corner sticker ────────────────────────────────────────
+  // Austin's signature phrase. Points back at "/" — an easter egg, not
+  // navigation, so it stays small and out of the way of real destinations.
   {
     href: "/",
     label: "It Always Buffs Out",
-    x: 68,
-    y: 62,
-    w: 22,
-    aspect: 1.2,
-    rotate: -8,
-    z: 9,
+    x: 86,
+    y: 30,
+    w: 13,
+    aspect: 1,
+    rotate: -12,
+    z: 11,
   },
 ];

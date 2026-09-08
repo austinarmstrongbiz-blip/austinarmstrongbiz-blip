@@ -15,7 +15,7 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { href: "/now", label: "Field Notes" },
   { href: "/essays", label: "Essays" },
-  { href: "/rants", label: "Rants" },
+  { href: "/matchday", label: "Matchday" },
   { href: "/projects", label: "Projects" },
   { href: "/work", label: "Work" },
   { href: "/playbook", label: "The Homies" },

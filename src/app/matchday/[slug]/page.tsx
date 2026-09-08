@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getRants, getRantBySlug, tagLabel } from "@/lib/rants";
+import { getMatchdayPosts, getMatchdayPostBySlug, tagLabel } from "@/lib/matchday";
 import { FadeUp } from "@/components/ui/Animate";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 
@@ -9,7 +9,7 @@ const BASE_URL = "https://austin-armstrong.me";
 
 // Posts are files in the repo, so every slug is known at build time.
 export async function generateStaticParams() {
-  return getRants().map((r) => ({ slug: r.slug }));
+  return getMatchdayPosts().map((r) => ({ slug: r.slug }));
 }
 
 export async function generateMetadata({
@@ -18,11 +18,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getRantBySlug(slug);
-  if (!post) return { title: "Rant not found" };
+  const post = getMatchdayPostBySlug(slug);
+  if (!post) return { title: "Post not found" };
 
-  const canonical = `${BASE_URL}/rants/${post.slug}`;
-  const label = post.tags[0] ? tagLabel(post.tags[0]) : "Rant";
+  const canonical = `${BASE_URL}/matchday/${post.slug}`;
+  const label = post.tags[0] ? tagLabel(post.tags[0]) : "Matchday";
   const ogImage = `/og?title=${encodeURIComponent(post.title)}&tag=${encodeURIComponent(label)}`;
 
   return {
@@ -46,12 +46,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function RantPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function MatchdayPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getRantBySlug(slug);
+  const post = getMatchdayPostBySlug(slug);
   if (!post) notFound();
 
-  const canonical = `${BASE_URL}/rants/${post.slug}`;
+  const canonical = `${BASE_URL}/matchday/${post.slug}`;
 
   const blogPostingSchema = {
     "@context": "https://schema.org",
@@ -86,11 +86,11 @@ export default async function RantPage({ params }: { params: Promise<{ slug: str
         <div className="container-editorial" style={{ paddingTop: "3rem" }}>
           <FadeUp>
             <Link
-              href="/rants"
+              href="/matchday"
               className="folio"
               style={{ color: "var(--color-ink-muted)", textDecoration: "none" }}
             >
-              ← All rants
+              ← All matchdays
             </Link>
           </FadeUp>
 
@@ -112,7 +112,7 @@ export default async function RantPage({ params }: { params: Promise<{ slug: str
               {post.tags.map((t) => (
                 <Link
                   key={t}
-                  href={`/rants?tag=${t}`}
+                  href={`/matchday?tag=${t}`}
                   className="folio"
                   style={{ color: "var(--color-ink-muted)" }}
                 >

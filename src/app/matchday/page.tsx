@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getRants, RANT_TAGS, tagLabel } from "@/lib/rants";
+import { getMatchdayPosts, MATCHDAY_TAGS, tagLabel } from "@/lib/matchday";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 
 export const metadata: Metadata = {
-  title: "Rants",
+  title: "Matchday",
   description:
     "Match reactions, hit pieces, and opinions Austin Armstrong could not keep to himself. Manchester City and whatever else earned it.",
-  alternates: { canonical: "https://austin-armstrong.me/rants" },
+  alternates: { canonical: "https://austin-armstrong.me/matchday" },
 };
 
-export default async function RantsPage({
+export default async function MatchdayPage({
   searchParams,
 }: {
   searchParams: Promise<{ tag?: string }>;
 }) {
   const { tag } = await searchParams;
-  const all = getRants();
-  const active = tag && RANT_TAGS.some((t) => t.slug === tag) ? tag : null;
+  const all = getMatchdayPosts();
+  const active = tag && MATCHDAY_TAGS.some((t) => t.slug === tag) ? tag : null;
   const posts = active ? all.filter((r) => r.tags.includes(active)) : all;
 
   return (
@@ -34,12 +34,12 @@ export default async function RantsPage({
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <FadeUp>
             <div className="folio" style={{ marginBottom: "2rem" }}>
-              {all.length > 0 ? `${all.length} ${all.length === 1 ? "rant" : "rants"}` : "Rants"} ·
-              Written here, nowhere else
+              {all.length > 0 ? `${all.length} ${all.length === 1 ? "post" : "posts"}` : "Matchday"}{" "}
+              · Written here, nowhere else
             </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-display">Rants</h1>
+            <h1 className="text-display">Matchday</h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p
@@ -52,8 +52,8 @@ export default async function RantsPage({
                 fontFamily: "var(--font-sans)",
               }}
             >
-              Manchester City after the final whistle, and whatever else earned a few thousand
-              words. Written hot, published anyway.
+              Ninety minutes, then a few thousand words. Manchester City mostly, but any match worth
+              staying up for. Written hot, published anyway.
             </p>
           </FadeUp>
         </div>
@@ -62,7 +62,7 @@ export default async function RantsPage({
       {/* ── Tag filter ─────────────────────────────────────────── */}
       <section style={{ paddingTop: "2rem", paddingBottom: "0" }}>
         <div className="container-editorial">
-          <nav aria-label="Filter rants by topic">
+          <nav aria-label="Filter posts by topic">
             <ul
               style={{
                 display: "flex",
@@ -75,7 +75,7 @@ export default async function RantsPage({
             >
               <li>
                 <Link
-                  href="/rants"
+                  href="/matchday"
                   aria-current={!active ? "true" : undefined}
                   className="folio"
                   style={{
@@ -90,10 +90,10 @@ export default async function RantsPage({
                   Everything
                 </Link>
               </li>
-              {RANT_TAGS.map((t) => (
+              {MATCHDAY_TAGS.map((t) => (
                 <li key={t.slug}>
                   <Link
-                    href={`/rants?tag=${t.slug}`}
+                    href={`/matchday?tag=${t.slug}`}
                     aria-current={active === t.slug ? "true" : undefined}
                     className="folio"
                     style={{
@@ -186,7 +186,7 @@ export default async function RantsPage({
                         marginBottom: "1rem",
                       }}
                     >
-                      <Link href={`/rants/${post.slug}`}>{post.title}</Link>
+                      <Link href={`/matchday/${post.slug}`}>{post.title}</Link>
                     </h2>
 
                     {post.excerpt && (
@@ -204,7 +204,7 @@ export default async function RantsPage({
                       </p>
                     )}
 
-                    <Link href={`/rants/${post.slug}`} className="folio">
+                    <Link href={`/matchday/${post.slug}`} className="folio">
                       Read it →
                     </Link>
                   </article>

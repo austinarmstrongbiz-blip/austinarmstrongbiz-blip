@@ -1,12 +1,12 @@
 import { MetadataRoute } from "next";
 import { getSubstackPosts } from "@/lib/substack";
-import { getRants } from "@/lib/rants";
+import { getMatchdayPosts } from "@/lib/matchday";
 
 const BASE_URL = "https://austin-armstrong.me";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getSubstackPosts(100);
-  const rants = getRants();
+  const matchday = getMatchdayPosts();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -52,8 +52,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/rants`,
-      lastModified: rants[0] ? new Date(rants[0].date) : new Date(),
+      url: `${BASE_URL}/matchday`,
+      lastModified: matchday[0] ? new Date(matchday[0].date) : new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
@@ -69,12 +69,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  const rantRoutes: MetadataRoute.Sitemap = rants.map((rant) => ({
-    url: `${BASE_URL}/rants/${rant.slug}`,
-    lastModified: new Date(rant.date),
+  const matchdayRoutes: MetadataRoute.Sitemap = matchday.map((post) => ({
+    url: `${BASE_URL}/matchday/${post.slug}`,
+    lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...postRoutes, ...rantRoutes];
+  return [...staticRoutes, ...postRoutes, ...matchdayRoutes];
 }

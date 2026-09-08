@@ -20,9 +20,9 @@ Notes on the fields above:
 
 - `title` — quote it if it contains a colon.
 - `date` — YYYY-MM-DD. Controls sort order, newest first.
-- `tags` — comma separated. Known tags: `man-city`, `hit-piece`.
+- `tags` — comma separated. Known tags: `man-city`, `other-clubs`, `hit-piece`.
 - `excerpt` — optional but recommended; used for SEO and social previews.
 - `fixture` — optional, Man City posts only. Omit it for hit pieces.
 
-The filename is the URL. `city-vs-arsenal.md` becomes `/rants/city-vs-arsenal`.
+The filename is the URL. `city-vs-arsenal.md` becomes `/matchday/city-vs-arsenal`.
 Files starting with `_` are ignored, which is why this template is not published.

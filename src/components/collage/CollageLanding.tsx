@@ -1,8 +1,9 @@
 /**
  * CollageLanding — the clickable image collage for the homepage.
  *
- * Server component. Every tile is a real <Link> with a real href, so it is
- * keyboard-reachable and crawlable out of the box. Each Link also carries an
+ * Server component. Every tile is a real link with a real href, so it is
+ * keyboard-reachable and crawlable out of the box (the newsletter tile is an
+ * outbound anchor; the rest are next/link routes). Each Link also carries an
  * explicit aria-label from tile.label, since the visible placeholder text is
  * going away once real art swaps in — the accessible name can't depend on it.
  * `collageTiles` in tiles.ts is already ordered top-to-bottom, left-to-right,
@@ -16,7 +17,7 @@
  * Two genuinely separate layouts below 640px, not a CSS reflow of the desktop
  * percentages: the absolute-position collage (".collage-desktop", tiles.ts
  * coordinates untouched) and a hand-placed single-column list of the same
- * nine tiles (".collage-mobile"). The swap is pure CSS — same convention as
+ * ten tiles (".collage-mobile"). The swap is pure CSS — same convention as
  * .desktop-nav / .mobile-menu-btn in globals.css: inline style sets the
  * desktop-visible default, the max-width:640px media query flips both with
  * !important. No client JS needed.
@@ -26,6 +27,41 @@
 
 import Link from "next/link";
 import { CANVAS, collageTiles } from "./tiles";
+import type { CollageTile } from "./tiles";
+
+/**
+ * One tile's link. The newsletter tile leaves the site, so it renders as a
+ * plain anchor with the usual new-tab safety attributes; everything else is a
+ * next/link route.
+ */
+function TileLink({
+  tile,
+  style,
+  children,
+}: {
+  tile: CollageTile;
+  style: React.CSSProperties;
+  children: React.ReactNode;
+}) {
+  if (tile.external) {
+    return (
+      <a
+        href={tile.href}
+        aria-label={`${tile.label} (opens in a new tab)`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={style}
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={tile.href} aria-label={tile.label} style={style}>
+      {children}
+    </Link>
+  );
+}
 
 export default function CollageLanding() {
   return (
@@ -47,10 +83,9 @@ export default function CollageLanding() {
         }}
       >
         {collageTiles.map((tile, i) => (
-          <Link
+          <TileLink
             key={tile.href}
-            href={tile.href}
-            aria-label={tile.label}
+            tile={tile}
             style={{
               position: "absolute",
               left: `${tile.x}%`,
@@ -110,10 +145,10 @@ export default function CollageLanding() {
                   color: "var(--color-ink-muted)",
                 }}
               >
-                {tile.href}
+                {tile.external ? "substack.com" : tile.href}
               </span>
             </div>
-          </Link>
+          </TileLink>
         ))}
       </div>
 
@@ -132,9 +167,8 @@ export default function CollageLanding() {
       >
         {collageTiles.map((tile, i) => (
           <li key={tile.href} style={{ borderBottom: "1px solid var(--color-rule)" }}>
-            <Link
-              href={tile.href}
-              aria-label={tile.label}
+            <TileLink
+              tile={tile}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -179,7 +213,7 @@ export default function CollageLanding() {
               >
                 →
               </span>
-            </Link>
+            </TileLink>
           </li>
         ))}
       </ul>
