@@ -406,13 +406,14 @@ a {
 
 /* ─── COLLAGE LANDING RESPONSIVE ─────────────────────────────────── */
 /* Separate hand-placed mobile layout, not a reflow of the desktop absolute
-   positions — same swap convention as .desktop-nav / .mobile-menu-btn above. */
+   coordinates — same swap convention as .desktop-nav / .mobile-menu-btn above.
+   Both are real collages; the narrow one is hand-placed, not a reflow. */
 @media (max-width: 640px) {
   .collage-desktop {
     display: none !important;
   }
   .collage-mobile {
-    display: flex !important;
+    display: block !important;
   }
 }
 
