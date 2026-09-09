@@ -10,8 +10,10 @@
  * order regardless of the absolute placement. The visible focus ring comes from
  * the site-wide a:focus-visible rule in globals.css.
  *
- * Tiles render as bordered placeholders for now. The real-image swap is a
- * separate task — see the PLACEHOLDER block below and `imageSrc` in tiles.ts.
+ * A tile renders its artwork if `public/collage/<slug>.png` (or .webp/.jpg)
+ * exists, and a bordered placeholder box if it does not. The art is decorative:
+ * the link already carries the label as its accessible name, so the image is
+ * alt="" and aria-hidden rather than repeating it to a screen reader.
  *
  * Two genuinely separate collages, not a CSS reflow of one: the wide canvas
  * (".collage-desktop", each tile's `desktop` placement) and a narrow one
@@ -33,10 +35,47 @@
  * Not wired to "/" yet. Preview it at /collage-preview.
  */
 
+import fs from "node:fs";
+import path from "node:path";
 import Link from "next/link";
 import SocialLinks from "@/components/ui/SocialLinks";
 import { CANVAS, MOBILE_CANVAS, collageTiles } from "./tiles";
 import type { CollageTile, TilePlacement } from "./tiles";
+
+/**
+ * Artwork lookup. `public/collage/<slug>.(png|jpg|jpeg|webp)` is rendered if it
+ * exists, and the placeholder box if it does not — so adding real art is just
+ * dropping a correctly named file in, with no code change and no path to keep
+ * in sync. Read once at module scope: this is a server component and the page
+ * is static, so the directory is scanned at build time, never per request.
+ */
+const ART_DIR = path.join(process.cwd(), "public", "collage");
+const EXTENSIONS = [".png", ".webp", ".jpg", ".jpeg"];
+
+const artBySlug: Record<string, string> = (() => {
+  const found: Record<string, string> = {};
+  let files: string[];
+  try {
+    files = fs.readdirSync(ART_DIR);
+  } catch {
+    return found; // no art yet — every tile falls back to its placeholder
+  }
+  for (const file of files) {
+    const ext = path.extname(file).toLowerCase();
+    if (!EXTENSIONS.includes(ext)) continue;
+    const stem = path.basename(file, path.extname(file));
+    // First matching extension in EXTENSIONS order wins, so a .png and a .jpg
+    // of the same tile resolve predictably instead of by directory order.
+    const existing = found[stem];
+    if (
+      !existing ||
+      EXTENSIONS.indexOf(ext) < EXTENSIONS.indexOf(path.extname(existing).toLowerCase())
+    ) {
+      found[stem] = `/collage/${file}`;
+    }
+  }
+  return found;
+})();
 
 /**
  * One tile's link. The newsletter tile leaves the site, so it renders as a
@@ -77,7 +116,21 @@ function TileLink({
  * replaces this with the art at tile.imageSrc; the wrapping link keeps its
  * geometry either way.
  */
-function TilePlaceholder({ tile, index }: { tile: CollageTile; index: number }) {
+function TileArt({ tile, index }: { tile: CollageTile; index: number }) {
+  const src = artBySlug[tile.slug];
+  if (src) {
+    return (
+      // Plain <img>: these are hand-cut transparent PNGs sized to the tile, and
+      // next/image would add layout wrappers that fight the absolute placement.
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt=""
+        aria-hidden
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
+    );
+  }
   return (
     <div
       style={{
@@ -186,7 +239,7 @@ export default function CollageLanding() {
       >
         {collageTiles.map((tile, i) => (
           <TileLink key={tile.href} tile={tile} style={linkStyle(tile.desktop)}>
-            <TilePlaceholder tile={tile} index={i} />
+            <TileArt tile={tile} index={i} />
           </TileLink>
         ))}
       </div>
@@ -205,7 +258,7 @@ export default function CollageLanding() {
       >
         {collageTiles.map((tile, i) => (
           <TileLink key={tile.href} tile={tile} style={linkStyle(tile.mobile)}>
-            <TilePlaceholder tile={tile} index={i} />
+            <TileArt tile={tile} index={i} />
           </TileLink>
         ))}
       </div>
