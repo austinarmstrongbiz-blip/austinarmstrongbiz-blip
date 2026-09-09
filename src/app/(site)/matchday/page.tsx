@@ -4,11 +4,22 @@ import { COMPETITIONS, getMatchdayPosts, MATCHDAY_TAGS, tagLabel } from "@/lib/m
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 import MatchdayCard from "@/components/matchday/MatchdayCard";
 
+const OG_IMAGE = "/og?theme=matchday";
+
 export const metadata: Metadata = {
   title: "Matchday",
   description:
     "Match reactions, hit pieces, and opinions Austin Armstrong could not keep to himself. Manchester City and whatever else earned it.",
   alternates: { canonical: "https://austin-armstrong.me/matchday" },
+  openGraph: {
+    type: "website",
+    url: "https://austin-armstrong.me/matchday",
+    title: "Matchday",
+    description:
+      "Match reactions, hit pieces, and opinions Austin Armstrong could not keep to himself. Manchester City and whatever else earned it.",
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Matchday" }],
+  },
+  twitter: { card: "summary_large_image", images: [OG_IMAGE] },
 };
 
 /** A filter pill: label, how many posts carry it, and where it points. */

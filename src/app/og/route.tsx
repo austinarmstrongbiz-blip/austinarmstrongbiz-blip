@@ -9,7 +9,8 @@ export async function GET(request: NextRequest) {
   const title = searchParams.get("title") ?? "";
   const subtitle = searchParams.get("subtitle") ?? "";
   const tag = searchParams.get("tag") ?? "";
-  const isHome = !title;
+  const isMatchday = searchParams.get("theme") === "matchday";
+  const isHome = !title && !isMatchday;
 
   // ── Load Basilia Bold Italic font ────────────────────────────────────────
   const fontRes = await fetch(
@@ -27,8 +28,182 @@ export async function GET(request: NextRequest) {
     fontWeight: 700,
   };
 
+  // ── Pitch markings, drawn rather than loaded, so the card needs no artwork ─
+  const line = "rgba(255,255,255,0.32)";
+  const matchdayCard = (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        position: "relative",
+        fontFamily: "Basilia",
+        background: "linear-gradient(135deg, #7FB8E6 0%, #6CABDD 38%, #2E4E8F 78%, #1C2C5B 100%)",
+      }}
+    >
+      {/* Gold accent strip, same as the section's chrome */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "10px",
+          background: "#FFC659",
+          display: "flex",
+        }}
+      />
+      {/* Pitch */}
+      <div style={{ position: "absolute", inset: 0, display: "flex" }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: "40px",
+            border: `3px solid ${line}`,
+            display: "flex",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: "600px",
+            top: "40px",
+            bottom: "40px",
+            width: "3px",
+            background: line,
+            display: "flex",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: "510px",
+            top: "225px",
+            width: "180px",
+            height: "180px",
+            borderRadius: "90px",
+            border: `3px solid ${line}`,
+            display: "flex",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: "40px",
+            top: "165px",
+            width: "150px",
+            height: "300px",
+            border: `3px solid ${line}`,
+            display: "flex",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            right: "40px",
+            top: "165px",
+            width: "150px",
+            height: "300px",
+            border: `3px solid ${line}`,
+            display: "flex",
+          }}
+        />
+      </div>
+
+      {/* Content */}
+      <div
+        style={{
+          position: "relative",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "70px 72px",
+        }}
+      >
+        <div
+          style={{
+            fontFamily: "monospace",
+            fontSize: "16px",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            fontWeight: 700,
+            color: "#FFC659",
+            display: "flex",
+          }}
+        >
+          {subtitle || tag || "Matchday · Manchester City"}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+          <div
+            style={{
+              ...displayStyle,
+              fontSize: title
+                ? title.length > 50
+                  ? "58px"
+                  : title.length > 35
+                    ? "68px"
+                    : "80px"
+                : "132px",
+              lineHeight: 0.98,
+              letterSpacing: "-0.03em",
+              color: "#ffffff",
+              display: "flex",
+              flexWrap: "wrap",
+            }}
+          >
+            {title || "Matchday"}
+          </div>
+          {!title && (
+            <div
+              style={{
+                ...displayStyle,
+                fontWeight: 400,
+                fontSize: "28px",
+                color: "rgba(255,255,255,0.85)",
+                display: "flex",
+              }}
+            >
+              I know ball, you should learn some.
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div style={{ width: "72px", height: "4px", background: "#FFC659", display: "flex" }} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ ...displayStyle, fontSize: "22px", color: "#ffffff", display: "flex" }}>
+              Austin Armstrong.
+            </span>
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "13px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.65)",
+                display: "flex",
+              }}
+            >
+              AUSTIN-ARMSTRONG.ME/MATCHDAY
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return new ImageResponse(
-    isHome ? (
+    isMatchday ? (
+      matchdayCard
+    ) : isHome ? (
       /* ══════════════════════════════════════════════════════════════
          HOMEPAGE OG — Split layout matching the actual hero section
          Left: yellow bg + name + tagline

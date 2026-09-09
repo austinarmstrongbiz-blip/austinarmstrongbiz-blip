@@ -22,8 +22,10 @@ export async function generateMetadata({
   if (!post) return { title: "Post not found" };
 
   const canonical = `${BASE_URL}/matchday/${post.slug}`;
-  const label = post.tags[0] ? tagLabel(post.tags[0]) : "Matchday";
-  const ogImage = `/og?title=${encodeURIComponent(post.title)}&tag=${encodeURIComponent(label)}`;
+  const eyebrow = post.fixture ?? (post.tags[0] ? tagLabel(post.tags[0]) : "Matchday");
+  const ogImage = `/og?theme=matchday&title=${encodeURIComponent(
+    post.title,
+  )}&subtitle=${encodeURIComponent(eyebrow)}`;
 
   return {
     title: post.title,
