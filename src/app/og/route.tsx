@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   const subtitle = searchParams.get("subtitle") ?? "";
   const tag = searchParams.get("tag") ?? "";
   const isMatchday = searchParams.get("theme") === "matchday";
+  const matchdayPhoto = searchParams.get("photo");
   const isHome = !title && !isMatchday;
 
   // ── Load Basilia Bold Italic font ────────────────────────────────────────
@@ -20,6 +21,12 @@ export async function GET(request: NextRequest) {
 
   // ── Hero photo URL (works on both Vercel and local) ──────────────────────
   const heroUrl = new URL("/images/Groom_601246405.jpg", origin).toString();
+  const stadiumUrl = new URL("/images/matchday/stadium-lights.jpg", origin).toString();
+  // Only accept a same-site relative path here — never fetch an attacker-supplied URL.
+  const matchdayBg =
+    matchdayPhoto && matchdayPhoto.startsWith("/")
+      ? new URL(matchdayPhoto, origin).toString()
+      : stadiumUrl;
 
   // ── Shared text styles ───────────────────────────────────────────────────
   const displayStyle = {
@@ -28,8 +35,12 @@ export async function GET(request: NextRequest) {
     fontWeight: 700,
   };
 
-  // ── Pitch markings, drawn rather than loaded, so the card needs no artwork ─
-  const line = "rgba(255,255,255,0.32)";
+  // A busy press photo (backdrop text, logos) reads badly with our own text
+  // stacked on top of it — split the card instead, same move as the essay
+  // layout below. The generic /matchday card (no custom photo) stays full-bleed
+  // over the calmer stadium shot.
+  const hasCustomPhoto = Boolean(matchdayPhoto);
+
   const matchdayCard = (
     <div
       style={{
@@ -38,9 +49,54 @@ export async function GET(request: NextRequest) {
         display: "flex",
         position: "relative",
         fontFamily: "Basilia",
-        background: "linear-gradient(135deg, #7FB8E6 0%, #6CABDD 38%, #2E4E8F 78%, #1C2C5B 100%)",
+        background: "#1C2C5B",
       }}
     >
+      {!hasCustomPhoto && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "1200px",
+            height: "630px",
+            display: "flex",
+          }}
+        >
+          {/* Stadium photo, full bleed */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={matchdayBg}
+            alt=""
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "flex",
+            }}
+          />
+          {/* Sky-to-navy tint plus a left-side scrim so the type stays readable */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(135deg, rgba(108,171,221,0.55) 0%, rgba(28,44,91,0.55) 45%)",
+              display: "flex",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(90deg, rgba(28,44,91,0.92) 0%, rgba(28,44,91,0.25) 62%, transparent 100%)",
+              display: "flex",
+            }}
+          />
+        </div>
+      )}
       {/* Gold accent strip, same as the section's chrome */}
       <div
         style={{
@@ -53,72 +109,16 @@ export async function GET(request: NextRequest) {
           display: "flex",
         }}
       />
-      {/* Pitch */}
-      <div style={{ position: "absolute", inset: 0, display: "flex" }}>
-        <div
-          style={{
-            position: "absolute",
-            inset: "40px",
-            border: `3px solid ${line}`,
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            left: "600px",
-            top: "40px",
-            bottom: "40px",
-            width: "3px",
-            background: line,
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            left: "510px",
-            top: "225px",
-            width: "180px",
-            height: "180px",
-            borderRadius: "90px",
-            border: `3px solid ${line}`,
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            left: "40px",
-            top: "165px",
-            width: "150px",
-            height: "300px",
-            border: `3px solid ${line}`,
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: "40px",
-            top: "165px",
-            width: "150px",
-            height: "300px",
-            border: `3px solid ${line}`,
-            display: "flex",
-          }}
-        />
-      </div>
 
       {/* Content */}
       <div
         style={{
           position: "relative",
-          flex: 1,
+          flex: hasCustomPhoto ? "0 0 640px" : 1,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "70px 72px",
+          padding: "70px 56px 70px 72px",
         }}
       >
         <div
@@ -141,12 +141,18 @@ export async function GET(request: NextRequest) {
               ...displayStyle,
               fontSize: title
                 ? title.length > 50
-                  ? "58px"
+                  ? hasCustomPhoto
+                    ? "40px"
+                    : "58px"
                   : title.length > 35
-                    ? "68px"
-                    : "80px"
+                    ? hasCustomPhoto
+                      ? "48px"
+                      : "68px"
+                    : hasCustomPhoto
+                      ? "56px"
+                      : "80px"
                 : "132px",
-              lineHeight: 0.98,
+              lineHeight: 1.04,
               letterSpacing: "-0.03em",
               color: "#ffffff",
               display: "flex",
@@ -175,8 +181,10 @@ export async function GET(request: NextRequest) {
           <div
             style={{
               display: "flex",
+              flexDirection: hasCustomPhoto ? "column" : "row",
+              gap: hasCustomPhoto ? "6px" : "0px",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: hasCustomPhoto ? "flex-start" : "center",
             }}
           >
             <span style={{ ...displayStyle, fontSize: "22px", color: "#ffffff", display: "flex" }}>
@@ -197,6 +205,31 @@ export async function GET(request: NextRequest) {
           </div>
         </div>
       </div>
+
+      {hasCustomPhoto && (
+        <div style={{ position: "relative", flex: 1, display: "flex", overflow: "hidden" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={matchdayBg}
+            alt=""
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center top",
+              display: "flex",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(90deg, #1C2C5B 0%, transparent 12%)",
+              display: "flex",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 

@@ -23,9 +23,9 @@ export async function generateMetadata({
 
   const canonical = `${BASE_URL}/matchday/${post.slug}`;
   const eyebrow = post.fixture ?? (post.tags[0] ? tagLabel(post.tags[0]) : "Matchday");
-  const ogImage = `/og?theme=matchday&title=${encodeURIComponent(
-    post.title,
-  )}&subtitle=${encodeURIComponent(eyebrow)}`;
+  const ogParams = new URLSearchParams({ theme: "matchday", title: post.title, subtitle: eyebrow });
+  if (post.heroImage) ogParams.set("photo", post.heroImage);
+  const ogImage = `/og?${ogParams.toString()}`;
 
   return {
     title: post.title,
