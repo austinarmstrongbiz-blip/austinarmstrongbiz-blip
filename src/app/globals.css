@@ -442,6 +442,84 @@ a {
   }
 }
 
+/* ─── COLLAGE TILES ──────────────────────────────────────────────── */
+/* A cut-out photo does not tell you where it links. Each art tile carries a
+   caption, and the tile nudges when you point at it so it reads as clickable.
+
+   The caption is visible BY DEFAULT and hidden only where hover exists. Phones
+   have no hover at all, so a hover-only label would leave every touch visitor
+   guessing — which is the opposite of the point. */
+.collage-tile {
+  position: absolute;
+}
+.collage-tile-art {
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+.collage-tile-label {
+  position: absolute;
+  left: 50%;
+  bottom: 0.35rem;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: var(--color-yellow);
+  padding: 0.22rem 0.5rem;
+  pointer-events: none;
+}
+
+/* Pointer devices only: hide the caption until the tile is hovered or focused,
+   and nudge the art. Touch devices keep the caption on permanently. */
+@media (hover: hover) {
+  .collage-tile-label {
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+  .collage-tile:hover .collage-tile-label,
+  .collage-tile:focus-visible .collage-tile-label {
+    opacity: 1;
+  }
+  .collage-tile:hover .collage-tile-art,
+  .collage-tile:focus-visible .collage-tile-art {
+    animation: collage-nudge 0.4s ease-out forwards;
+  }
+  /* Lift the pointed-at tile above its neighbours. The z-index is set inline
+     per tile, so this needs to win. */
+  .collage-tile:hover,
+  .collage-tile:focus-visible {
+    z-index: 50 !important;
+  }
+}
+
+@keyframes collage-nudge {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  35% {
+    transform: scale(1.06) rotate(-2deg);
+  }
+  70% {
+    transform: scale(1.06) rotate(2deg);
+  }
+  100% {
+    transform: scale(1.06) rotate(0deg);
+  }
+}
+
+/* The global prefers-reduced-motion rule collapses the animation to nothing,
+   which would also drop the scale. Keep the size change, lose the shake. */
+@media (prefers-reduced-motion: reduce) {
+  .collage-tile:hover .collage-tile-art,
+  .collage-tile:focus-visible .collage-tile-art {
+    animation: none !important;
+    transform: scale(1.06);
+  }
+}
+
 /* ─── PILLAR COLORS ──────────────────────────────────────────────── */
 :root {
   --color-pillar-lifestyle: #c9a96e;

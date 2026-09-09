@@ -10,8 +10,10 @@
  * order regardless of the absolute placement. The visible focus ring comes from
  * the site-wide a:focus-visible rule in globals.css.
  *
- * Tiles render as bordered placeholders for now. The real-image swap is a
- * separate task — see the PLACEHOLDER block below and `imageSrc` in tiles.ts.
+ * A tile renders its artwork if `public/collage/<slug>.png` (or .webp/.jpg)
+ * exists, and a bordered placeholder box if it does not. The art is decorative:
+ * the link already carries the label as its accessible name, so the image is
+ * alt="" and aria-hidden rather than repeating it to a screen reader.
  *
  * Two genuinely separate collages, not a CSS reflow of one: the wide canvas
  * (".collage-desktop", each tile's `desktop` placement) and a narrow one
@@ -33,10 +35,77 @@
  * Not wired to "/" yet. Preview it at /collage-preview.
  */
 
+import fs from "node:fs";
+import path from "node:path";
 import Link from "next/link";
 import SocialLinks from "@/components/ui/SocialLinks";
 import { CANVAS, MOBILE_CANVAS, collageTiles } from "./tiles";
 import type { CollageTile, TilePlacement } from "./tiles";
+
+/**
+ * Artwork lookup. `public/collage/<slug>.(png|jpg|jpeg|webp)` is rendered if it
+ * exists, and the placeholder box if it does not — so adding real art is just
+ * dropping a correctly named file in, with no code change and no path to keep
+ * in sync. Read once at module scope: this is a server component and the page
+ * is static, so the directory is scanned at build time, never per request.
+ */
+const ART_DIR = path.join(process.cwd(), "public", "collage");
+const EXTENSIONS = [".png", ".webp", ".jpg", ".jpeg"];
+
+interface Art {
+  src: string;
+  /**
+   * The artwork's own width/height, used in place of the tile's configured
+   * aspect. A tile then hugs its picture instead of leaving dead space inside
+   * an arbitrary box — which matters because the box is the click target and
+   * the caption hangs off its bottom edge. Null when the file's dimensions
+   * could not be read, in which case the configured aspect stands.
+   */
+  aspect: number | null;
+}
+
+/** PNG dimensions live in the IHDR chunk at a fixed offset. No decoder needed. */
+function pngAspect(file: string): number | null {
+  try {
+    const fd = fs.openSync(file, "r");
+    const head = Buffer.alloc(24);
+    fs.readSync(fd, head, 0, 24, 0);
+    fs.closeSync(fd);
+    if (head.toString("ascii", 1, 4) !== "PNG") return null;
+    const w = head.readUInt32BE(16);
+    const h = head.readUInt32BE(20);
+    return w > 0 && h > 0 ? w / h : null;
+  } catch {
+    return null;
+  }
+}
+
+const artBySlug: Record<string, Art> = (() => {
+  const found: Record<string, Art> = {};
+  const chosenExt: Record<string, string> = {};
+  let files: string[];
+  try {
+    files = fs.readdirSync(ART_DIR);
+  } catch {
+    return found; // no art yet — every tile falls back to its placeholder
+  }
+  for (const file of files) {
+    const ext = path.extname(file).toLowerCase();
+    if (!EXTENSIONS.includes(ext)) continue;
+    const stem = path.basename(file, ext);
+    // First matching extension in EXTENSIONS order wins, so a .png and a .jpg
+    // of the same tile resolve predictably instead of by directory order.
+    if (stem in chosenExt && EXTENSIONS.indexOf(ext) >= EXTENSIONS.indexOf(chosenExt[stem])) {
+      continue;
+    }
+    chosenExt[stem] = ext;
+    found[stem] = {
+      src: `/collage/${file}`,
+      aspect: ext === ".png" ? pngAspect(path.join(ART_DIR, file)) : null,
+    };
+  }
+  return found;
+})();
 
 /**
  * One tile's link. The newsletter tile leaves the site, so it renders as a
@@ -52,6 +121,7 @@ function TileLink({
   style: React.CSSProperties;
   children: React.ReactNode;
 }) {
+  const className = "collage-tile";
   if (tile.external) {
     return (
       <a
@@ -59,6 +129,7 @@ function TileLink({
         aria-label={`${tile.label} (opens in a new tab)`}
         target="_blank"
         rel="noopener noreferrer"
+        className={className}
         style={style}
       >
         {children}
@@ -66,7 +137,7 @@ function TileLink({
     );
   }
   return (
-    <Link href={tile.href} aria-label={tile.label} style={style}>
+    <Link href={tile.href} aria-label={tile.label} className={className} style={style}>
       {children}
     </Link>
   );
@@ -77,7 +148,34 @@ function TileLink({
  * replaces this with the art at tile.imageSrc; the wrapping link keeps its
  * geometry either way.
  */
-function TilePlaceholder({ tile, index }: { tile: CollageTile; index: number }) {
+function TileArt({ tile, index }: { tile: CollageTile; index: number }) {
+  const art = artBySlug[tile.slug];
+  if (art) {
+    return (
+      <>
+        {/* The nudge animates this wrapper, not the link, so it does not fight
+            the link's own rotate() placement. */}
+        <span className="collage-tile-art" style={{ display: "block", height: "100%" }}>
+          {/* Plain <img>: these are hand-cut transparent PNGs sized to the tile,
+              and next/image would add layout wrappers that fight the absolute
+              placement. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={art.src}
+            alt=""
+            aria-hidden
+            style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+          />
+        </span>
+        {/* A cut-out photo does not say where it goes. On a pointer device this
+            caption appears on hover or keyboard focus; on touch, where there is
+            no hover, it is always visible. See globals.css. */}
+        <span className="collage-tile-label" aria-hidden>
+          {tile.label}
+        </span>
+      </>
+    );
+  }
   return (
     <div
       style={{
@@ -137,13 +235,13 @@ function TilePlaceholder({ tile, index }: { tile: CollageTile; index: number }) 
  */
 const CHROME_RESERVE = "9rem";
 
-function linkStyle(p: TilePlacement): React.CSSProperties {
+function linkStyle(p: TilePlacement, artAspect?: number | null): React.CSSProperties {
   return {
     position: "absolute",
     left: `${p.x}%`,
     top: `${p.y}%`,
     width: `${p.w}%`,
-    aspectRatio: `${p.aspect}`,
+    aspectRatio: `${artAspect ?? p.aspect}`,
     zIndex: p.z,
     transform: `rotate(${p.rotate}deg)`,
     display: "block",
@@ -185,8 +283,12 @@ export default function CollageLanding() {
         }}
       >
         {collageTiles.map((tile, i) => (
-          <TileLink key={tile.href} tile={tile} style={linkStyle(tile.desktop)}>
-            <TilePlaceholder tile={tile} index={i} />
+          <TileLink
+            key={tile.href}
+            tile={tile}
+            style={linkStyle(tile.desktop, artBySlug[tile.slug]?.aspect)}
+          >
+            <TileArt tile={tile} index={i} />
           </TileLink>
         ))}
       </div>
@@ -204,8 +306,12 @@ export default function CollageLanding() {
         }}
       >
         {collageTiles.map((tile, i) => (
-          <TileLink key={tile.href} tile={tile} style={linkStyle(tile.mobile)}>
-            <TilePlaceholder tile={tile} index={i} />
+          <TileLink
+            key={tile.href}
+            tile={tile}
+            style={linkStyle(tile.mobile, artBySlug[tile.slug]?.aspect)}
+          >
+            <TileArt tile={tile} index={i} />
           </TileLink>
         ))}
       </div>
