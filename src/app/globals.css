@@ -93,6 +93,17 @@
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
+/* Man City brand — matchday section only. Official club hex. */
+:root {
+  --city-sky: #6cabdd;
+  --city-sky-deep: #4e93c9;
+  --city-navy: #1c2c5b;
+  --city-navy-soft: #263a72;
+  --city-gold: #ffc659;
+  --city-gold-deep: #d4a12a;
+  --city-red: #ec3325;
+}
+
 /* ─── RESET & BASE ───────────────────────────────────────────────── */
 *,
 *::before,
@@ -404,6 +415,19 @@ a {
   }
 }
 
+/* ─── COLLAGE LANDING RESPONSIVE ─────────────────────────────────── */
+/* Separate hand-placed mobile layout, not a reflow of the desktop absolute
+   coordinates — same swap convention as .desktop-nav / .mobile-menu-btn above.
+   Both are real collages; the narrow one is hand-placed, not a reflow. */
+@media (max-width: 640px) {
+  .collage-desktop {
+    display: none !important;
+  }
+  .collage-mobile {
+    display: block !important;
+  }
+}
+
 /* ─── RESUME ROLE HEADER ─────────────────────────────────────────── */
 /* Role title beside a big impact number ("$100K") overflows a phone. Stack it,
    same approach as .hero-grid below. !important because the page sets these
@@ -557,6 +581,160 @@ a {
   /* Collapse to 2 columns on mobile */
   .ig-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ─── MATCHDAY ───────────────────────────────────────────────────── */
+/* Title, then a rule broken by the post count, then the filter pills. */
+.matchday-count-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.matchday-count-rule > span[aria-hidden] {
+  flex: 1 1 0;
+  max-width: 8rem;
+  height: 2px;
+  background: var(--city-navy);
+  opacity: 0.55;
+}
+.matchday-count {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--city-gold);
+  text-shadow: 0 2px 8px rgba(28, 44, 91, 0.35);
+  white-space: nowrap;
+}
+
+.matchday-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.matchday-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--city-navy);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--city-navy);
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.matchday-chip:hover,
+.matchday-chip.is-active {
+  background: var(--city-navy);
+  color: #fff;
+}
+.matchday-chip-count {
+  font-weight: 700;
+  color: var(--city-navy);
+}
+.matchday-chip:hover .matchday-chip-count,
+.matchday-chip.is-active .matchday-chip-count {
+  color: var(--city-gold);
+}
+
+.matchday-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+@media (min-width: 640px) {
+  .matchday-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1000px) {
+  .matchday-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.matchday-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-bg-warm);
+  border: 1px solid var(--color-rule);
+  border-radius: 10px;
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.matchday-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(28, 44, 91, 0.16);
+}
+
+.matchday-card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(150deg, var(--city-sky) 0%, var(--city-navy) 100%);
+}
+
+.matchday-score-chip {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(28, 44, 91, 0.92);
+  color: var(--city-gold);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.matchday-comp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--city-navy);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Ratings pitch — keep the XI legible on a phone */
+@media (max-width: 560px) {
+  .ratings-pitch {
+    padding: 1.25rem 0.5rem !important;
+    min-height: 22rem !important;
+    gap: 1rem !important;
+  }
+  .ratings-row {
+    gap: 0.35rem !important;
+  }
+  .ratings-badge {
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+    font-size: 0.78rem !important;
+  }
+  .ratings-name {
+    max-width: 4.2rem !important;
+    font-size: 0.55rem !important;
   }
 }
 

@@ -3,14 +3,7 @@
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-
-const navItems = [
-  { href: "/now", label: "Field Notes" },
-  { href: "/essays", label: "Essays" },
-  { href: "/projects", label: "Projects" },
-  { href: "/work", label: "Work" },
-  { href: "/resume", label: "CV" },
-];
+import { navItems } from "@/lib/nav";
 
 // Stable no-op subscribe: `mounted` never changes after hydration, so there is
 // nothing to subscribe to. Module scope keeps the identity stable across renders.
