@@ -5,3 +5,7 @@ build
 next-env.d.ts
 tsconfig.tsbuildinfo
 public
+# Frontmatter here holds single-line JSON (ratings:); Prettier's built-in YAML
+# frontmatter formatter reflows it to multi-line with trailing commas, which
+# breaks both the hand-rolled parser and JSON.parse.
+content/matchday

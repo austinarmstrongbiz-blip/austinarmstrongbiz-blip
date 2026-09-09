@@ -27,19 +27,19 @@ export default async function MatchdayPage({
         style={{
           paddingTop: "0",
           paddingBottom: "4rem",
-          background: `linear-gradient(160deg, var(--city-navy) 0%, var(--city-navy-soft) 100%)`,
-          borderBottom: "3px solid var(--city-sky)",
+          background: `linear-gradient(160deg, var(--city-sky) 0%, var(--city-sky-deep) 100%)`,
+          borderBottom: "3px solid var(--city-navy)",
         }}
       >
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <FadeUp>
-            <div className="folio" style={{ marginBottom: "2rem", color: "var(--city-sky)" }}>
+            <div className="folio" style={{ marginBottom: "2rem", color: "var(--city-gold-deep)" }}>
               {all.length > 0 ? `${all.length} ${all.length === 1 ? "post" : "posts"}` : "Matchday"}{" "}
               · Written here, nowhere else
             </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-display" style={{ color: "#fff" }}>
+            <h1 className="text-display" style={{ color: "var(--city-navy)" }}>
               Matchday
             </h1>
           </FadeUp>
@@ -50,7 +50,7 @@ export default async function MatchdayPage({
                 maxWidth: "52ch",
                 fontSize: "1.05rem",
                 lineHeight: 1.75,
-                color: "rgba(255,255,255,0.75)",
+                color: "rgba(28,44,91,0.75)",
                 fontFamily: "var(--font-sans)",
               }}
             >

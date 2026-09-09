@@ -79,8 +79,8 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
         style={{
           paddingTop: "3.5rem",
           paddingBottom: "3rem",
-          background: `linear-gradient(160deg, var(--city-navy) 0%, var(--city-navy-soft) 100%)`,
-          borderBottom: "3px solid var(--city-sky)",
+          background: `linear-gradient(160deg, var(--city-sky) 0%, var(--city-sky-deep) 100%)`,
+          borderBottom: "3px solid var(--city-navy)",
         }}
       >
         <div className="container-editorial">
@@ -88,37 +88,48 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
             <Link
               href="/matchday"
               className="folio"
-              style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none" }}
+              style={{ color: "rgba(28,44,91,0.7)", textDecoration: "none" }}
             >
               ← All matchdays
             </Link>
           </FadeUp>
 
-          <FadeUp delay={0.05}>
-            <div
-              style={{
-                display: "flex",
-                gap: "1.5rem",
-                margin: "2rem 0 1.25rem",
-                flexWrap: "wrap",
-              }}
-            >
-              <span className="folio" style={{ color: "rgba(255,255,255,0.65)" }}>
-                {post.dateFormatted}
-              </span>
-              <span className="folio" style={{ color: "rgba(255,255,255,0.5)" }}>
-                {post.readTime}
-              </span>
-            </div>
-          </FadeUp>
-
           {post.fixture && (
-            <FadeUp delay={0.08}>
-              <div className="folio" style={{ color: "var(--city-gold)", marginBottom: "1rem" }}>
+            <FadeUp delay={0.05}>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: "clamp(1.75rem, 5vw, 3.25rem)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.01em",
+                  color: "var(--city-gold)",
+                  textShadow: "0 2px 10px rgba(28,44,91,0.25)",
+                  margin: "1.75rem 0 1.25rem",
+                }}
+              >
                 {post.fixture}
               </div>
             </FadeUp>
           )}
+
+          <FadeUp delay={0.08}>
+            <div
+              style={{
+                display: "flex",
+                gap: "1.5rem",
+                marginBottom: "1.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <span className="folio" style={{ color: "var(--city-navy)" }}>
+                {post.dateFormatted}
+              </span>
+              <span className="folio" style={{ color: "rgba(28,44,91,0.65)" }}>
+                {post.readTime}
+              </span>
+            </div>
+          </FadeUp>
 
           <FadeUp delay={0.1}>
             <h1
@@ -129,7 +140,7 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
                 fontSize: "clamp(2rem, 5vw, 3.75rem)",
                 lineHeight: 1.0,
                 letterSpacing: "-0.025em",
-                color: "#fff",
+                color: "var(--city-navy)",
                 maxWidth: "20ch",
               }}
             >
