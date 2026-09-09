@@ -585,6 +585,70 @@ a {
 }
 
 /* ─── MATCHDAY ───────────────────────────────────────────────────── */
+/* Title, then a rule broken by the post count, then the filter pills. */
+.matchday-count-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.matchday-count-rule > span[aria-hidden] {
+  flex: 1 1 0;
+  max-width: 8rem;
+  height: 2px;
+  background: var(--city-navy);
+  opacity: 0.55;
+}
+.matchday-count {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--city-gold);
+  text-shadow: 0 2px 8px rgba(28, 44, 91, 0.35);
+  white-space: nowrap;
+}
+
+.matchday-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.matchday-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--city-navy);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--city-navy);
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.matchday-chip:hover,
+.matchday-chip.is-active {
+  background: var(--city-navy);
+  color: #fff;
+}
+.matchday-chip-count {
+  font-weight: 700;
+  color: var(--city-navy);
+}
+.matchday-chip:hover .matchday-chip-count,
+.matchday-chip.is-active .matchday-chip-count {
+  color: var(--city-gold);
+}
+
 .matchday-grid {
   display: grid;
   grid-template-columns: 1fr;

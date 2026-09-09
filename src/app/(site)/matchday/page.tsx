@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getMatchdayPosts, MATCHDAY_TAGS, tagLabel } from "@/lib/matchday";
+import Link from "next/link";
+import { COMPETITIONS, getMatchdayPosts, MATCHDAY_TAGS, tagLabel } from "@/lib/matchday";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 import MatchdayCard from "@/components/matchday/MatchdayCard";
 
@@ -10,15 +11,51 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://austin-armstrong.me/matchday" },
 };
 
+/** A filter pill: label, how many posts carry it, and where it points. */
+interface Chip {
+  key: string;
+  label: string;
+  count: number;
+  href: string;
+  active: boolean;
+}
+
 export default async function MatchdayPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tag?: string }>;
+  searchParams: Promise<{ tag?: string; competition?: string }>;
 }) {
-  const { tag } = await searchParams;
+  const { tag, competition } = await searchParams;
   const all = getMatchdayPosts();
-  const active = tag && MATCHDAY_TAGS.some((t) => t.slug === tag) ? tag : null;
-  const posts = active ? all.filter((r) => r.tags.includes(active)) : all;
+
+  const activeTag = tag && MATCHDAY_TAGS.some((t) => t.slug === tag) ? tag : null;
+  const activeComp = competition && COMPETITIONS[competition] ? competition : null;
+
+  const posts = all.filter(
+    (p) =>
+      (!activeTag || p.tags.includes(activeTag)) && (!activeComp || p.competition === activeComp),
+  );
+
+  // Only surface filters that would actually return something.
+  const chips: Chip[] = [
+    ...Object.entries(COMPETITIONS).map(([slug, { label }]) => ({
+      key: `comp-${slug}`,
+      label,
+      count: all.filter((p) => p.competition === slug).length,
+      href: `/matchday?competition=${slug}`,
+      active: activeComp === slug,
+    })),
+    ...MATCHDAY_TAGS.map((t) => ({
+      key: `tag-${t.slug}`,
+      label: t.label,
+      count: all.filter((p) => p.tags.includes(t.slug)).length,
+      href: `/matchday?tag=${t.slug}`,
+      active: activeTag === t.slug,
+    })),
+  ].filter((c) => c.count > 0);
+
+  const filtered = Boolean(activeTag || activeComp);
+  const countLabel = `${all.length} ${all.length === 1 ? "post" : "posts"}`;
 
   return (
     <>
@@ -26,7 +63,7 @@ export default async function MatchdayPage({
       <section
         style={{
           paddingTop: "0",
-          paddingBottom: "4rem",
+          paddingBottom: "3.5rem",
           background: `linear-gradient(160deg, var(--city-sky) 0%, var(--city-sky-deep) 100%)`,
           borderBottom: "3px solid var(--city-navy)",
         }}
@@ -37,23 +74,35 @@ export default async function MatchdayPage({
               Matchday
             </h1>
           </FadeUp>
+
           <FadeUp delay={0.1}>
-            <div
-              style={{
-                marginTop: "1.5rem",
-                fontFamily: "var(--font-mono)",
-                fontWeight: 700,
-                fontSize: "clamp(0.95rem, 2.2vw, 1.25rem)",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "var(--city-gold)",
-                textShadow: "0 2px 8px rgba(28,44,91,0.35)",
-              }}
-            >
-              {all.length > 0 ? `${all.length} ${all.length === 1 ? "post" : "posts"}` : "Matchday"}{" "}
-              · Written here, nowhere else
+            <div className="matchday-count-rule">
+              <span aria-hidden />
+              <span className="matchday-count">{countLabel}</span>
+              <span aria-hidden />
             </div>
           </FadeUp>
+
+          <FadeUp delay={0.15}>
+            <nav aria-label="Filter matchday posts" className="matchday-chips">
+              {filtered && (
+                <Link href="/matchday" className="matchday-chip">
+                  All <span className="matchday-chip-count">{all.length}</span>
+                </Link>
+              )}
+              {chips.map((c) => (
+                <Link
+                  key={c.key}
+                  href={c.href}
+                  aria-current={c.active ? "true" : undefined}
+                  className={`matchday-chip${c.active ? " is-active" : ""}`}
+                >
+                  {c.label} <span className="matchday-chip-count">{c.count}</span>
+                </Link>
+              ))}
+            </nav>
+          </FadeUp>
+
           <FadeUp delay={0.2}>
             <p
               style={{
@@ -87,9 +136,11 @@ export default async function MatchdayPage({
                   maxWidth: "40ch",
                 }}
               >
-                {active
-                  ? `Nothing filed under ${tagLabel(active)} yet.`
-                  : "Nothing here yet. Give it one bad result."}
+                {activeComp
+                  ? `Nothing filed under ${COMPETITIONS[activeComp].label} yet.`
+                  : activeTag
+                    ? `Nothing filed under ${tagLabel(activeTag)} yet.`
+                    : "Nothing here yet. Give it one bad result."}
               </p>
             </FadeUp>
           ) : (
