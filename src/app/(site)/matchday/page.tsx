@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getMatchdayPosts, MATCHDAY_TAGS, tagLabel } from "@/lib/matchday";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
+import MatchdayCard from "@/components/matchday/MatchdayCard";
 
 export const metadata: Metadata = {
   title: "Matchday",
@@ -31,38 +31,50 @@ export default async function MatchdayPage({
           borderBottom: "3px solid var(--city-navy)",
         }}
       >
-        <div className="container-editorial" style={{ paddingTop: "4rem" }}>
+        <div className="container-editorial" style={{ paddingTop: "4rem", textAlign: "center" }}>
           <FadeUp>
-            <div className="folio" style={{ marginBottom: "2rem", color: "var(--city-gold-deep)" }}>
-              {all.length > 0 ? `${all.length} ${all.length === 1 ? "post" : "posts"}` : "Matchday"}{" "}
-              · Written here, nowhere else
-            </div>
-          </FadeUp>
-          <FadeUp delay={0.1}>
             <h1 className="text-display" style={{ color: "var(--city-navy)" }}>
               Matchday
             </h1>
           </FadeUp>
+          <FadeUp delay={0.1}>
+            <div
+              style={{
+                marginTop: "1.5rem",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                fontSize: "clamp(0.95rem, 2.2vw, 1.25rem)",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--city-gold)",
+                textShadow: "0 2px 8px rgba(28,44,91,0.35)",
+              }}
+            >
+              {all.length > 0 ? `${all.length} ${all.length === 1 ? "post" : "posts"}` : "Matchday"}{" "}
+              · Written here, nowhere else
+            </div>
+          </FadeUp>
           <FadeUp delay={0.2}>
             <p
               style={{
-                marginTop: "2rem",
+                margin: "2rem auto 0",
                 maxWidth: "52ch",
                 fontSize: "1.05rem",
                 lineHeight: 1.75,
-                color: "rgba(28,44,91,0.75)",
+                fontStyle: "italic",
+                color: "rgba(28,44,91,0.8)",
                 fontFamily: "var(--font-sans)",
               }}
             >
               Ninety minutes, then a few thousand words. Manchester City mostly, but any match worth
-              staying up for. Written hot, published anyway.
+              staying up for. I know ball, you should learn some. Educate yourself below.
             </p>
           </FadeUp>
         </div>
       </section>
 
-      {/* ── List ───────────────────────────────────────────────── */}
-      <section style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
+      {/* ── Cards ──────────────────────────────────────────────── */}
+      <section style={{ paddingTop: "3.5rem", paddingBottom: "5rem" }}>
         <div className="container-editorial">
           {posts.length === 0 ? (
             <FadeUp>
@@ -81,75 +93,10 @@ export default async function MatchdayPage({
               </p>
             </FadeUp>
           ) : (
-            <StaggerList>
+            <StaggerList className="matchday-grid">
               {posts.map((post) => (
-                <StaggerItem key={post.slug}>
-                  <article
-                    style={{
-                      paddingBottom: "2.5rem",
-                      marginBottom: "2.5rem",
-                      borderBottom: "1px solid var(--color-rule)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "1.5rem",
-                        marginBottom: "1rem",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <span className="folio" style={{ color: "var(--color-ink-soft)" }}>
-                        {post.dateFormatted}
-                      </span>
-                      <span className="folio" style={{ color: "var(--color-ink-muted)" }}>
-                        {post.readTime}
-                      </span>
-                    </div>
-
-                    {post.fixture && (
-                      <div
-                        className="folio"
-                        style={{ color: "var(--color-ink)", marginBottom: "0.75rem" }}
-                      >
-                        {post.fixture}
-                      </div>
-                    )}
-
-                    <h2
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        fontStyle: "italic",
-                        fontSize: "clamp(1.5rem, 3.5vw, 2.25rem)",
-                        lineHeight: 1.05,
-                        letterSpacing: "-0.02em",
-                        color: "var(--color-ink)",
-                        marginBottom: "1rem",
-                      }}
-                    >
-                      <Link href={`/matchday/${post.slug}`}>{post.title}</Link>
-                    </h2>
-
-                    {post.excerpt && (
-                      <p
-                        style={{
-                          fontFamily: "var(--font-sans)",
-                          fontSize: "1rem",
-                          lineHeight: 1.8,
-                          color: "var(--color-ink-soft)",
-                          maxWidth: "65ch",
-                          marginBottom: "1.5rem",
-                        }}
-                      >
-                        {post.excerpt}
-                      </p>
-                    )}
-
-                    <Link href={`/matchday/${post.slug}`} className="folio">
-                      Read it →
-                    </Link>
-                  </article>
+                <StaggerItem key={post.slug} style={{ display: "flex" }}>
+                  <MatchdayCard post={post} />
                 </StaggerItem>
               ))}
             </StaggerList>

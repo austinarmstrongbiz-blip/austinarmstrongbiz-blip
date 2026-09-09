@@ -45,7 +45,25 @@ export interface MatchdayPost {
   bodyHtml: string;
   /** Optional pitch-formation ratings card, parsed from a JSON frontmatter line. */
   ratings: MatchdayRatings | null;
+  /** Card artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
+  heroImage: string | null;
+  /** Competition slug — see COMPETITIONS. */
+  competition: string | null;
+  /** Short score for the card overlay, e.g. "2 — 0". */
+  scoreline: string | null;
 }
+
+/**
+ * Competitions a post can be filed under. `icon` stays undefined until the real
+ * artwork lands in /public/images/competitions — the card falls back to the
+ * label pill on its own, so adding a logo later is a one-line change here.
+ */
+export const COMPETITIONS: Record<string, { label: string; icon?: string }> = {
+  "champions-league": { label: "Champions League" },
+  "premier-league": { label: "Premier League" },
+  "fa-cup": { label: "FA Cup" },
+  "carabao-cup": { label: "Carabao Cup" },
+};
 
 /** Tag slugs the section knows about, in the order the filter bar shows them. */
 export const MATCHDAY_TAGS = [
@@ -124,6 +142,9 @@ function toPost(slug: string, raw: string): MatchdayPost {
     readTime: estimateReadTime(bodyHtml),
     bodyHtml,
     ratings: parseRatings(meta.ratings),
+    heroImage: meta.heroImage || null,
+    competition: meta.competition || null,
+    scoreline: meta.scoreline || null,
   };
 }
 

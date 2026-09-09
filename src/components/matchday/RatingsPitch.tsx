@@ -11,6 +11,7 @@ function Badge({ player }: { player: RatingsPlayer }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem" }}>
       <div
+        className="ratings-badge"
         style={{
           width: "2.5rem",
           height: "2.5rem",
@@ -30,7 +31,7 @@ function Badge({ player }: { player: RatingsPlayer }) {
         {player.rating}
       </div>
       <div
-        className="folio"
+        className="folio ratings-name"
         style={{
           color: "#fff",
           textAlign: "center",
@@ -86,7 +87,7 @@ export default function RatingsPitch({ ratings }: { ratings: MatchdayRatings }) 
             color: "var(--city-gold)",
           }}
         >
-          {ratings.score.homeScore} – {ratings.score.awayScore}
+          {ratings.score.homeScore} — {ratings.score.awayScore}
         </span>
         <span className="folio" style={{ color: "var(--city-sky)" }}>
           {ratings.score.away}
@@ -96,6 +97,7 @@ export default function RatingsPitch({ ratings }: { ratings: MatchdayRatings }) 
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {/* Pitch */}
         <div
+          className="ratings-pitch"
           style={{
             flex: "1 1 20rem",
             background:
@@ -122,6 +124,7 @@ export default function RatingsPitch({ ratings }: { ratings: MatchdayRatings }) 
           {rows.map((row, i) => (
             <div
               key={i}
+              className="ratings-row"
               style={{
                 display: "flex",
                 justifyContent: "space-evenly",
