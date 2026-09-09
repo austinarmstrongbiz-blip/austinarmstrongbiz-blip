@@ -4,6 +4,33 @@ date: 2026-09-09
 tags: man-city
 excerpt: City won 2-0 against Porto in the Champions League opener while half their attack was still finding its legs. That should worry everyone else in this competition.
 fixture: Man City 2 - 0 Porto · Champions League, Matchday 1
+ratings:
+  {
+    "score": { "home": "Porto", "homeScore": 0, "away": "Man City", "awayScore": 2 },
+    "starters":
+      [
+        { "name": "Haaland", "rating": 80, "row": 1 },
+        { "name": "Semenyo", "rating": 67, "row": 2 },
+        { "name": "Cherki", "rating": 62, "row": 2 },
+        { "name": "Foden", "rating": 73, "row": 2 },
+        { "name": "Enzo Fernández", "rating": 78, "row": 3 },
+        { "name": "Bouaddi", "rating": 72, "row": 3 },
+        { "name": "Gvardiol", "rating": 61, "row": 4 },
+        { "name": "Dias", "rating": 56, "row": 4 },
+        { "name": "Guéhi", "rating": 69, "row": 4 },
+        { "name": "Nunes", "rating": 67, "row": 4 },
+        { "name": "Donnarumma", "rating": 74, "row": 5 },
+      ],
+    "subs":
+      [
+        { "name": "Aït-Nouri", "rating": 76, "row": 0 },
+        { "name": "Khusanov", "rating": 65, "row": 0 },
+        { "name": "Kovačić", "rating": 62, "row": 0 },
+        { "name": "Anderson", "rating": 69, "row": 0 },
+        { "name": "Ndiaye", "rating": 54, "row": 0 },
+      ],
+    "manager": { "name": "Maresca", "rating": 68 },
+  }
 ---
 
 City beat Porto 2-0 in the Champions League opener and the whole time I kept thinking the same thing: this was not City playing well. This was City playing okay, running through the gears at half speed, and still walking out with a clean sheet and three points against a Diogo Costa who had one of the best individual performances I've seen from an opposing keeper all year. 9.5 out of 10, easy. The man was a wall. Haaland scored both goals on him and could easily have had four.
@@ -27,15 +54,3 @@ Bouaddi, for an 18 year old, was genuinely excellent. So relaxed on the ball for
 Small note because it needs saying: Donnarumma's feet were genuinely impressive today, calm under pressure in buildup in a way that matters more than people give goalkeepers credit for. And somebody needs to look at how many offsides got called in this game, because it was a lot, more than a normal match should produce.
 
 Here's the actual point of all this. City went into a stadium that hadn't lost since early December, against a keeper playing out of his mind, with their record goalscorer having a quiet night by his own ridiculous standard, with a right back rotation that's still being figured out, and with an attack that's still finding its exact shape under a new manager in a new competition setup. And they won comfortably enough that it never really felt in doubt after halftime. That is not a team playing anywhere near its ceiling. That's a team still getting its legs under it in September and still capable of ending someone else's unbeaten home run on the road. If I'm anyone else in this competition, that's the part that keeps me up at night. Not what City did today. What today says about what's coming once it all clicks at once.
-
----
-
-**Ratings, for the record**
-
-Porto 0 - 2 Manchester City
-
-Starting XI: Donnarumma (74) — Nunes (67), Dias (56), Guéhi (69), Gvardiol (61) — Enzo Fernández (78), Bouaddi (72) — Semenyo (67), Cherki (62), Foden (73) — Haaland (80)
-
-Subs used: Aït-Nouri (76), Khusanov (65), Kovačić (62), Anderson (69), Ndiaye (54)
-
-Manager: Maresca (68)

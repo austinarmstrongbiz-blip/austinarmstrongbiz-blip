@@ -18,6 +18,20 @@ import { marked } from "marked";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "matchday");
 
+export interface RatingsPlayer {
+  name: string;
+  rating: number;
+  /** 1 = striker row ... 5 = goalkeeper row. Rows render top to bottom. */
+  row: number;
+}
+
+export interface MatchdayRatings {
+  score: { home: string; homeScore: number; away: string; awayScore: number };
+  starters: RatingsPlayer[];
+  subs: RatingsPlayer[];
+  manager: { name: string; rating: number };
+}
+
 export interface MatchdayPost {
   slug: string;
   title: string;
@@ -29,6 +43,8 @@ export interface MatchdayPost {
   fixture: string | null;
   readTime: string;
   bodyHtml: string;
+  /** Optional pitch-formation ratings card, parsed from a JSON frontmatter line. */
+  ratings: MatchdayRatings | null;
 }
 
 /** Tag slugs the section knows about, in the order the filter bar shows them. */
@@ -107,7 +123,17 @@ function toPost(slug: string, raw: string): MatchdayPost {
     fixture: meta.fixture || null,
     readTime: estimateReadTime(bodyHtml),
     bodyHtml,
+    ratings: parseRatings(meta.ratings),
   };
+}
+
+function parseRatings(raw: string | undefined): MatchdayRatings | null {
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as MatchdayRatings;
+  } catch {
+    return null;
+  }
 }
 
 /**

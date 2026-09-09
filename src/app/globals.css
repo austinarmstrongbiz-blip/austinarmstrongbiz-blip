@@ -93,6 +93,17 @@
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
+/* Man City brand — matchday section only. Official club hex. */
+:root {
+  --city-sky: #6cabdd;
+  --city-sky-deep: #4e93c9;
+  --city-navy: #1c2c5b;
+  --city-navy-soft: #263a72;
+  --city-gold: #ffc659;
+  --city-gold-deep: #d4a12a;
+  --city-red: #ec3325;
+}
+
 /* ─── RESET & BASE ───────────────────────────────────────────────── */
 *,
 *::before,

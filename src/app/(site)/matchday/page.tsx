@@ -27,19 +27,21 @@ export default async function MatchdayPage({
         style={{
           paddingTop: "0",
           paddingBottom: "4rem",
-          borderBottom: "1px solid var(--color-rule)",
+          background: `linear-gradient(160deg, var(--city-navy) 0%, var(--city-navy-soft) 100%)`,
+          borderBottom: "3px solid var(--city-sky)",
         }}
       >
-        <div style={{ background: "var(--color-yellow)", height: "4px" }} />
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <FadeUp>
-            <div className="folio" style={{ marginBottom: "2rem" }}>
+            <div className="folio" style={{ marginBottom: "2rem", color: "var(--city-sky)" }}>
               {all.length > 0 ? `${all.length} ${all.length === 1 ? "post" : "posts"}` : "Matchday"}{" "}
               · Written here, nowhere else
             </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-display">Matchday</h1>
+            <h1 className="text-display" style={{ color: "#fff" }}>
+              Matchday
+            </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p
@@ -48,7 +50,7 @@ export default async function MatchdayPage({
                 maxWidth: "52ch",
                 fontSize: "1.05rem",
                 lineHeight: 1.75,
-                color: "var(--color-ink-soft)",
+                color: "rgba(255,255,255,0.75)",
                 fontFamily: "var(--font-sans)",
               }}
             >
@@ -56,61 +58,6 @@ export default async function MatchdayPage({
               staying up for. Written hot, published anyway.
             </p>
           </FadeUp>
-        </div>
-      </section>
-
-      {/* ── Tag filter ─────────────────────────────────────────── */}
-      <section style={{ paddingTop: "2rem", paddingBottom: "0" }}>
-        <div className="container-editorial">
-          <nav aria-label="Filter posts by topic">
-            <ul
-              style={{
-                display: "flex",
-                gap: "0.75rem",
-                flexWrap: "wrap",
-                listStyle: "none",
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              <li>
-                <Link
-                  href="/matchday"
-                  aria-current={!active ? "true" : undefined}
-                  className="folio"
-                  style={{
-                    display: "inline-block",
-                    padding: "0.4rem 0.9rem",
-                    border: "1px solid var(--color-ink)",
-                    background: !active ? "var(--color-yellow)" : "transparent",
-                    color: "var(--color-ink)",
-                    textDecoration: "none",
-                  }}
-                >
-                  Everything
-                </Link>
-              </li>
-              {MATCHDAY_TAGS.map((t) => (
-                <li key={t.slug}>
-                  <Link
-                    href={`/matchday?tag=${t.slug}`}
-                    aria-current={active === t.slug ? "true" : undefined}
-                    className="folio"
-                    style={{
-                      display: "inline-block",
-                      padding: "0.4rem 0.9rem",
-                      border: "1px solid var(--color-ink)",
-                      background: active === t.slug ? "var(--color-yellow)" : "transparent",
-                      color: "var(--color-ink)",
-                      textDecoration: "none",
-                    }}
-                  >
-                    {t.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </div>
       </section>
 
@@ -158,11 +105,6 @@ export default async function MatchdayPage({
                       <span className="folio" style={{ color: "var(--color-ink-muted)" }}>
                         {post.readTime}
                       </span>
-                      {post.tags.map((t) => (
-                        <span key={t} className="folio" style={{ color: "var(--color-ink-muted)" }}>
-                          {tagLabel(t)}
-                        </span>
-                      ))}
                     </div>
 
                     {post.fixture && (

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMatchdayPosts, getMatchdayPostBySlug, tagLabel } from "@/lib/matchday";
 import { FadeUp } from "@/components/ui/Animate";
-import NewsletterForm from "@/components/ui/NewsletterForm";
+import RatingsPitch from "@/components/matchday/RatingsPitch";
 
 const BASE_URL = "https://austin-armstrong.me";
 
@@ -74,21 +74,21 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
       />
 
-      {/* ── Header ─────────────────────────────────────────────── */}
+      {/* ── Hero ───────────────────────────────────────────────── */}
       <section
         style={{
-          paddingTop: "0",
+          paddingTop: "3.5rem",
           paddingBottom: "3rem",
-          borderBottom: "1px solid var(--color-rule)",
+          background: `linear-gradient(160deg, var(--city-navy) 0%, var(--city-navy-soft) 100%)`,
+          borderBottom: "3px solid var(--city-sky)",
         }}
       >
-        <div style={{ background: "var(--color-yellow)", height: "4px" }} />
-        <div className="container-editorial" style={{ paddingTop: "3rem" }}>
+        <div className="container-editorial">
           <FadeUp>
             <Link
               href="/matchday"
               className="folio"
-              style={{ color: "var(--color-ink-muted)", textDecoration: "none" }}
+              style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none" }}
             >
               ← All matchdays
             </Link>
@@ -103,28 +103,18 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
                 flexWrap: "wrap",
               }}
             >
-              <span className="folio" style={{ color: "var(--color-ink-soft)" }}>
+              <span className="folio" style={{ color: "rgba(255,255,255,0.65)" }}>
                 {post.dateFormatted}
               </span>
-              <span className="folio" style={{ color: "var(--color-ink-muted)" }}>
+              <span className="folio" style={{ color: "rgba(255,255,255,0.5)" }}>
                 {post.readTime}
               </span>
-              {post.tags.map((t) => (
-                <Link
-                  key={t}
-                  href={`/matchday?tag=${t}`}
-                  className="folio"
-                  style={{ color: "var(--color-ink-muted)" }}
-                >
-                  {tagLabel(t)}
-                </Link>
-              ))}
             </div>
           </FadeUp>
 
           {post.fixture && (
             <FadeUp delay={0.08}>
-              <div className="folio" style={{ color: "var(--color-ink)", marginBottom: "1rem" }}>
+              <div className="folio" style={{ color: "var(--city-gold)", marginBottom: "1rem" }}>
                 {post.fixture}
               </div>
             </FadeUp>
@@ -139,7 +129,7 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
                 fontSize: "clamp(2rem, 5vw, 3.75rem)",
                 lineHeight: 1.0,
                 letterSpacing: "-0.025em",
-                color: "var(--color-ink)",
+                color: "#fff",
                 maxWidth: "20ch",
               }}
             >
@@ -149,8 +139,19 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
         </div>
       </section>
 
+      {/* ── Ratings pitch ──────────────────────────────────────── */}
+      {post.ratings && (
+        <section style={{ paddingTop: "3rem", paddingBottom: "0" }}>
+          <div className="container-editorial">
+            <FadeUp>
+              <RatingsPitch ratings={post.ratings} />
+            </FadeUp>
+          </div>
+        </section>
+      )}
+
       {/* ── Body ───────────────────────────────────────────────── */}
-      <section style={{ paddingTop: "3.5rem", paddingBottom: "4rem" }}>
+      <section style={{ paddingTop: "3.5rem", paddingBottom: "5rem" }}>
         <div className="container-editorial">
           <FadeUp>
             <div
@@ -165,22 +166,6 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
               dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
             />
           </FadeUp>
-        </div>
-      </section>
-
-      {/* ── Subscribe CTA ──────────────────────────────────────── */}
-      <section
-        style={{
-          paddingTop: "3rem",
-          paddingBottom: "5rem",
-          borderTop: "1px solid var(--color-rule)",
-        }}
-      >
-        <div className="container-editorial">
-          <NewsletterForm
-            variant="light"
-            blurb="If you liked this one, there are more where it came from. Drop your email."
-          />
         </div>
       </section>
     </>
