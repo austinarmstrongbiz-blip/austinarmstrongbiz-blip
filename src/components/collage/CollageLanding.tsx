@@ -52,8 +52,37 @@ import type { CollageTile, TilePlacement } from "./tiles";
 const ART_DIR = path.join(process.cwd(), "public", "collage");
 const EXTENSIONS = [".png", ".webp", ".jpg", ".jpeg"];
 
-const artBySlug: Record<string, string> = (() => {
-  const found: Record<string, string> = {};
+interface Art {
+  src: string;
+  /**
+   * The artwork's own width/height, used in place of the tile's configured
+   * aspect. A tile then hugs its picture instead of leaving dead space inside
+   * an arbitrary box — which matters because the box is the click target and
+   * the caption hangs off its bottom edge. Null when the file's dimensions
+   * could not be read, in which case the configured aspect stands.
+   */
+  aspect: number | null;
+}
+
+/** PNG dimensions live in the IHDR chunk at a fixed offset. No decoder needed. */
+function pngAspect(file: string): number | null {
+  try {
+    const fd = fs.openSync(file, "r");
+    const head = Buffer.alloc(24);
+    fs.readSync(fd, head, 0, 24, 0);
+    fs.closeSync(fd);
+    if (head.toString("ascii", 1, 4) !== "PNG") return null;
+    const w = head.readUInt32BE(16);
+    const h = head.readUInt32BE(20);
+    return w > 0 && h > 0 ? w / h : null;
+  } catch {
+    return null;
+  }
+}
+
+const artBySlug: Record<string, Art> = (() => {
+  const found: Record<string, Art> = {};
+  const chosenExt: Record<string, string> = {};
   let files: string[];
   try {
     files = fs.readdirSync(ART_DIR);
@@ -63,16 +92,17 @@ const artBySlug: Record<string, string> = (() => {
   for (const file of files) {
     const ext = path.extname(file).toLowerCase();
     if (!EXTENSIONS.includes(ext)) continue;
-    const stem = path.basename(file, path.extname(file));
+    const stem = path.basename(file, ext);
     // First matching extension in EXTENSIONS order wins, so a .png and a .jpg
     // of the same tile resolve predictably instead of by directory order.
-    const existing = found[stem];
-    if (
-      !existing ||
-      EXTENSIONS.indexOf(ext) < EXTENSIONS.indexOf(path.extname(existing).toLowerCase())
-    ) {
-      found[stem] = `/collage/${file}`;
+    if (stem in chosenExt && EXTENSIONS.indexOf(ext) >= EXTENSIONS.indexOf(chosenExt[stem])) {
+      continue;
     }
+    chosenExt[stem] = ext;
+    found[stem] = {
+      src: `/collage/${file}`,
+      aspect: ext === ".png" ? pngAspect(path.join(ART_DIR, file)) : null,
+    };
   }
   return found;
 })();
@@ -91,6 +121,7 @@ function TileLink({
   style: React.CSSProperties;
   children: React.ReactNode;
 }) {
+  const className = "collage-tile";
   if (tile.external) {
     return (
       <a
@@ -98,6 +129,7 @@ function TileLink({
         aria-label={`${tile.label} (opens in a new tab)`}
         target="_blank"
         rel="noopener noreferrer"
+        className={className}
         style={style}
       >
         {children}
@@ -105,7 +137,7 @@ function TileLink({
     );
   }
   return (
-    <Link href={tile.href} aria-label={tile.label} style={style}>
+    <Link href={tile.href} aria-label={tile.label} className={className} style={style}>
       {children}
     </Link>
   );
@@ -117,18 +149,31 @@ function TileLink({
  * geometry either way.
  */
 function TileArt({ tile, index }: { tile: CollageTile; index: number }) {
-  const src = artBySlug[tile.slug];
-  if (src) {
+  const art = artBySlug[tile.slug];
+  if (art) {
     return (
-      // Plain <img>: these are hand-cut transparent PNGs sized to the tile, and
-      // next/image would add layout wrappers that fight the absolute placement.
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={src}
-        alt=""
-        aria-hidden
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-      />
+      <>
+        {/* The nudge animates this wrapper, not the link, so it does not fight
+            the link's own rotate() placement. */}
+        <span className="collage-tile-art" style={{ display: "block", height: "100%" }}>
+          {/* Plain <img>: these are hand-cut transparent PNGs sized to the tile,
+              and next/image would add layout wrappers that fight the absolute
+              placement. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={art.src}
+            alt=""
+            aria-hidden
+            style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+          />
+        </span>
+        {/* A cut-out photo does not say where it goes. On a pointer device this
+            caption appears on hover or keyboard focus; on touch, where there is
+            no hover, it is always visible. See globals.css. */}
+        <span className="collage-tile-label" aria-hidden>
+          {tile.label}
+        </span>
+      </>
     );
   }
   return (
@@ -190,13 +235,13 @@ function TileArt({ tile, index }: { tile: CollageTile; index: number }) {
  */
 const CHROME_RESERVE = "9rem";
 
-function linkStyle(p: TilePlacement): React.CSSProperties {
+function linkStyle(p: TilePlacement, artAspect?: number | null): React.CSSProperties {
   return {
     position: "absolute",
     left: `${p.x}%`,
     top: `${p.y}%`,
     width: `${p.w}%`,
-    aspectRatio: `${p.aspect}`,
+    aspectRatio: `${artAspect ?? p.aspect}`,
     zIndex: p.z,
     transform: `rotate(${p.rotate}deg)`,
     display: "block",
@@ -238,7 +283,11 @@ export default function CollageLanding() {
         }}
       >
         {collageTiles.map((tile, i) => (
-          <TileLink key={tile.href} tile={tile} style={linkStyle(tile.desktop)}>
+          <TileLink
+            key={tile.href}
+            tile={tile}
+            style={linkStyle(tile.desktop, artBySlug[tile.slug]?.aspect)}
+          >
             <TileArt tile={tile} index={i} />
           </TileLink>
         ))}
@@ -257,7 +306,11 @@ export default function CollageLanding() {
         }}
       >
         {collageTiles.map((tile, i) => (
-          <TileLink key={tile.href} tile={tile} style={linkStyle(tile.mobile)}>
+          <TileLink
+            key={tile.href}
+            tile={tile}
+            style={linkStyle(tile.mobile, artBySlug[tile.slug]?.aspect)}
+          >
             <TileArt tile={tile} index={i} />
           </TileLink>
         ))}
