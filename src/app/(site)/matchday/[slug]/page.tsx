@@ -56,6 +56,21 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
 
   const canonical = `${BASE_URL}/matchday/${post.slug}`;
 
+  const bodyStyle = {
+    maxWidth: "68ch",
+    fontFamily: "var(--font-sans)",
+    fontSize: "1.075rem",
+    lineHeight: 1.8,
+    color: "var(--color-ink-soft)",
+  } as const;
+
+  // Split after the first paragraph so the stats bar can drop in right below
+  // it, ahead of everything else. Falls back to putting the whole body in
+  // firstParagraphHtml (and skipping the split) if there's no </p> to find.
+  const splitAt = post.bodyHtml.indexOf("</p>");
+  const firstParagraphHtml = splitAt === -1 ? post.bodyHtml : post.bodyHtml.slice(0, splitAt + 4);
+  const restOfBodyHtml = splitAt === -1 ? "" : post.bodyHtml.slice(splitAt + 4);
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -164,33 +179,34 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
         </section>
       )}
 
-      {/* ── Match stats ────────────────────────────────────────── */}
-      {post.matchStats && (
-        <section style={{ paddingTop: "1.5rem", paddingBottom: "0" }}>
-          <div className="container-editorial" style={{ maxWidth: "68ch", marginInline: "auto" }}>
-            <FadeUp>
-              <MatchStatsBar stats={post.matchStats} />
-            </FadeUp>
-          </div>
-        </section>
-      )}
-
-      {/* ── Body ───────────────────────────────────────────────── */}
+      {/* ── Body, with the stats bar dropped in after paragraph 1 ─ */}
       <section style={{ paddingTop: "3.5rem", paddingBottom: "5rem" }}>
         <div className="container-editorial">
           <FadeUp>
             <div
-              className="essay-body"
-              style={{
-                maxWidth: "68ch",
-                fontFamily: "var(--font-sans)",
-                fontSize: "1.075rem",
-                lineHeight: 1.8,
-                color: "var(--color-ink-soft)",
-              }}
-              dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
+              className="essay-body matchday-callouts"
+              style={bodyStyle}
+              dangerouslySetInnerHTML={{ __html: firstParagraphHtml }}
             />
           </FadeUp>
+
+          {post.matchStats && (
+            <FadeUp>
+              <div style={{ maxWidth: "68ch", margin: "2.5rem auto" }}>
+                <MatchStatsBar stats={post.matchStats} />
+              </div>
+            </FadeUp>
+          )}
+
+          {restOfBodyHtml && (
+            <FadeUp>
+              <div
+                className="essay-body matchday-callouts"
+                style={bodyStyle}
+                dangerouslySetInnerHTML={{ __html: restOfBodyHtml }}
+              />
+            </FadeUp>
+          )}
         </div>
       </section>
     </>

@@ -803,6 +803,23 @@ a {
   line-height: 1.5;
   color: var(--color-ink);
 }
+
+/* Matchday callouts — a bold yellow "button" pull-quote, not a subtle margin
+   quote. Scoped to .matchday-callouts so essays keep the quieter style. */
+.matchday-callouts blockquote {
+  margin: 2.5rem 0;
+  padding: 1.5rem 1.75rem;
+  border-left: none;
+  border-radius: 12px;
+  background: var(--city-gold);
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.35;
+  color: var(--city-navy);
+  text-align: center;
+}
 .essay-body img {
   max-width: 100%;
   height: auto;
