@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getMatchdayPosts, getMatchdayPostBySlug, tagLabel } from "@/lib/matchday";
 import { FadeUp } from "@/components/ui/Animate";
 import RatingsPitch from "@/components/matchday/RatingsPitch";
+import MatchStatsBar from "@/components/matchday/MatchStatsBar";
 
 const BASE_URL = "https://austin-armstrong.me";
 
@@ -158,6 +159,17 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
           <div className="container-editorial">
             <FadeUp>
               <RatingsPitch ratings={post.ratings} />
+            </FadeUp>
+          </div>
+        </section>
+      )}
+
+      {/* ── Match stats ────────────────────────────────────────── */}
+      {post.matchStats && (
+        <section style={{ paddingTop: "1.5rem", paddingBottom: "0" }}>
+          <div className="container-editorial" style={{ maxWidth: "68ch", marginInline: "auto" }}>
+            <FadeUp>
+              <MatchStatsBar stats={post.matchStats} />
             </FadeUp>
           </div>
         </section>

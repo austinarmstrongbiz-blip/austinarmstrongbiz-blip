@@ -32,6 +32,20 @@ export interface MatchdayRatings {
   manager: { name: string; rating: number };
 }
 
+export interface MatchStatRow {
+  label: string;
+  home: number;
+  away: number;
+  /** e.g. "%" — appended after each number. Omit for plain counts. */
+  suffix?: string;
+}
+
+export interface MatchdayStats {
+  home: string;
+  away: string;
+  rows: MatchStatRow[];
+}
+
 export interface MatchdayPost {
   slug: string;
   title: string;
@@ -45,6 +59,8 @@ export interface MatchdayPost {
   bodyHtml: string;
   /** Optional pitch-formation ratings card, parsed from a JSON frontmatter line. */
   ratings: MatchdayRatings | null;
+  /** Optional team-stats comparison bars, parsed from a JSON frontmatter line. */
+  matchStats: MatchdayStats | null;
   /** Card artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
   heroImage: string | null;
   /** Competition slug — see COMPETITIONS. */
@@ -142,6 +158,7 @@ function toPost(slug: string, raw: string): MatchdayPost {
     readTime: estimateReadTime(bodyHtml),
     bodyHtml,
     ratings: parseRatings(meta.ratings),
+    matchStats: parseJson<MatchdayStats>(meta.matchStats),
     heroImage: meta.heroImage || null,
     competition: meta.competition || null,
     scoreline: meta.scoreline || null,
@@ -149,9 +166,13 @@ function toPost(slug: string, raw: string): MatchdayPost {
 }
 
 function parseRatings(raw: string | undefined): MatchdayRatings | null {
+  return parseJson<MatchdayRatings>(raw);
+}
+
+function parseJson<T>(raw: string | undefined): T | null {
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as MatchdayRatings;
+    return JSON.parse(raw) as T;
   } catch {
     return null;
   }
