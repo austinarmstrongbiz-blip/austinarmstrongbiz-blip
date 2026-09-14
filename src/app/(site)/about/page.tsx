@@ -16,7 +16,10 @@ import {
 import InstagramFeed from "@/components/ui/InstagramFeed";
 
 export const metadata: Metadata = {
-  title: "Austin Armstrong",
+  title: "About",
+  description:
+    "Austin Armstrong — generalist operator at the intersection of enterprise IT finance, AI go-to-market, and organizational change.",
+  alternates: { canonical: "https://austin-armstrong.me/about" },
 };
 
 // ─── PILLARS ──────────────────────────────────────────────────────────────────
