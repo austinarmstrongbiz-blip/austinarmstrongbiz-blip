@@ -6,6 +6,7 @@ excerpt: City beat United 1-0 with ten men for 67 minutes, and the goal that dec
 fixture: Man Utd 0 — 1 Man City · Premier League, Matchday 4
 competition: premier-league
 scoreline: 0 — 1
+ratings: {"score":{"home":"Man Utd","homeScore":0,"away":"Man City","awayScore":1},"starters":[{"name":"Haaland","rating":93,"row":1},{"name":"Semenyo","rating":84,"row":2},{"name":"Cherki","rating":65,"row":2},{"name":"Foden","rating":47,"row":2},{"name":"Fernández","rating":84,"row":3},{"name":"Anderson","rating":94,"row":3},{"name":"Gvardiol","rating":80,"row":4},{"name":"Dias (C)","rating":92,"row":4},{"name":"Guéhi","rating":90,"row":4},{"name":"Nunes","rating":94,"row":4},{"name":"Donnarumma","rating":88,"row":5}],"subs":[{"name":"Ndiaye","rating":80,"row":0},{"name":"O'Reilly","rating":62,"row":0}],"manager":{"name":"Maresca","rating":90}}
 ---
 
 City won the derby 1-0 at Old Trafford playing with ten men for the final 67 minutes, and the goal that decided it was bad enough that the Premier League's own officiating body apologized to United afterward. Sit with both of those at once. That's not a clean win. It's the kind of result that tells you more about the team than a comfortable one would.
