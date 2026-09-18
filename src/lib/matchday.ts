@@ -43,7 +43,22 @@ export interface MatchStatRow {
 export interface MatchdayStats {
   home: string;
   away: string;
+  /** Bar colors, e.g. City's sky blue vs an opponent's own badge color. Defaults to navy/sky. */
+  homeColor?: string;
+  awayColor?: string;
   rows: MatchStatRow[];
+}
+
+export interface PlayerSpotlightStat {
+  label: string;
+  value: string;
+}
+
+export interface PlayerSpotlightData {
+  name: string;
+  subtitle?: string;
+  photo: string;
+  stats: PlayerSpotlightStat[];
 }
 
 export interface MatchdayPost {
@@ -61,8 +76,12 @@ export interface MatchdayPost {
   ratings: MatchdayRatings | null;
   /** Optional team-stats comparison bars, parsed from a JSON frontmatter line. */
   matchStats: MatchdayStats | null;
-  /** Card artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
+  /** Optional single-player callout, dropped in at a `<!--SPOTLIGHT-->` marker in the body. */
+  spotlight: PlayerSpotlightData | null;
+  /** Post header artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
   heroImage: string | null;
+  /** Landing-page card artwork. Falls back to heroImage, then a gradient. */
+  cardImage: string | null;
   /** Competition slug — see COMPETITIONS. */
   competition: string | null;
   /** Short score for the card overlay, e.g. "2 — 0". */
@@ -159,7 +178,9 @@ function toPost(slug: string, raw: string): MatchdayPost {
     bodyHtml,
     ratings: parseRatings(meta.ratings),
     matchStats: parseJson<MatchdayStats>(meta.matchStats),
+    spotlight: parseJson<PlayerSpotlightData>(meta.spotlight),
     heroImage: meta.heroImage || null,
+    cardImage: meta.cardImage || null,
     competition: meta.competition || null,
     scoreline: meta.scoreline || null,
   };

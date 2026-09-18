@@ -11,6 +11,9 @@ function formatValue(n: number, suffix?: string): string {
  * values (or 50/50 if both are zero), city-sky vs navy.
  */
 export default function MatchStatsBar({ stats }: { stats: MatchdayStats }) {
+  const homeColor = stats.homeColor ?? "var(--city-navy)";
+  const awayColor = stats.awayColor ?? "var(--city-sky)";
+
   return (
     <div
       style={{
@@ -28,13 +31,13 @@ export default function MatchStatsBar({ stats }: { stats: MatchdayStats }) {
           borderBottom: "1px solid var(--color-rule)",
         }}
       >
-        <span className="folio" style={{ color: "var(--city-navy)", fontWeight: 700 }}>
+        <span className="folio" style={{ color: homeColor, fontWeight: 700 }}>
           {stats.home}
         </span>
         <span className="folio" style={{ color: "var(--color-ink-muted)" }}>
           Match stats
         </span>
-        <span className="folio" style={{ color: "var(--city-sky-deep)", fontWeight: 700 }}>
+        <span className="folio" style={{ color: awayColor, fontWeight: 700 }}>
           {stats.away}
         </span>
       </div>
@@ -84,13 +87,13 @@ export default function MatchStatsBar({ stats }: { stats: MatchdayStats }) {
                 <div
                   style={{
                     width: `${homePct}%`,
-                    background: "var(--city-navy)",
+                    background: homeColor,
                   }}
                 />
                 <div
                   style={{
                     width: `${100 - homePct}%`,
-                    background: "var(--city-sky)",
+                    background: awayColor,
                   }}
                 />
               </div>
