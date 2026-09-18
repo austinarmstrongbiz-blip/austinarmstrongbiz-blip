@@ -61,8 +61,10 @@ export interface MatchdayPost {
   ratings: MatchdayRatings | null;
   /** Optional team-stats comparison bars, parsed from a JSON frontmatter line. */
   matchStats: MatchdayStats | null;
-  /** Card artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
+  /** Post header artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
   heroImage: string | null;
+  /** Landing-page card artwork. Falls back to heroImage, then a gradient. */
+  cardImage: string | null;
   /** Competition slug — see COMPETITIONS. */
   competition: string | null;
   /** Short score for the card overlay, e.g. "2 — 0". */
@@ -160,6 +162,7 @@ function toPost(slug: string, raw: string): MatchdayPost {
     ratings: parseRatings(meta.ratings),
     matchStats: parseJson<MatchdayStats>(meta.matchStats),
     heroImage: meta.heroImage || null,
+    cardImage: meta.cardImage || null,
     competition: meta.competition || null,
     scoreline: meta.scoreline || null,
   };
