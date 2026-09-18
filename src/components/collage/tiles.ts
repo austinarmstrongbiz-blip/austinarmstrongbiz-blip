@@ -11,6 +11,8 @@ import { SUBSTACK_URL } from "@/lib/substack";
  * upright; CSS tilts them. That way a tile can be re-angled without re-exporting
  * an image, and the image itself stays reusable elsewhere.
  *
+ * Artwork is matched by `slug`, not stored as a path — see CollageLanding.
+ *
  * Mobile is a separate, hand-placed layout on its own narrower canvas — see
  * each tile's `mobile` block and MOBILE_CANVAS. It is deliberately not a reflow
  * of the desktop coordinates.
@@ -47,12 +49,14 @@ export interface CollageTile {
    */
   mobile: TilePlacement;
   /**
-   * Path to the tile artwork under /public.
+   * Filename stem for this tile's artwork, looked for at
+   * `public/collage/<slug>.(png|jpg|webp)`.
    *
-   * Unused for now — placeholders ship first. The real-image swap is a separate
-   * task: it reads this field and renders the art instead of the placeholder box.
+   * There is no path to keep in sync: CollageLanding checks the directory at
+   * build time and renders the art if it is there, the placeholder box if it is
+   * not. Dropping a correctly named file in is the whole swap.
    */
-  imageSrc?: string;
+  slug: string;
 }
 
 /**
@@ -83,24 +87,28 @@ export const MOBILE_CANVAS = { width: 360, height: 1000 } as const;
 export const collageTiles: CollageTile[] = [
   {
     href: "/now",
+    slug: "field-notes",
     label: "Field Notes",
     desktop: { x: 2, y: 4, w: 30, aspect: 1.35, rotate: -4, z: 3 },
     mobile: { x: 2, y: 2, w: 52, aspect: 1.3, rotate: -4, z: 3 },
   },
   {
     href: "/essays",
+    slug: "essays",
     label: "Essays",
     desktop: { x: 30, y: 0, w: 26, aspect: 0.78, rotate: 3, z: 5 },
     mobile: { x: 50, y: 9, w: 46, aspect: 0.95, rotate: 5, z: 5 },
   },
   {
     href: "/matchday",
+    slug: "matchday",
     label: "Matchday",
     desktop: { x: 57, y: 6, w: 30, aspect: 1.5, rotate: -6, z: 2 },
     mobile: { x: 4, y: 20, w: 54, aspect: 1.45, rotate: 3, z: 4 },
   },
   {
     href: "/projects",
+    slug: "projects",
     label: "Projects",
     desktop: { x: 4, y: 34, w: 27, aspect: 1.1, rotate: 5, z: 6 },
     mobile: { x: 46, y: 30, w: 50, aspect: 1.1, rotate: -6, z: 6 },
@@ -108,24 +116,28 @@ export const collageTiles: CollageTile[] = [
   // /about is added by a sibling branch. The route will exist once branches merge.
   {
     href: "/about",
+    slug: "about",
     label: "About",
     desktop: { x: 33, y: 30, w: 30, aspect: 1.25, rotate: -2, z: 8 },
     mobile: { x: 6, y: 41, w: 56, aspect: 1.25, rotate: -2, z: 8 },
   },
   {
     href: "/work",
+    slug: "work",
     label: "Work",
     desktop: { x: 64, y: 30, w: 26, aspect: 0.95, rotate: 4, z: 4 },
     mobile: { x: 48, y: 52, w: 46, aspect: 0.95, rotate: 4, z: 7 },
   },
   {
     href: "/playbook",
+    slug: "the-homies",
     label: "The Homies",
     desktop: { x: 12, y: 64, w: 28, aspect: 1.4, rotate: -3, z: 7 },
     mobile: { x: 3, y: 61, w: 52, aspect: 1.4, rotate: 5, z: 6 },
   },
   {
     href: "/resume",
+    slug: "cv",
     label: "CV",
     desktop: { x: 42, y: 62, w: 24, aspect: 1.6, rotate: 6, z: 5 },
     mobile: { x: 46, y: 72, w: 44, aspect: 1.5, rotate: -5, z: 5 },
@@ -133,6 +145,7 @@ export const collageTiles: CollageTile[] = [
   // The newsletter is the one tile that leaves the site.
   {
     href: SUBSTACK_URL,
+    slug: "none-of-the-above",
     label: "None of the Above",
     external: true,
     desktop: { x: 66, y: 66, w: 26, aspect: 1.3, rotate: 7, z: 6 },
