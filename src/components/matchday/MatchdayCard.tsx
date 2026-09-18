@@ -19,7 +19,7 @@ export default function MatchdayCard({ post }: { post: MatchdayPost }) {
               alt=""
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", objectPosition: "center 15%" }}
             />
           )}
           {post.scoreline && <span className="matchday-score-chip">{post.scoreline}</span>}

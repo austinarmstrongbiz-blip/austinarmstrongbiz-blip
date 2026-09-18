@@ -5,6 +5,7 @@ import { getMatchdayPosts, getMatchdayPostBySlug, tagLabel } from "@/lib/matchda
 import { FadeUp } from "@/components/ui/Animate";
 import RatingsPitch from "@/components/matchday/RatingsPitch";
 import MatchStatsBar from "@/components/matchday/MatchStatsBar";
+import PlayerSpotlight from "@/components/matchday/PlayerSpotlight";
 
 const BASE_URL = "https://austin-armstrong.me";
 
@@ -70,6 +71,15 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
   const splitAt = post.bodyHtml.indexOf("</p>");
   const firstParagraphHtml = splitAt === -1 ? post.bodyHtml : post.bodyHtml.slice(0, splitAt + 4);
   const restOfBodyHtml = splitAt === -1 ? "" : post.bodyHtml.slice(splitAt + 4);
+
+  // A `<!--SPOTLIGHT-->` marker line in the body, if present, drops the
+  // player spotlight card in at that point instead of just after paragraph 1.
+  const spotlightMarker = "<!--SPOTLIGHT-->";
+  const spotlightAt = post.spotlight ? restOfBodyHtml.indexOf(spotlightMarker) : -1;
+  const restBeforeSpotlight =
+    spotlightAt === -1 ? restOfBodyHtml : restOfBodyHtml.slice(0, spotlightAt);
+  const restAfterSpotlight =
+    spotlightAt === -1 ? "" : restOfBodyHtml.slice(spotlightAt + spotlightMarker.length);
 
   const blogPostingSchema = {
     "@context": "https://schema.org",
@@ -198,12 +208,30 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
             </FadeUp>
           )}
 
-          {restOfBodyHtml && (
+          {restBeforeSpotlight && (
             <FadeUp>
               <div
                 className="essay-body matchday-callouts"
                 style={bodyStyle}
-                dangerouslySetInnerHTML={{ __html: restOfBodyHtml }}
+                dangerouslySetInnerHTML={{ __html: restBeforeSpotlight }}
+              />
+            </FadeUp>
+          )}
+
+          {post.spotlight && spotlightAt !== -1 && (
+            <FadeUp>
+              <div style={{ maxWidth: "68ch", margin: "2.5rem auto" }}>
+                <PlayerSpotlight player={post.spotlight} />
+              </div>
+            </FadeUp>
+          )}
+
+          {restAfterSpotlight && (
+            <FadeUp>
+              <div
+                className="essay-body matchday-callouts"
+                style={bodyStyle}
+                dangerouslySetInnerHTML={{ __html: restAfterSpotlight }}
               />
             </FadeUp>
           )}
