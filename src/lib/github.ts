@@ -6,7 +6,7 @@
 const GITHUB_USERNAME = "austinarmstrongbiz-blip";
 const GITHUB_API = "https://api.github.com";
 
-export interface GitHubRepo {
+interface GitHubRepo {
   id: number;
   name: string;
   displayName: string; // human-readable name (spaces, title case)

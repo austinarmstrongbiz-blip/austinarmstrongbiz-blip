@@ -148,14 +148,6 @@ html {
   z-index: -1;
 }
 
-/* Full-width highlight bar (logo / hero usage) */
-.highlight-block {
-  background: var(--color-yellow);
-  display: inline-block;
-  padding: 0 0.15em;
-  line-height: 1;
-}
-
 .text-display {
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 9vw, 8rem);
@@ -311,33 +303,6 @@ html {
   color: var(--color-bg);
 }
 
-/* ─── ANIMATIONS ─────────────────────────────────────────────────── */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.animate-fade-in {
-  animation: fadeIn 0.8s ease both;
-}
-
 /* ─── FOCUS VISIBLE ──────────────────────────────────────────────── */
 /* Keyboard users get a clear yellow ring; mouse clicks stay clean. */
 :focus-visible {
@@ -353,8 +318,8 @@ button:focus-visible {
 
 /* ─── REDUCED MOTION ─────────────────────────────────────────────── */
 /* Honors the OS "reduce motion" setting. Framer Motion is handled
-   separately via <MotionConfig reducedMotion="user">; this covers the
-   CSS keyframe utilities and any transitions. */
+   separately via <MotionConfig reducedMotion="user">; this covers any
+   CSS animations and transitions. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -364,25 +329,6 @@ button:focus-visible {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-.delay-100 {
-  animation-delay: 0.1s;
-}
-.delay-200 {
-  animation-delay: 0.2s;
-}
-.delay-300 {
-  animation-delay: 0.3s;
-}
-.delay-400 {
-  animation-delay: 0.4s;
-}
-.delay-500 {
-  animation-delay: 0.5s;
-}
-.delay-600 {
-  animation-delay: 0.6s;
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────────────── */
@@ -575,13 +521,6 @@ a {
 }
 .ig-photo:hover .ig-caption {
   opacity: 1 !important;
-}
-
-@media (max-width: 640px) {
-  /* Collapse to 2 columns on mobile */
-  .ig-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
 }
 
 /* ─── MATCHDAY ───────────────────────────────────────────────────── */

@@ -32,7 +32,7 @@ export interface MatchdayRatings {
   manager: { name: string; rating: number };
 }
 
-export interface MatchStatRow {
+interface MatchStatRow {
   label: string;
   home: number;
   away: number;
@@ -49,7 +49,7 @@ export interface MatchdayStats {
   rows: MatchStatRow[];
 }
 
-export interface PlayerSpotlightStat {
+interface PlayerSpotlightStat {
   label: string;
   value: string;
 }
