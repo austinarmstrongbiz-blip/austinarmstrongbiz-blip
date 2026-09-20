@@ -220,7 +220,12 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
 
           {post.spotlight && spotlightAt !== -1 && (
             <FadeUp>
-              <div style={{ maxWidth: "68ch", margin: "2.5rem auto" }}>
+              <div
+                style={{
+                  maxWidth: post.spotlight.layout === "side" ? undefined : "68ch",
+                  margin: "3rem auto",
+                }}
+              >
                 <PlayerSpotlight player={post.spotlight} />
               </div>
             </FadeUp>
