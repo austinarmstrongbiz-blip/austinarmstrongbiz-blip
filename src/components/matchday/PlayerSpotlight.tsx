@@ -1,14 +1,24 @@
 import type { PlayerSpotlightData } from "@/lib/matchday";
 
-function Header({ player }: { player: PlayerSpotlightData }) {
+interface Props {
+  player: PlayerSpotlightData;
+  large?: boolean;
+}
+
+function Header({ player, large }: Props) {
   return (
-    <div style={{ padding: "1rem 1.25rem", background: "var(--city-navy)" }}>
+    <div
+      style={{
+        padding: large ? "1.5rem 1.75rem" : "1rem 1.25rem",
+        background: "var(--city-navy)",
+      }}
+    >
       <span
         style={{
           fontFamily: "var(--font-display)",
           fontWeight: 700,
           fontStyle: "italic",
-          fontSize: "1.2rem",
+          fontSize: large ? "1.9rem" : "1.2rem",
           color: "var(--city-gold)",
         }}
       >
@@ -17,7 +27,7 @@ function Header({ player }: { player: PlayerSpotlightData }) {
       {player.subtitle && (
         <span
           className="folio"
-          style={{ display: "block", color: "rgba(255,255,255,0.7)", marginTop: "0.2rem" }}
+          style={{ display: "block", color: "rgba(255,255,255,0.7)", marginTop: "0.3rem" }}
         >
           {player.subtitle}
         </span>
@@ -26,7 +36,7 @@ function Header({ player }: { player: PlayerSpotlightData }) {
   );
 }
 
-function Featured({ player }: { player: PlayerSpotlightData }) {
+function Featured({ player, large }: Props) {
   if (!player.featured?.length) return null;
   return (
     <div style={{ display: "flex", background: "var(--city-gold)" }}>
@@ -35,7 +45,7 @@ function Featured({ player }: { player: PlayerSpotlightData }) {
           key={stat.label}
           style={{
             flex: 1,
-            padding: "1rem 0.75rem",
+            padding: large ? "1.75rem 1rem" : "1rem 0.75rem",
             textAlign: "center",
             color: "var(--city-navy)",
           }}
@@ -44,13 +54,13 @@ function Featured({ player }: { player: PlayerSpotlightData }) {
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
-              fontSize: "2rem",
+              fontSize: large ? "3.25rem" : "2rem",
               lineHeight: 1.1,
             }}
           >
             {stat.value}
           </div>
-          <div className="folio" style={{ color: "var(--city-navy)", marginTop: "0.2rem" }}>
+          <div className="folio" style={{ color: "var(--city-navy)", marginTop: "0.4rem" }}>
             {stat.label}
           </div>
         </div>
@@ -59,14 +69,24 @@ function Featured({ player }: { player: PlayerSpotlightData }) {
   );
 }
 
-function Grid({ player, columns }: { player: PlayerSpotlightData; columns: number }) {
+function Grid({ player, columns, large }: Props & { columns: number }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gridAutoRows: "1fr",
+        flex: 1,
+      }}
+    >
       {player.stats.map((stat) => (
         <div
           key={stat.label}
           style={{
-            padding: "0.9rem 0.75rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: large ? "1.5rem 1rem" : "0.9rem 0.75rem",
             textAlign: "center",
             borderTop: "1px solid var(--color-rule)",
             borderLeft: "1px solid var(--color-rule)",
@@ -76,13 +96,13 @@ function Grid({ player, columns }: { player: PlayerSpotlightData; columns: numbe
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
-              fontSize: "1.15rem",
+              fontSize: large ? "1.75rem" : "1.15rem",
               color: "var(--color-ink)",
             }}
           >
             {stat.value}
           </div>
-          <div className="folio" style={{ color: "var(--color-ink-muted)", marginTop: "0.2rem" }}>
+          <div className="folio" style={{ color: "var(--color-ink-muted)", marginTop: "0.3rem" }}>
             {stat.label}
           </div>
         </div>
@@ -103,7 +123,7 @@ export default function PlayerSpotlight({ player }: { player: PlayerSpotlightDat
   if (player.layout === "side") {
     return (
       <div style={{ ...frame, display: "flex", flexWrap: "wrap" }}>
-        <div style={{ flex: "1 1 240px", aspectRatio: "4 / 5", position: "relative" }}>
+        <div style={{ flex: "1 1 340px", aspectRatio: "4 / 5", position: "relative" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={player.photo}
@@ -117,10 +137,10 @@ export default function PlayerSpotlight({ player }: { player: PlayerSpotlightDat
             }}
           />
         </div>
-        <div style={{ flex: "1.3 1 300px", display: "flex", flexDirection: "column" }}>
-          <Header player={player} />
-          <Featured player={player} />
-          <Grid player={player} columns={Math.min(player.stats.length, 3)} />
+        <div style={{ flex: "1.2 1 340px", display: "flex", flexDirection: "column" }}>
+          <Header player={player} large />
+          <Featured player={player} large />
+          <Grid player={player} columns={Math.min(player.stats.length, 3)} large />
         </div>
       </div>
     );
