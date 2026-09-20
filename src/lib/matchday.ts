@@ -58,7 +58,11 @@ export interface PlayerSpotlightData {
   name: string;
   subtitle?: string;
   photo: string;
+  /** Big headline stats shown above the grid, e.g. goal contributions. */
+  featured?: PlayerSpotlightStat[];
   stats: PlayerSpotlightStat[];
+  /** "side" puts a portrait photo beside the stats instead of above them. */
+  layout?: "side";
 }
 
 export interface MatchdayPost {
