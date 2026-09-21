@@ -6,6 +6,7 @@ import { FadeUp } from "@/components/ui/Animate";
 import RatingsPitch from "@/components/matchday/RatingsPitch";
 import MatchStatsBar from "@/components/matchday/MatchStatsBar";
 import PlayerSpotlight from "@/components/matchday/PlayerSpotlight";
+import MatchdaySignup from "@/components/matchday/MatchdaySignup";
 
 const BASE_URL = "https://austin-armstrong.me";
 
@@ -240,6 +241,19 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
               />
             </FadeUp>
           )}
+        </div>
+      </section>
+
+      {/* ── Email signup ───────────────────────────────────────── */}
+      <section
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "4rem",
+          borderTop: "1px solid var(--color-rule)",
+        }}
+      >
+        <div className="container-editorial">
+          <MatchdaySignup />
         </div>
       </section>
     </>

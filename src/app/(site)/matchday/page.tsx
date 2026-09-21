@@ -3,6 +3,7 @@ import Link from "next/link";
 import { COMPETITIONS, getMatchdayPosts, MATCHDAY_TAGS, tagLabel } from "@/lib/matchday";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 import MatchdayCard from "@/components/matchday/MatchdayCard";
+import MatchdaySignup from "@/components/matchday/MatchdaySignup";
 
 const OG_IMAGE = "/og?theme=matchday";
 
@@ -163,6 +164,19 @@ export default async function MatchdayPage({
               ))}
             </StaggerList>
           )}
+        </div>
+      </section>
+
+      {/* ── Email signup ───────────────────────────────────────── */}
+      <section
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "4rem",
+          borderTop: "1px solid var(--color-rule)",
+        }}
+      >
+        <div className="container-editorial">
+          <MatchdaySignup />
         </div>
       </section>
     </>
