@@ -13,8 +13,10 @@
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
-  const apiKey = process.env.BEEHIIV_API_KEY;
-  const publicationId = process.env.BEEHIIV_PUBLICATION_ID;
+  // Trimmed: a key pasted into the Vercel dashboard easily picks up a stray
+  // space or newline, which Beehiiv rejects as INVALID_API_KEY.
+  const apiKey = process.env.BEEHIIV_API_KEY?.trim();
+  const publicationId = process.env.BEEHIIV_PUBLICATION_ID?.trim();
   if (!apiKey || !publicationId) {
     return Response.json({ error: "not_configured" }, { status: 503 });
   }
