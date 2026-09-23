@@ -133,7 +133,7 @@ export const collageTiles: CollageTile[] = [
     href: "/resume",
     slug: "cv",
     label: "CV",
-    desktop: { x: 9, y: 64, w: 31, aspect: 1.6, rotate: -4, z: 5 },
+    desktop: { x: 9, y: 64, w: 31, aspect: 1.6, rotate: -4, z: 7 },
     mobile: { x: 4, y: 67, w: 54, aspect: 1.5, rotate: -5, z: 5 },
   },
   // The newsletter is the one tile that leaves the site.
