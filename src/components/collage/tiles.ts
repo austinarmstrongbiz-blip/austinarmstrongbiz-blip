@@ -1,5 +1,3 @@
-import { SUBSTACK_URL } from "@/lib/substack";
-
 /**
  * Collage landing tiles — desktop layout config.
  *
@@ -69,80 +67,59 @@ export const CANVAS = { width: 960, height: 760 } as const;
  * The narrow canvas, used below 640px. Tall and thin, with its own coordinates
  * in each tile's `mobile` block — the phone gets a real collage, not a list.
  */
-export const MOBILE_CANVAS = { width: 360, height: 1000 } as const;
+export const MOBILE_CANVAS = { width: 360, height: 720 } as const;
 
 /**
- * Eight tiles: six nav routes (src/lib/nav.ts), plus /about, plus the newsletter,
- * the only outbound link. The Homies (/playbook) is left off for now; the page still
- * exists and is still in the nav.
+ * Six tiles for now: Field Notes, Essays, Matchday, Projects, About, CV. Work and
+ * the None of the Above newsletter are off until their art exists (the
+ * `external` field and TileLink's outbound branch stay for the newsletter's
+ * return). The Homies (/playbook) is hidden site-wide.
  *
- * Every tile is a real destination. A tenth "It Always Buffs Out" sticker was
- * cut: it pointed back at the homepage, so it took collage space and a tab stop
- * without going anywhere.
- *
- * Layout logic, roughly: three across the top, three through the middle band,
- * three along the bottom, each row offset from the one above so the tiles
- * interlock instead of sitting in a grid. /about is the visual anchor — biggest
- * z in the middle of the canvas, since it's the "who is this guy" tile.
+ * Layout: a loose two-row interlock, Field Notes / Essays / Matchday across the
+ * top, Projects / CV / About underneath, with About as the tall right-hand anchor
+ * and CV stacked on top of its neighbours.
  */
 export const collageTiles: CollageTile[] = [
   {
     href: "/now",
     slug: "field-notes",
     label: "Field Notes",
-    desktop: { x: 2, y: 4, w: 30, aspect: 1.35, rotate: -4, z: 3 },
-    mobile: { x: 2, y: 2, w: 52, aspect: 1.3, rotate: -4, z: 3 },
+    desktop: { x: 6, y: 4, w: 28, aspect: 1.35, rotate: -4, z: 3 },
+    mobile: { x: 2, y: 3, w: 52, aspect: 1.3, rotate: -4, z: 3 },
   },
   {
     href: "/essays",
     slug: "essays",
     label: "Essays",
-    desktop: { x: 30, y: 0, w: 26, aspect: 0.78, rotate: 3, z: 5 },
-    mobile: { x: 50, y: 9, w: 46, aspect: 0.95, rotate: 5, z: 5 },
+    desktop: { x: 36, y: 2, w: 24, aspect: 0.78, rotate: 3, z: 5 },
+    mobile: { x: 50, y: 12, w: 46, aspect: 0.95, rotate: 5, z: 5 },
   },
   {
     href: "/matchday",
     slug: "matchday",
     label: "Matchday",
-    desktop: { x: 57, y: 6, w: 30, aspect: 1.5, rotate: -6, z: 2 },
-    mobile: { x: 4, y: 20, w: 54, aspect: 1.45, rotate: 3, z: 4 },
+    desktop: { x: 62, y: 8, w: 32, aspect: 1.5, rotate: -6, z: 2 },
+    mobile: { x: 4, y: 29, w: 54, aspect: 1.45, rotate: 3, z: 4 },
   },
   {
     href: "/projects",
     slug: "projects",
     label: "Projects",
-    desktop: { x: 4, y: 34, w: 27, aspect: 1.1, rotate: 5, z: 6 },
-    mobile: { x: 46, y: 30, w: 50, aspect: 1.1, rotate: -6, z: 6 },
+    desktop: { x: 8, y: 40, w: 26, aspect: 1.1, rotate: 5, z: 6 },
+    mobile: { x: 46, y: 37, w: 50, aspect: 1.1, rotate: -6, z: 6 },
   },
-  // /about is added by a sibling branch. The route will exist once branches merge.
   {
     href: "/about",
     slug: "about",
     label: "About",
-    desktop: { x: 33, y: 30, w: 30, aspect: 1.25, rotate: -2, z: 8 },
-    mobile: { x: 6, y: 41, w: 56, aspect: 1.25, rotate: -2, z: 8 },
-  },
-  {
-    href: "/work",
-    slug: "work",
-    label: "Work",
-    desktop: { x: 64, y: 30, w: 26, aspect: 0.95, rotate: 4, z: 4 },
-    mobile: { x: 48, y: 52, w: 46, aspect: 0.95, rotate: 4, z: 7 },
+    desktop: { x: 58, y: 28, w: 30, aspect: 1.25, rotate: -2, z: 8 },
+    mobile: { x: 6, y: 46, w: 56, aspect: 1.25, rotate: -2, z: 8 },
   },
   {
     href: "/resume",
     slug: "cv",
     label: "CV",
-    desktop: { x: 9, y: 64, w: 31, aspect: 1.6, rotate: -4, z: 7 },
-    mobile: { x: 4, y: 67, w: 54, aspect: 1.5, rotate: -5, z: 5 },
-  },
-  // The newsletter is the one tile that leaves the site.
-  {
-    href: SUBSTACK_URL,
-    slug: "none-of-the-above",
-    label: "None of the Above",
-    external: true,
-    desktop: { x: 66, y: 66, w: 26, aspect: 1.3, rotate: 7, z: 6 },
-    mobile: { x: 8, y: 81, w: 54, aspect: 1.3, rotate: 6, z: 4 },
+    desktop: { x: 32, y: 52, w: 32, aspect: 1.6, rotate: -4, z: 9 },
+    mobile: { x: 40, y: 72, w: 54, aspect: 1.5, rotate: -5, z: 9 },
   },
 ];
