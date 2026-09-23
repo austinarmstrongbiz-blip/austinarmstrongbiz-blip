@@ -106,19 +106,6 @@ export default function WorkPage() {
               </a>
             </div>
           </FadeUp>
-          <FadeUp delay={0.4}>
-            <a
-              href="/playbook"
-              className="folio"
-              style={{
-                display: "inline-block",
-                marginTop: "1.5rem",
-                color: "var(--color-ink-muted)",
-              }}
-            >
-              Not ready to talk? See the exact outbound system →
-            </a>
-          </FadeUp>
         </div>
       </section>
 
