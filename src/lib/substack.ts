@@ -6,7 +6,7 @@
 const FEED_URL = "https://austinarmstrong20.substack.com/feed";
 const SUBSTACK_URL = "https://austinarmstrong20.substack.com";
 
-export interface SubstackPost {
+interface SubstackPost {
   title: string;
   slug: string; // last path segment, e.g. "the-generalist-edge"
   url: string; // canonical Substack URL

@@ -14,7 +14,7 @@ export interface Book {
   tag: string;
 }
 
-export interface Thought {
+interface Thought {
   idea: string;
   context: string;
   date: string;
@@ -108,7 +108,7 @@ export const featuredRepoNames: string[] = ["austinarmstrongbiz-blip"];
 
 // ─── STATIC PROJECTS ─────────────────────────────────────────────────────────
 // Non-GitHub projects, case studies, and notable work to show on /projects.
-export interface StaticProject {
+interface StaticProject {
   title: string;
   description: string;
   tag: string;

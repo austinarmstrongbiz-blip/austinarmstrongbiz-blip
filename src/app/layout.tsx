@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import MotionProvider from "@/components/ui/MotionProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Document shell only: html, body, fonts, analytics.
+ * Document shell only: html, body, fonts, analytics, and the motion config.
  *
  * Page chrome lives in the route-group layouts — (site) has the header and
  * footer, (bare) has neither — so the collage landing page can render full
@@ -83,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
 
-        {children}
+        <MotionProvider>{children}</MotionProvider>
 
         <Analytics />
         <SpeedInsights />

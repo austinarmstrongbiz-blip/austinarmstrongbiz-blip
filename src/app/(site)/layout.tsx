@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { navItems } from "@/lib/nav";
 import MobileNav from "@/components/ui/MobileNav";
-import MotionProvider from "@/components/ui/MotionProvider";
 import NewsletterForm from "@/components/ui/NewsletterForm";
+import HideOnMatchday from "@/components/ui/HideOnMatchday";
 import SocialLinks from "@/components/ui/SocialLinks";
 
 /* The brand logo — "Austin Armstrong." in Basilia Bold Italic
@@ -113,9 +113,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </header>
 
       {/* ── Content ── */}
-      <main className="flex-1">
-        <MotionProvider>{children}</MotionProvider>
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* ── Footer ── */}
       <footer
@@ -127,17 +125,19 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         {/* Yellow accent strip */}
         <div style={{ height: "4px", background: "var(--color-yellow)" }} />
 
-        {/* Newsletter capture */}
-        <div
-          className="container-editorial"
-          style={{
-            paddingTop: "3rem",
-            paddingBottom: "2.5rem",
-            borderBottom: "1px solid var(--color-rule)",
-          }}
-        >
-          <NewsletterForm variant="light" />
-        </div>
+        {/* Newsletter capture — not on Matchday, which has its own list */}
+        <HideOnMatchday>
+          <div
+            className="container-editorial"
+            style={{
+              paddingTop: "3rem",
+              paddingBottom: "2.5rem",
+              borderBottom: "1px solid var(--color-rule)",
+            }}
+          >
+            <NewsletterForm variant="light" />
+          </div>
+        </HideOnMatchday>
 
         <div
           className="container-editorial"

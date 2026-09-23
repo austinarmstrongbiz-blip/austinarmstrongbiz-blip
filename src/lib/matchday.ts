@@ -32,6 +32,39 @@ export interface MatchdayRatings {
   manager: { name: string; rating: number };
 }
 
+interface MatchStatRow {
+  label: string;
+  home: number;
+  away: number;
+  /** e.g. "%" — appended after each number. Omit for plain counts. */
+  suffix?: string;
+}
+
+export interface MatchdayStats {
+  home: string;
+  away: string;
+  /** Bar colors, e.g. City's sky blue vs an opponent's own badge color. Defaults to navy/sky. */
+  homeColor?: string;
+  awayColor?: string;
+  rows: MatchStatRow[];
+}
+
+interface PlayerSpotlightStat {
+  label: string;
+  value: string;
+}
+
+export interface PlayerSpotlightData {
+  name: string;
+  subtitle?: string;
+  photo: string;
+  /** Big headline stats shown above the grid, e.g. goal contributions. */
+  featured?: PlayerSpotlightStat[];
+  stats: PlayerSpotlightStat[];
+  /** "side" puts a portrait photo beside the stats instead of above them. */
+  layout?: "side";
+}
+
 export interface MatchdayPost {
   slug: string;
   title: string;
@@ -45,8 +78,14 @@ export interface MatchdayPost {
   bodyHtml: string;
   /** Optional pitch-formation ratings card, parsed from a JSON frontmatter line. */
   ratings: MatchdayRatings | null;
-  /** Card artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
+  /** Optional team-stats comparison bars, parsed from a JSON frontmatter line. */
+  matchStats: MatchdayStats | null;
+  /** Optional single-player callout, dropped in at a `<!--SPOTLIGHT-->` marker in the body. */
+  spotlight: PlayerSpotlightData | null;
+  /** Post header artwork, e.g. /images/matchday/city-porto.jpg. Falls back to a gradient. */
   heroImage: string | null;
+  /** Landing-page card artwork. Falls back to heroImage, then a gradient. */
+  cardImage: string | null;
   /** Competition slug — see COMPETITIONS. */
   competition: string | null;
   /** Short score for the card overlay, e.g. "2 — 0". */
@@ -142,16 +181,23 @@ function toPost(slug: string, raw: string): MatchdayPost {
     readTime: estimateReadTime(bodyHtml),
     bodyHtml,
     ratings: parseRatings(meta.ratings),
+    matchStats: parseJson<MatchdayStats>(meta.matchStats),
+    spotlight: parseJson<PlayerSpotlightData>(meta.spotlight),
     heroImage: meta.heroImage || null,
+    cardImage: meta.cardImage || null,
     competition: meta.competition || null,
     scoreline: meta.scoreline || null,
   };
 }
 
 function parseRatings(raw: string | undefined): MatchdayRatings | null {
+  return parseJson<MatchdayRatings>(raw);
+}
+
+function parseJson<T>(raw: string | undefined): T | null {
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as MatchdayRatings;
+    return JSON.parse(raw) as T;
   } catch {
     return null;
   }

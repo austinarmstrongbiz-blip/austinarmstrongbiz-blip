@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { getMatchdayPosts, getMatchdayPostBySlug, tagLabel } from "@/lib/matchday";
 import { FadeUp } from "@/components/ui/Animate";
 import RatingsPitch from "@/components/matchday/RatingsPitch";
+import MatchStatsBar from "@/components/matchday/MatchStatsBar";
+import PlayerSpotlight from "@/components/matchday/PlayerSpotlight";
+import MatchdaySignup from "@/components/matchday/MatchdaySignup";
 
 const BASE_URL = "https://austin-armstrong.me";
 
@@ -54,6 +57,30 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
   if (!post) notFound();
 
   const canonical = `${BASE_URL}/matchday/${post.slug}`;
+
+  const bodyStyle = {
+    maxWidth: "68ch",
+    fontFamily: "var(--font-sans)",
+    fontSize: "1.075rem",
+    lineHeight: 1.8,
+    color: "var(--color-ink-soft)",
+  } as const;
+
+  // Split after the first paragraph so the stats bar can drop in right below
+  // it, ahead of everything else. Falls back to putting the whole body in
+  // firstParagraphHtml (and skipping the split) if there's no </p> to find.
+  const splitAt = post.bodyHtml.indexOf("</p>");
+  const firstParagraphHtml = splitAt === -1 ? post.bodyHtml : post.bodyHtml.slice(0, splitAt + 4);
+  const restOfBodyHtml = splitAt === -1 ? "" : post.bodyHtml.slice(splitAt + 4);
+
+  // A `<!--SPOTLIGHT-->` marker line in the body, if present, drops the
+  // player spotlight card in at that point instead of just after paragraph 1.
+  const spotlightMarker = "<!--SPOTLIGHT-->";
+  const spotlightAt = post.spotlight ? restOfBodyHtml.indexOf(spotlightMarker) : -1;
+  const restBeforeSpotlight =
+    spotlightAt === -1 ? restOfBodyHtml : restOfBodyHtml.slice(0, spotlightAt);
+  const restAfterSpotlight =
+    spotlightAt === -1 ? "" : restOfBodyHtml.slice(spotlightAt + spotlightMarker.length);
 
   const blogPostingSchema = {
     "@context": "https://schema.org",
@@ -163,22 +190,70 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
         </section>
       )}
 
-      {/* ── Body ───────────────────────────────────────────────── */}
+      {/* ── Body, with the stats bar dropped in after paragraph 1 ─ */}
       <section style={{ paddingTop: "3.5rem", paddingBottom: "5rem" }}>
         <div className="container-editorial">
           <FadeUp>
             <div
-              className="essay-body"
-              style={{
-                maxWidth: "68ch",
-                fontFamily: "var(--font-sans)",
-                fontSize: "1.075rem",
-                lineHeight: 1.8,
-                color: "var(--color-ink-soft)",
-              }}
-              dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
+              className="essay-body matchday-callouts"
+              style={bodyStyle}
+              dangerouslySetInnerHTML={{ __html: firstParagraphHtml }}
             />
           </FadeUp>
+
+          {post.matchStats && (
+            <FadeUp>
+              <div style={{ maxWidth: "68ch", margin: "2.5rem auto" }}>
+                <MatchStatsBar stats={post.matchStats} />
+              </div>
+            </FadeUp>
+          )}
+
+          {restBeforeSpotlight && (
+            <FadeUp>
+              <div
+                className="essay-body matchday-callouts"
+                style={bodyStyle}
+                dangerouslySetInnerHTML={{ __html: restBeforeSpotlight }}
+              />
+            </FadeUp>
+          )}
+
+          {post.spotlight && spotlightAt !== -1 && (
+            <FadeUp>
+              <div
+                style={{
+                  maxWidth: post.spotlight.layout === "side" ? undefined : "68ch",
+                  margin: "3rem auto",
+                }}
+              >
+                <PlayerSpotlight player={post.spotlight} />
+              </div>
+            </FadeUp>
+          )}
+
+          {restAfterSpotlight && (
+            <FadeUp>
+              <div
+                className="essay-body matchday-callouts"
+                style={bodyStyle}
+                dangerouslySetInnerHTML={{ __html: restAfterSpotlight }}
+              />
+            </FadeUp>
+          )}
+        </div>
+      </section>
+
+      {/* ── Email signup ───────────────────────────────────────── */}
+      <section
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "4rem",
+          borderTop: "1px solid var(--color-rule)",
+        }}
+      >
+        <div className="container-editorial">
+          <MatchdaySignup />
         </div>
       </section>
     </>

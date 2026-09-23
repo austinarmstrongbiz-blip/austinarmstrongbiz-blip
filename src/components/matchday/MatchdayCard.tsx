@@ -4,6 +4,7 @@ import { COMPETITIONS, type MatchdayPost } from "@/lib/matchday";
 
 export default function MatchdayCard({ post }: { post: MatchdayPost }) {
   const competition = post.competition ? COMPETITIONS[post.competition] : undefined;
+  const cardImage = post.cardImage ?? post.heroImage;
 
   return (
     <Link
@@ -12,13 +13,13 @@ export default function MatchdayCard({ post }: { post: MatchdayPost }) {
     >
       <article className="matchday-card">
         <div className="matchday-card-media">
-          {post.heroImage && (
+          {cardImage && (
             <Image
-              src={post.heroImage}
+              src={cardImage}
               alt=""
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", objectPosition: "center 15%" }}
             />
           )}
           {post.scoreline && <span className="matchday-score-chip">{post.scoreline}</span>}

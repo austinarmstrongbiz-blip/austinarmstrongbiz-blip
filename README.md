@@ -24,7 +24,6 @@ Personal site for Austin Armstrong — generalist operator, writer, builder. Nex
 | `/playbook`                 | Resources page                                                         |
 | `/feed.xml`                 | RSS feed                                                               |
 | `/api/cv-sync`              | Vercel cron (Mondays 9am UTC) — pulls staged wins into the CV database |
-| `/api/health`               | Health check                                                           |
 
 ## Local development
 
@@ -55,7 +54,6 @@ npm run build           # production build
 npm run lint             # eslint
 npm run format          # prettier --write
 npm run format:check    # prettier --check (CI-safe, no writes)
-npm run analyze         # production build with bundle analyzer report
 npm run test:e2e        # Playwright smoke test (see below)
 ```
 

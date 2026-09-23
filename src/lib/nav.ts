@@ -7,7 +7,7 @@
  * Both now import from here so a new section is added once.
  */
 
-export interface NavItem {
+interface NavItem {
   href: string;
   label: string;
 }

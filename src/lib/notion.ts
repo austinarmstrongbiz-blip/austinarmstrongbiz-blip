@@ -11,17 +11,41 @@ import { reading as staticReading, thinking as staticThinking } from "./data";
 const NOTION_API = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
 
-function notionHeaders() {
-  return {
-    Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-    "Notion-Version": NOTION_VERSION,
-    "Content-Type": "application/json",
-  };
+/**
+ * Query one Notion database. Returns its rows, or null if the request failed
+ * for any reason — each caller decides what a failure falls back to.
+ */
+async function queryDb(
+  caller: string,
+  dbId: string,
+  body: object,
+): Promise<Record<string, unknown>[] | null> {
+  try {
+    const res = await fetch(`${NOTION_API}/databases/${dbId}/query`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) {
+      console.error(`[notion] ${caller} failed: ${res.status} ${res.statusText}`);
+      return null;
+    }
+    const data = await res.json();
+    return data.results ?? [];
+  } catch (err) {
+    console.error(`[notion] ${caller} error:`, err);
+    return null;
+  }
 }
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
-export interface NotionBook {
+interface NotionBook {
   id: string;
   title: string;
   author: string;
@@ -34,7 +58,7 @@ export interface NotionBook {
   cover: string | null;
 }
 
-export interface NotionCVEntry {
+interface NotionCVEntry {
   id: string;
   role: string;
   organization: string;
@@ -128,49 +152,30 @@ export async function getReadingList(): Promise<NotionBook[]> {
   const dbId = process.env.NOTION_READING_DB;
   if (!dbId) return [];
 
-  try {
-    const res = await fetch(`${NOTION_API}/databases/${dbId}/query`, {
-      method: "POST",
-      headers: notionHeaders(),
-      body: JSON.stringify({
-        sorts: [{ property: "Status", direction: "ascending" }],
-      }),
-      next: { revalidate: 3600 },
-    });
+  const results = await queryDb("getReadingList", dbId, {
+    sorts: [{ property: "Status", direction: "ascending" }],
+  });
+  if (!results) return readingFallback();
 
-    if (!res.ok) {
-      console.error(
-        `[notion] getReadingList failed: ${res.status} ${res.statusText} — using fallback`,
-      );
-      return readingFallback();
-    }
+  const books: NotionBook[] = results
+    .map((page: Record<string, unknown>) => {
+      const props = page.properties as Record<string, unknown>;
+      return {
+        id: page.id as string,
+        title: getTitle(props.Title as Parameters<typeof getTitle>[0]),
+        author: getText(props.Author as Parameters<typeof getText>[0]),
+        status: getSelect(props.Status as Parameters<typeof getSelect>[0]) as NotionBook["status"],
+        genre: getMultiSelect(props.Genre as Parameters<typeof getMultiSelect>[0]),
+        notes: getText(props.Notes as Parameters<typeof getText>[0]),
+        rating: getNumber(props.Rating as Parameters<typeof getNumber>[0]),
+        type: getSelect(props.Type as Parameters<typeof getSelect>[0]),
+        link: getUrl(props.Link as Parameters<typeof getUrl>[0]),
+        cover: getUrl(props.Cover as Parameters<typeof getUrl>[0]),
+      };
+    })
+    .filter((b: NotionBook) => b.title);
 
-    const data = await res.json();
-    const books: NotionBook[] = (data.results ?? [])
-      .map((page: Record<string, unknown>) => {
-        const props = page.properties as Record<string, unknown>;
-        return {
-          id: page.id as string,
-          title: getTitle(props.Title as Parameters<typeof getTitle>[0]),
-          author: getText(props.Author as Parameters<typeof getText>[0]),
-          status: getSelect(
-            props.Status as Parameters<typeof getSelect>[0],
-          ) as NotionBook["status"],
-          genre: getMultiSelect(props.Genre as Parameters<typeof getMultiSelect>[0]),
-          notes: getText(props.Notes as Parameters<typeof getText>[0]),
-          rating: getNumber(props.Rating as Parameters<typeof getNumber>[0]),
-          type: getSelect(props.Type as Parameters<typeof getSelect>[0]),
-          link: getUrl(props.Link as Parameters<typeof getUrl>[0]),
-          cover: getUrl(props.Cover as Parameters<typeof getUrl>[0]),
-        };
-      })
-      .filter((b: NotionBook) => b.title);
-
-    return attachCovers(books);
-  } catch (err) {
-    console.error("[notion] getReadingList error — using fallback:", err);
-    return readingFallback();
-  }
+  return attachCovers(books);
 }
 
 // ─── BOOK COVERS ──────────────────────────────────────────────────────────────
@@ -206,55 +211,40 @@ export async function getCVEntries(): Promise<NotionCVEntry[]> {
   const dbId = process.env.NOTION_CV_DB;
   if (!dbId) return [];
 
-  try {
-    const res = await fetch(`${NOTION_API}/databases/${dbId}/query`, {
-      method: "POST",
-      headers: notionHeaders(),
-      body: JSON.stringify({
-        sorts: [
-          { property: "Current", direction: "descending" },
-          { property: "Start Date", direction: "descending" },
-        ],
-      }),
-      next: { revalidate: 3600 },
-    });
+  const results = await queryDb("getCVEntries", dbId, {
+    sorts: [
+      { property: "Current", direction: "descending" },
+      { property: "Start Date", direction: "descending" },
+    ],
+  });
+  if (!results) return [];
 
-    if (!res.ok) {
-      console.error(`[notion] getCVEntries failed: ${res.status} ${res.statusText}`);
-      return [];
-    }
-
-    const data = await res.json();
-    return (data.results ?? [])
-      .map((page: Record<string, unknown>) => {
-        const props = page.properties as Record<string, unknown>;
-        const current = getCheckbox(props.Current as Parameters<typeof getCheckbox>[0]);
-        const startDate = getDate(props["Start Date"] as Parameters<typeof getDate>[0]);
-        const endDate = getDate(props["End Date"] as Parameters<typeof getDate>[0]);
-        return {
-          id: page.id as string,
-          role: getTitle(props.Role as Parameters<typeof getTitle>[0]),
-          organization: getText(props.Organization as Parameters<typeof getText>[0]),
-          type: getSelect(props.Type as Parameters<typeof getSelect>[0]) as NotionCVEntry["type"],
-          current,
-          startDate,
-          endDate,
-          period: formatPeriod(startDate, endDate, current),
-          description: getText(props.Description as Parameters<typeof getText>[0]),
-          location: getText(props.Location as Parameters<typeof getText>[0]),
-          skills: getMultiSelect(props.Skills as Parameters<typeof getMultiSelect>[0]),
-        };
-      })
-      .filter((e: NotionCVEntry & { period: string }) => e.role);
-  } catch (err) {
-    console.error("[notion] getCVEntries error:", err);
-    return [];
-  }
+  return results
+    .map((page: Record<string, unknown>) => {
+      const props = page.properties as Record<string, unknown>;
+      const current = getCheckbox(props.Current as Parameters<typeof getCheckbox>[0]);
+      const startDate = getDate(props["Start Date"] as Parameters<typeof getDate>[0]);
+      const endDate = getDate(props["End Date"] as Parameters<typeof getDate>[0]);
+      return {
+        id: page.id as string,
+        role: getTitle(props.Role as Parameters<typeof getTitle>[0]),
+        organization: getText(props.Organization as Parameters<typeof getText>[0]),
+        type: getSelect(props.Type as Parameters<typeof getSelect>[0]) as NotionCVEntry["type"],
+        current,
+        startDate,
+        endDate,
+        period: formatPeriod(startDate, endDate, current),
+        description: getText(props.Description as Parameters<typeof getText>[0]),
+        location: getText(props.Location as Parameters<typeof getText>[0]),
+        skills: getMultiSelect(props.Skills as Parameters<typeof getMultiSelect>[0]),
+      };
+    })
+    .filter((e: NotionCVEntry & { period: string }) => e.role);
 }
 
 // ─── CURRENTLY THINKING ───────────────────────────────────────────────────────
 
-export interface NotionThought {
+interface NotionThought {
   id: string;
   idea: string;
   context: string;
@@ -267,43 +257,26 @@ export async function getThinkingList(): Promise<NotionThought[]> {
   const dbId = process.env.NOTION_THINKING_DB;
   if (!dbId) return [];
 
-  try {
-    const res = await fetch(`${NOTION_API}/databases/${dbId}/query`, {
-      method: "POST",
-      headers: notionHeaders(),
-      body: JSON.stringify({
-        filter: { property: "Active", checkbox: { equals: true } },
-        sorts: [{ property: "Date", direction: "descending" }],
-      }),
-      next: { revalidate: 3600 },
-    });
+  const results = await queryDb("getThinkingList", dbId, {
+    filter: { property: "Active", checkbox: { equals: true } },
+    sorts: [{ property: "Date", direction: "descending" }],
+  });
+  if (!results) return thinkingFallback();
 
-    if (!res.ok) {
-      console.error(
-        `[notion] getThinkingList failed: ${res.status} ${res.statusText} — using fallback`,
-      );
-      return thinkingFallback();
-    }
-
-    const data = await res.json();
-    return (data.results ?? [])
-      .map((page: Record<string, unknown>) => {
-        const props = page.properties as Record<string, unknown>;
-        const dateStr = getDate(props.Date as Parameters<typeof getDate>[0]);
-        return {
-          id: page.id as string,
-          idea: getTitle(props.Idea as Parameters<typeof getTitle>[0]),
-          context: getText(props.Context as Parameters<typeof getText>[0]),
-          tag: getText(props.Tag as Parameters<typeof getText>[0]),
-          date: dateStr ?? "",
-          dateFormatted: dateStr
-            ? new Date(dateStr).toLocaleDateString("en-US", { month: "long", year: "numeric" })
-            : "",
-        };
-      })
-      .filter((t: NotionThought) => t.idea);
-  } catch (err) {
-    console.error("[notion] getThinkingList error — using fallback:", err);
-    return thinkingFallback();
-  }
+  return results
+    .map((page: Record<string, unknown>) => {
+      const props = page.properties as Record<string, unknown>;
+      const dateStr = getDate(props.Date as Parameters<typeof getDate>[0]);
+      return {
+        id: page.id as string,
+        idea: getTitle(props.Idea as Parameters<typeof getTitle>[0]),
+        context: getText(props.Context as Parameters<typeof getText>[0]),
+        tag: getText(props.Tag as Parameters<typeof getText>[0]),
+        date: dateStr ?? "",
+        dateFormatted: dateStr
+          ? new Date(dateStr).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+          : "",
+      };
+    })
+    .filter((t: NotionThought) => t.idea);
 }
