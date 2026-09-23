@@ -1,6 +1,6 @@
 # Collage art spec
 
-Nine images. This is the homepage, so these are the first thing anyone sees.
+Eight images. This is the homepage, so these are the first thing anyone sees.
 
 ## How to add one
 
@@ -14,7 +14,7 @@ That is the whole job. No code to change. Any tile without a file keeps showing
 its grey placeholder box, so you can add them one at a time and see each one
 land.
 
-## The nine
+## The eight
 
 | File | Export at | Tile | Goes to |
 | --- | --- | --- | --- |
@@ -24,7 +24,6 @@ land.
 | `projects.png` | 518 x 470 | Projects | /projects |
 | `about.png` | 576 x 460 | About | /about |
 | `work.png` | 500 x 526 | Work | /work |
-| `the-homies.png` | 538 x 384 | The Homies | /playbook |
 | `cv.png` | 460 x 288 | CV | /resume |
 | `none-of-the-above.png` | 500 x 384 | None of the Above | Substack |
 
@@ -42,7 +41,7 @@ the cut-out scrapbook look, because the tiles overlap each other.
 **Put the subject in the middle.** Tiles overlap at the edges, so anything near
 a corner may sit underneath a neighbouring tile.
 
-**Keep the file under about 400KB each.** Nine large images on the homepage is
+**Keep the file under about 400KB each.** Eight large images on the homepage is
 the fastest way to make the site feel slow. Canva PNGs are usually fine; if one
 comes out huge, run it through tinypng.com.
 
@@ -59,7 +58,6 @@ You know the vibe better than I do. These are starting points, not rules.
 - **projects.png** — something you built. A screen, a whiteboard, a laptop mid-work.
 - **about.png** — your face. This is the anchor tile in the middle of the collage.
 - **work.png** — the professional one. Suit, desk, on stage.
-- **the-homies.png** — people. The only tile that should have more than one person in it.
 - **cv.png** — the small wide one. A printed page, a headshot, keep it simple.
 - **none-of-the-above.png** — the newsletter. A logo, a cover, or the words themselves.
 

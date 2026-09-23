@@ -72,8 +72,9 @@ export const CANVAS = { width: 960, height: 760 } as const;
 export const MOBILE_CANVAS = { width: 360, height: 1000 } as const;
 
 /**
- * Nine tiles: the seven real nav routes (src/lib/nav.ts), plus /about, plus the
- * newsletter — the only outbound link.
+ * Eight tiles: six nav routes (src/lib/nav.ts), plus /about, plus the newsletter,
+ * the only outbound link. The Homies (/playbook) is left off for now; the page still
+ * exists and is still in the nav.
  *
  * Every tile is a real destination. A tenth "It Always Buffs Out" sticker was
  * cut: it pointed back at the homepage, so it took collage space and a tab stop
@@ -129,18 +130,11 @@ export const collageTiles: CollageTile[] = [
     mobile: { x: 48, y: 52, w: 46, aspect: 0.95, rotate: 4, z: 7 },
   },
   {
-    href: "/playbook",
-    slug: "the-homies",
-    label: "The Homies",
-    desktop: { x: 12, y: 64, w: 28, aspect: 1.4, rotate: -3, z: 7 },
-    mobile: { x: 3, y: 61, w: 52, aspect: 1.4, rotate: 5, z: 6 },
-  },
-  {
     href: "/resume",
     slug: "cv",
     label: "CV",
-    desktop: { x: 42, y: 62, w: 24, aspect: 1.6, rotate: 6, z: 5 },
-    mobile: { x: 46, y: 72, w: 44, aspect: 1.5, rotate: -5, z: 5 },
+    desktop: { x: 11, y: 67, w: 24, aspect: 1.6, rotate: -4, z: 5 },
+    mobile: { x: 6, y: 68, w: 44, aspect: 1.5, rotate: -5, z: 5 },
   },
   // The newsletter is the one tile that leaves the site.
   {
