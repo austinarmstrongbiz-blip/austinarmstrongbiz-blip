@@ -18,6 +18,5 @@ export const navItems: NavItem[] = [
   { href: "/matchday", label: "Matchday" },
   { href: "/projects", label: "Projects" },
   { href: "/work", label: "Work" },
-  { href: "/playbook", label: "The Homies" },
   { href: "/resume", label: "CV" },
 ];

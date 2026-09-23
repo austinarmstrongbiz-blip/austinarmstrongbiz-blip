@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 
+// Hidden for now (2026-09-23): out of the nav, the sitemap and the /work page,
+// and noindex so search engines drop it. The page still works for anyone with
+// the direct link. To bring it back, reverse the commit that added this note.
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "The Outbound Playbook",
   description:
     "The exact outbound system that generated 4,989 leads in 30 days and closed a pilot one hour after the first call. Buy-signal targeting, multi-channel sequencing, and a pipeline that never goes cold.",
