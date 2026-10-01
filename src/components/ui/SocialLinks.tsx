@@ -64,7 +64,7 @@ const socials: Social[] = [
   },
   {
     // NOTE: handle assumed to match Instagram/LinkedIn — Austin to confirm.
-    href: "https://www.tiktok.com/@austinarmstrong20",
+    href: "https://www.tiktok.com/@austin.armstrong20",
     label: "TikTok",
     icon: (
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
