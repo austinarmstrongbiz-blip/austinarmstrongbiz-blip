@@ -63,7 +63,7 @@ export interface CollageTile {
  * Canvas the percentages above are measured against.
  * The rendered canvas is `min(960px, 100%)` wide and holds this aspect ratio.
  */
-export const CANVAS = { width: 960, height: 760 } as const;
+export const CANVAS = { width: 1400, height: 830 } as const;
 
 /**
  * The narrow canvas, used below 640px. Tall and thin, with its own coordinates
@@ -90,51 +90,51 @@ export const collageTiles: CollageTile[] = [
     href: "/now",
     slug: "field-notes",
     label: "Field Notes",
-    desktop: { x: 2, y: 4, w: 30, aspect: 1.35, rotate: -4, z: 3 },
-    mobile: { x: 2, y: 2, w: 52, aspect: 1.3, rotate: -4, z: 3 },
+    desktop: { x: 2.3, y: 2, w: 30, aspect: 1.35, rotate: -4, z: 3 },
+    mobile: { x: 0.3, y: 14.6, w: 67, aspect: 1.3, rotate: -4, z: 3 },
   },
   {
     href: "/essays",
     slug: "essays",
     label: "Essays",
-    desktop: { x: 30, y: 0, w: 26, aspect: 0.78, rotate: 3, z: 5 },
-    mobile: { x: 50, y: 9, w: 46, aspect: 0.95, rotate: 5, z: 5 },
+    desktop: { x: 34, y: -1.3, w: 26, aspect: 0.78, rotate: 3, z: 5 },
+    mobile: { x: 49.7, y: 2.2, w: 53.5, aspect: 0.95, rotate: 5, z: 9 },
   },
   {
     href: "/matchday",
     slug: "matchday",
     label: "Matchday",
-    desktop: { x: 57, y: 6, w: 30, aspect: 1.5, rotate: -6, z: 2 },
-    mobile: { x: 4, y: 20, w: 54, aspect: 1.45, rotate: 3, z: 4 },
+    desktop: { x: 56.6, y: 10, w: 40, aspect: 1.5, rotate: -6, z: 2 },
+    mobile: { x: 0.5, y: 37.4, w: 96.8, aspect: 1.45, rotate: 3, z: 4 },
   },
   {
     href: "/projects",
     slug: "projects",
     label: "Projects",
-    desktop: { x: 4, y: 34, w: 27, aspect: 1.1, rotate: 5, z: 6 },
-    mobile: { x: 46, y: 30, w: 50, aspect: 1.1, rotate: -6, z: 6 },
+    desktop: { x: 12, y: 36.9, w: 21.5, aspect: 1.1, rotate: 5, z: 6 },
+    mobile: { x: 7.6, y: 70.3, w: 35.8, aspect: 1.1, rotate: -6, z: 11 },
   },
   // /about is added by a sibling branch. The route will exist once branches merge.
   {
     href: "/about",
     slug: "about",
     label: "About",
-    desktop: { x: 33, y: 30, w: 30, aspect: 1.25, rotate: -2, z: 8 },
-    mobile: { x: 6, y: 41, w: 56, aspect: 1.25, rotate: -2, z: 8 },
+    desktop: { x: 34.6, y: 38.2, w: 30, aspect: 1.25, rotate: -2, z: 8 },
+    mobile: { x: 2.6, y: 42.3, w: 68.1, aspect: 1.25, rotate: 0, z: 8 },
   },
   {
     href: "/work",
     slug: "work",
     label: "Work",
-    desktop: { x: 64, y: 30, w: 26, aspect: 0.95, rotate: 4, z: 4 },
-    mobile: { x: 48, y: 52, w: 46, aspect: 0.95, rotate: 4, z: 7 },
+    desktop: { x: 64, y: 16.8, w: 30.5, aspect: 0.95, rotate: 4, z: 4 },
+    mobile: { x: 47.2, y: 63.5, w: 56.1, aspect: 0.95, rotate: 8.8, z: 1 },
   },
   {
     href: "/resume",
     slug: "cv",
     label: "CV",
-    desktop: { x: 9, y: 64, w: 31, aspect: 1.6, rotate: -4, z: 7 },
-    mobile: { x: 4, y: 67, w: 54, aspect: 1.5, rotate: -5, z: 5 },
+    desktop: { x: 2.2, y: 67, w: 26.9, aspect: 1.6, rotate: -21.1, z: 7 },
+    mobile: { x: -1.6, y: -0.1, w: 70.1, aspect: 1.5, rotate: -6.3, z: 5 },
   },
   // The newsletter is the one tile that leaves the site.
   {
@@ -142,7 +142,7 @@ export const collageTiles: CollageTile[] = [
     slug: "none-of-the-above",
     label: "None of the Above",
     external: true,
-    desktop: { x: 66, y: 66, w: 26, aspect: 1.3, rotate: 7, z: 6 },
-    mobile: { x: 8, y: 81, w: 54, aspect: 1.3, rotate: 6, z: 4 },
+    desktop: { x: 64.1, y: 66.3, w: 26, aspect: 1.3, rotate: -18.9, z: 6 },
+    mobile: { x: 46.2, y: 26.6, w: 54, aspect: 1.3, rotate: 6, z: 2 },
   },
 ];
