@@ -158,35 +158,36 @@ export default async function EssayPage({ params }: { params: Promise<{ slug: st
             />
           </FadeUp>
 
-          {/* Canonical credit + Substack link */}
-          <div
-            style={{
-              maxWidth: "68ch",
-              marginTop: "3rem",
-              paddingTop: "1.5rem",
-              borderTop: "1px solid var(--color-rule)",
-            }}
-          >
-            <p
+          {post.substackUrl && (
+            <div
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "0.9rem",
-                color: "var(--color-ink-muted)",
-                lineHeight: 1.6,
+                maxWidth: "68ch",
+                marginTop: "3rem",
+                paddingTop: "1.5rem",
+                borderTop: "1px solid var(--color-rule)",
               }}
             >
-              This essay also appears on{" "}
-              <a
-                href={post.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--color-ink-soft)", textDecoration: "underline" }}
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.9rem",
+                  color: "var(--color-ink-muted)",
+                  lineHeight: 1.6,
+                }}
               >
-                Substack
-              </a>
-              . Subscribe there to get new essays delivered to your inbox.
-            </p>
-          </div>
+                This essay also appears on{" "}
+                <a
+                  href={post.substackUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--color-ink-soft)", textDecoration: "underline" }}
+                >
+                  Substack
+                </a>
+                . Subscribe there to get new essays delivered to your inbox.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

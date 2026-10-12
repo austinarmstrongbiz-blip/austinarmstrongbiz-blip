@@ -1,10 +1,16 @@
 /**
- * Substack RSS feed parser.
- * Fetches posts from Austin's Substack, ISR-cached for 1 hour.
+ * Essay content from Austin's Substack RSS feed and local Markdown files.
+ * Substack posts are ISR-cached for 1 hour; local essays are read at build time.
  */
+
+import fs from "node:fs";
+import path from "node:path";
+import { marked } from "marked";
 
 const FEED_URL = "https://austinarmstrong20.substack.com/feed";
 const SUBSTACK_URL = "https://austinarmstrong20.substack.com";
+const LOCAL_ESSAYS_DIR = path.join(process.cwd(), "content", "essays");
+const SITE_URL = "https://austin-armstrong.me";
 
 interface SubstackPost {
   title: string;
@@ -16,6 +22,58 @@ interface SubstackPost {
   imageUrl: string | null;
   readTime: string | null;
   bodyHtml: string; // full article HTML from <content:encoded>
+  substackUrl: string | null;
+}
+
+function localEssayPosts(): SubstackPost[] {
+  let files: string[];
+  try {
+    files = fs.readdirSync(LOCAL_ESSAYS_DIR);
+  } catch {
+    return [];
+  }
+
+  return files
+    .filter((file) => file.endsWith(".md") && !file.startsWith("_"))
+    .map((file) => {
+      const slug = file.replace(/\.md$/, "");
+      const raw = fs.readFileSync(path.join(LOCAL_ESSAYS_DIR, file), "utf8");
+      const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(raw);
+      const metadata: Record<string, string> = {};
+      for (const line of (match?.[1] ?? "").split(/\r?\n/)) {
+        const separator = line.indexOf(":");
+        if (separator < 0) continue;
+        const key = line.slice(0, separator).trim();
+        const value = line
+          .slice(separator + 1)
+          .trim()
+          .replace(/^(["'])(.*)\1$/, "$2");
+        if (key) metadata[key] = value;
+      }
+
+      const body = match?.[2] ?? raw;
+      const bodyHtml = marked.parse(body, { async: false }) as string;
+      const date = metadata.date ? new Date(`${metadata.date}T12:00:00Z`) : new Date();
+      const dateFormatted = date.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      });
+      const wordCount = body.split(/\s+/).filter(Boolean).length;
+
+      return {
+        title: metadata.title || slug,
+        slug,
+        url: `${SITE_URL}/essays/${slug}`,
+        date: date.toISOString(),
+        dateFormatted,
+        summary: metadata.excerpt || "",
+        imageUrl: null,
+        readTime: `${Math.max(1, Math.round(wordCount / 220))} min read`,
+        bodyHtml,
+        substackUrl: null,
+      };
+    });
 }
 
 // Derive a URL-safe slug from a Substack post URL (.../p/<slug>)
@@ -58,11 +116,13 @@ function cleanSummary(raw: string, maxLen = 180): string {
 }
 
 export async function getSubstackPosts(limit = 20): Promise<SubstackPost[]> {
+  const localPosts = localEssayPosts();
+
   try {
     const res = await fetch(FEED_URL, {
       next: { revalidate: 3600 },
     });
-    if (!res.ok) return [];
+    if (!res.ok) return localPosts.slice(0, limit);
 
     const xml = await res.text();
 
@@ -109,12 +169,13 @@ export async function getSubstackPosts(limit = 20): Promise<SubstackPost[]> {
         imageUrl,
         readTime,
         bodyHtml: contentRaw,
+        substackUrl: url,
       });
     }
 
-    return posts;
+    return [...localPosts, ...posts].sort((a, b) => b.date.localeCompare(a.date)).slice(0, limit);
   } catch {
-    return [];
+    return localPosts.slice(0, limit);
   }
 }
 

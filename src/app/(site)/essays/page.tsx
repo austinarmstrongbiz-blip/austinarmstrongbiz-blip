@@ -29,7 +29,7 @@ export default async function EssaysPage() {
         <div className="container-editorial" style={{ paddingTop: "4rem" }}>
           <FadeUp>
             <div className="folio" style={{ marginBottom: "2rem" }}>
-              {posts.length > 0 ? `${posts.length} essays` : "Essays"} · Published on Substack
+              {posts.length > 0 ? `${posts.length} essays` : "Essays"} · On Substack and this site
             </div>
           </FadeUp>
           <FadeUp delay={0.1}>
