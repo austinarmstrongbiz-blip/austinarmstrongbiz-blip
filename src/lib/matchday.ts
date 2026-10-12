@@ -86,6 +86,8 @@ export interface MatchdayPost {
   heroImage: string | null;
   /** Landing-page card artwork. Falls back to heroImage, then a gradient. */
   cardImage: string | null;
+  /** CSS object-position for the card crop, e.g. "center 55%". Defaults to "center 15%". */
+  cardFocus: string | null;
   /** Competition slug — see COMPETITIONS. */
   competition: string | null;
   /** Short score for the card overlay, e.g. "2 — 0". */
@@ -185,6 +187,7 @@ function toPost(slug: string, raw: string): MatchdayPost {
     spotlight: parseJson<PlayerSpotlightData>(meta.spotlight),
     heroImage: meta.heroImage || null,
     cardImage: meta.cardImage || null,
+    cardFocus: meta.cardFocus || null,
     competition: meta.competition || null,
     scoreline: meta.scoreline || null,
   };
