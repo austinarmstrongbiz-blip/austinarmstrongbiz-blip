@@ -89,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Analytics />
         <SpeedInsights />
-        <Clarity />
+        <Clarity projectId={process.env.NEXT_CLARITY_ID} />
       </body>
     </html>
   );

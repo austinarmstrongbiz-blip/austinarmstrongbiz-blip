@@ -5,12 +5,11 @@ import Script from "next/script";
 /**
  * Microsoft Clarity — session recordings, heatmaps, rage/dead-click signals.
  *
- * Renders nothing unless `NEXT_PUBLIC_CLARITY_ID` is set, so the third-party
+ * Renders nothing unless `projectId` (passed from layout.tsx, read from `NEXT_CLARITY_ID`) is set, so the third-party
  * script ships dark until a project ID is added to the Vercel env vars.
  * Complements (does not replace) Vercel Analytics + Speed Insights.
  */
-export default function Clarity() {
-  const projectId = process.env.NEXT_PUBLIC_CLARITY_ID;
+export default function Clarity({ projectId }: { projectId?: string }) {
   if (!projectId) return null;
 
   return (
