@@ -352,7 +352,7 @@ a {
 }
 
 /* ─── MOBILE NAV ─────────────────────────────────────────────────── */
-@media (max-width: 640px) {
+@media (max-width: 960px) {
   .desktop-nav {
     display: none !important;
   }
