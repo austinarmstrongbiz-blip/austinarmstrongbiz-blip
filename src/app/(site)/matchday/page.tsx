@@ -143,6 +143,7 @@ export default async function MatchdayPage({
                 {/* Keyed by filter so the menu closes after a pick. */}
                 <details
                   key={`club-${activeComp}-${activeTag}-${activeSeason}`}
+                  name="matchday-menu"
                   className="matchday-menu"
                 >
                   <summary>
@@ -170,6 +171,7 @@ export default async function MatchdayPage({
 
                 <details
                   key={`season-${activeComp}-${activeTag}-${activeSeason}`}
+                  name="matchday-menu"
                   className="matchday-menu"
                 >
                   <summary>
