@@ -33,6 +33,7 @@ export default function MatchdayCard({
             />
           )}
           {post.scoreline && <span className="matchday-score-chip">{post.scoreline}</span>}
+          {featured && <span className="matchday-latest">Latest</span>}
         </div>
 
         <div

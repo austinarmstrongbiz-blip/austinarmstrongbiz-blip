@@ -1006,3 +1006,102 @@ a {
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+
+/* ─── Phone layout ──────────────────────────────────────────────── */
+@media (max-width: 639px) {
+  /* Tighter header, competitions in one swipeable row beside the club menu */
+  .matchday-header > .container-editorial {
+    padding-top: 1.75rem;
+  }
+  .matchday-header .text-display {
+    font-size: 3.2rem;
+  }
+  .matchday-count-rule {
+    margin-top: 0.75rem;
+  }
+  .matchday-filters {
+    flex-wrap: nowrap;
+    margin-top: 1rem;
+  }
+  .matchday-segments {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .matchday-segment,
+  .matchday-menu summary {
+    white-space: nowrap;
+    flex: none;
+  }
+  .matchday-header p {
+    margin-top: 1rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+  }
+
+  /* Featured card full width, the rest 2 across */
+  .matchday-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .matchday-grid > :first-child {
+    grid-column: span 2;
+  }
+  .matchday-grid > :not(:first-child) .matchday-card > div:last-child {
+    padding: 0.7rem !important;
+    gap: 0.5rem !important;
+  }
+  .matchday-grid > :not(:first-child) h2 {
+    font-size: 0.9rem !important;
+  }
+  .matchday-grid > :not(:first-child) .matchday-comp-badge {
+    display: none;
+  }
+  .matchday-grid > :not(:first-child) .matchday-score-chip {
+    left: 0.4rem;
+    bottom: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.2rem 0.5rem;
+  }
+}
+
+/* ─── Featured card: gold frame, navy body ───────────────────────── */
+.matchday-grid > :first-child .matchday-card {
+  border: 2px solid var(--city-gold);
+  box-shadow:
+    0 0 0 4px rgba(255, 198, 89, 0.35),
+    0 14px 36px rgba(28, 44, 91, 0.3);
+}
+.matchday-grid > :first-child .matchday-card > div:last-child {
+  background: linear-gradient(160deg, var(--city-navy) 0%, var(--city-navy-soft) 100%);
+}
+.matchday-grid > :first-child h2 {
+  color: #fff !important;
+}
+.matchday-grid > :first-child .folio {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+.matchday-grid > :first-child .matchday-comp-badge {
+  background: var(--city-gold);
+  color: var(--city-navy);
+}
+.matchday-grid > :first-child .matchday-score-chip {
+  background: var(--city-gold);
+  color: var(--city-navy);
+}
+.matchday-latest {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--city-gold);
+  color: var(--city-navy);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
