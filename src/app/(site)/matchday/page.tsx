@@ -48,126 +48,158 @@ export default async function MatchdayPage({
       (!activeTag || p.tags.includes(activeTag)) && (!activeComp || p.competition === activeComp),
   );
 
+  // Competition and club filters combine, so each link keeps the other one.
+  const href = (comp: string | null, t: string | null) => {
+    const q = new URLSearchParams();
+    if (comp) q.set("competition", comp);
+    if (t) q.set("tag", t);
+    const qs = q.toString();
+    return qs ? `/matchday?${qs}` : "/matchday";
+  };
+
   // Only surface filters that would actually return something.
-  const chips: Chip[] = [
-    ...Object.entries(COMPETITIONS).map(([slug, { label }]) => ({
-      key: `comp-${slug}`,
+  const compChips: Chip[] = Object.entries(COMPETITIONS)
+    .map(([slug, { label }]) => ({
+      key: slug,
       label,
       count: all.filter((p) => p.competition === slug).length,
-      href: `/matchday?competition=${slug}`,
+      href: href(slug, activeTag),
       active: activeComp === slug,
-    })),
-    ...MATCHDAY_TAGS.map((t) => ({
-      key: `tag-${t.slug}`,
-      label: t.label,
-      count: all.filter((p) => p.tags.includes(t.slug)).length,
-      href: `/matchday?tag=${t.slug}`,
-      active: activeTag === t.slug,
-    })),
-  ].filter((c) => c.count > 0);
+    }))
+    .filter((c) => c.count > 0);
+  const clubChips: Chip[] = MATCHDAY_TAGS.map((t) => ({
+    key: t.slug,
+    label: t.label,
+    count: all.filter((p) => p.tags.includes(t.slug)).length,
+    href: href(activeComp, t.slug),
+    active: activeTag === t.slug,
+  })).filter((c) => c.count > 0);
 
-  const filtered = Boolean(activeTag || activeComp);
   const countLabel = `${all.length} ${all.length === 1 ? "post" : "posts"}`;
 
   return (
     <>
-      {/* ── Header ─────────────────────────────────────────────── */}
-      <section
-        style={{
-          paddingTop: "0",
-          paddingBottom: "3.5rem",
-          background: `linear-gradient(160deg, var(--city-sky) 0%, var(--city-sky-deep) 100%)`,
-          borderBottom: "3px solid var(--city-navy)",
-        }}
-      >
-        <div className="container-editorial" style={{ paddingTop: "4rem", textAlign: "center" }}>
-          <FadeUp>
-            <h1 className="text-display" style={{ color: "var(--city-navy)" }}>
-              Matchday
-            </h1>
-          </FadeUp>
-
-          <FadeUp delay={0.1}>
-            <div className="matchday-count-rule">
-              <span aria-hidden />
-              <span className="matchday-count">{countLabel}</span>
-              <span aria-hidden />
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.15}>
-            <nav aria-label="Filter matchday posts" className="matchday-chips">
-              {filtered && (
-                <Link href="/matchday" className="matchday-chip">
-                  All <span className="matchday-chip-count">{all.length}</span>
-                </Link>
-              )}
-              {chips.map((c) => (
-                <Link
-                  key={c.key}
-                  href={c.href}
-                  aria-current={c.active ? "true" : undefined}
-                  className={`matchday-chip${c.active ? " is-active" : ""}`}
-                >
-                  {c.label} <span className="matchday-chip-count">{c.count}</span>
-                </Link>
-              ))}
-            </nav>
-          </FadeUp>
-
-          <FadeUp delay={0.2}>
-            <p
-              style={{
-                margin: "2rem auto 0",
-                maxWidth: "52ch",
-                fontSize: "1.05rem",
-                lineHeight: 1.75,
-                fontStyle: "italic",
-                color: "rgba(28,44,91,0.8)",
-                fontFamily: "var(--font-sans)",
-              }}
-            >
-              Ninety minutes, then a few thousand words. Manchester City mostly, but any match worth
-              staying up for. I know ball, you should learn some. Educate yourself below.
-            </p>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── Cards ──────────────────────────────────────────────── */}
-      <section style={{ paddingTop: "3.5rem", paddingBottom: "5rem" }}>
-        <div className="container-editorial">
-          {posts.length === 0 ? (
+      <div className="matchday-backdrop">
+        {/* ── Header ─────────────────────────────────────────────── */}
+        <section className="matchday-header">
+          <div className="container-editorial matchday-wide">
             <FadeUp>
+              <h1 className="text-display" style={{ color: "var(--city-navy)" }}>
+                Matchday
+              </h1>
+            </FadeUp>
+
+            <FadeUp delay={0.1}>
+              <div className="matchday-count-rule">
+                <span aria-hidden />
+                <span className="matchday-count">{countLabel}</span>
+                <span aria-hidden />
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.15}>
+              <div className="matchday-filters">
+                <nav aria-label="Filter by competition" className="matchday-segments">
+                  <Link
+                    href={href(null, activeTag)}
+                    aria-current={!activeComp ? "true" : undefined}
+                    className={`matchday-segment${!activeComp ? " is-active" : ""}`}
+                  >
+                    All <span className="matchday-segment-count">{all.length}</span>
+                  </Link>
+                  {compChips.map((c) => (
+                    <Link
+                      key={c.key}
+                      href={c.href}
+                      aria-current={c.active ? "true" : undefined}
+                      className={`matchday-segment${c.active ? " is-active" : ""}`}
+                    >
+                      {c.label} <span className="matchday-segment-count">{c.count}</span>
+                    </Link>
+                  ))}
+                </nav>
+
+                {/* Keyed by filter so the menu closes after a pick. */}
+                <details key={`${activeComp}-${activeTag}`} className="matchday-menu">
+                  <summary>
+                    <span className="matchday-menu-label">Club</span>
+                    {clubChips.find((c) => c.active)?.label ?? "All"}
+                  </summary>
+                  <div className="matchday-menu-list">
+                    <Link
+                      href={href(activeComp, null)}
+                      className={`matchday-segment${!activeTag ? " is-active" : ""}`}
+                    >
+                      All <span className="matchday-segment-count">{all.length}</span>
+                    </Link>
+                    {clubChips.map((c) => (
+                      <Link
+                        key={c.key}
+                        href={c.href}
+                        className={`matchday-segment${c.active ? " is-active" : ""}`}
+                      >
+                        {c.label} <span className="matchday-segment-count">{c.count}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.2}>
               <p
                 style={{
-                  fontFamily: "var(--font-display)",
+                  margin: "1.5rem auto 0",
+                  maxWidth: "52ch",
+                  fontSize: "1.05rem",
+                  lineHeight: 1.75,
                   fontStyle: "italic",
-                  fontSize: "1.4rem",
-                  color: "var(--color-ink-muted)",
-                  maxWidth: "40ch",
+                  color: "rgba(28,44,91,0.8)",
+                  fontFamily: "var(--font-sans)",
                 }}
               >
-                {activeComp
-                  ? `Nothing filed under ${COMPETITIONS[activeComp].label} yet.`
-                  : activeTag
-                    ? `Nothing filed under ${tagLabel(activeTag)} yet.`
-                    : "Nothing here yet. Give it one bad result."}
+                Ninety minutes, then a few thousand words. Manchester City mostly, but any match
+                worth staying up for. I know ball, you should learn some. Educate yourself below.
               </p>
             </FadeUp>
-          ) : (
-            // Keyed by filter so the grid remounts and replays its entrance. Without
-            // this, cards new to the list mount hidden and never animate in.
-            <StaggerList key={activeComp ?? activeTag ?? "all"} className="matchday-grid">
-              {posts.map((post) => (
-                <StaggerItem key={post.slug} style={{ display: "flex" }}>
-                  <MatchdayCard post={post} />
-                </StaggerItem>
-              ))}
-            </StaggerList>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+
+        {/* ── Cards ──────────────────────────────────────────────── */}
+        <section style={{ paddingTop: "2rem", paddingBottom: "5rem" }}>
+          <div className="container-editorial matchday-wide">
+            {posts.length === 0 ? (
+              <FadeUp>
+                <p
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontStyle: "italic",
+                    fontSize: "1.4rem",
+                    color: "var(--color-ink-muted)",
+                    maxWidth: "40ch",
+                  }}
+                >
+                  {activeComp
+                    ? `Nothing filed under ${COMPETITIONS[activeComp].label} yet.`
+                    : activeTag
+                      ? `Nothing filed under ${tagLabel(activeTag)} yet.`
+                      : "Nothing here yet. Give it one bad result."}
+                </p>
+              </FadeUp>
+            ) : (
+              // Keyed by filter so the grid remounts and replays its entrance. Without
+              // this, cards new to the list mount hidden and never animate in.
+              <StaggerList key={activeComp ?? activeTag ?? "all"} className="matchday-grid">
+                {posts.map((post, i) => (
+                  <StaggerItem key={post.slug} style={{ display: "flex" }}>
+                    <MatchdayCard post={post} featured={i === 0} />
+                  </StaggerItem>
+                ))}
+              </StaggerList>
+            )}
+          </div>
+        </section>
+      </div>
 
       {/* ── Email signup ───────────────────────────────────────── */}
       <section
