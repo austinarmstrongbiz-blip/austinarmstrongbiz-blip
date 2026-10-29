@@ -156,7 +156,9 @@ export default async function MatchdayPage({
               </p>
             </FadeUp>
           ) : (
-            <StaggerList className="matchday-grid">
+            // Keyed by filter so the grid remounts and replays its entrance. Without
+            // this, cards new to the list mount hidden and never animate in.
+            <StaggerList key={activeComp ?? activeTag ?? "all"} className="matchday-grid">
               {posts.map((post) => (
                 <StaggerItem key={post.slug} style={{ display: "flex" }}>
                   <MatchdayCard post={post} />
