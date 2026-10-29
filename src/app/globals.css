@@ -746,6 +746,7 @@ a {
   position: relative;
 }
 .matchday-menu summary {
+  position: relative;
   list-style: none;
   cursor: pointer;
   padding: 0.75rem 2.2rem 0.75rem 1.1rem;
@@ -1045,6 +1046,20 @@ a {
   .matchday-menu summary {
     white-space: nowrap;
     flex: none;
+  }
+  /* Dropdown lists open full width under the filter row, so they stay
+     on screen. Only one opens at a time (details share a name). */
+  .matchday-filters {
+    position: relative;
+  }
+  .matchday-menu {
+    position: static;
+  }
+  .matchday-menu-list {
+    left: 0;
+    right: 0;
+    min-width: 0;
+    z-index: 10;
   }
   .matchday-header p {
     margin-top: 1rem !important;
