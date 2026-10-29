@@ -816,6 +816,15 @@ a {
   .matchday-grid > :not(:first-child) h2 {
     font-size: 1.15rem !important;
   }
+  /* 3 or fewer posts (one competition picked): stack the small cards in
+     the column beside the featured tile, same shape as the full grid. */
+  .matchday-grid:not(:has(> :nth-child(4))) > :not(:first-child) {
+    grid-column: 3;
+    align-self: start;
+  }
+  .matchday-grid:not(:has(> :nth-child(3))) > :first-child .matchday-card {
+    min-height: 48rem;
+  }
 }
 
 .matchday-card {
@@ -1019,11 +1028,13 @@ a {
   .matchday-count-rule {
     margin-top: 0.75rem;
   }
+  /* Competition bar gets its own swipeable row, dropdowns sit below it. */
   .matchday-filters {
-    flex-wrap: nowrap;
     margin-top: 1rem;
+    gap: 0.5rem;
   }
   .matchday-segments {
+    flex: 1 1 100%;
     flex-wrap: nowrap;
     justify-content: flex-start;
     min-width: 0;

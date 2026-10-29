@@ -35,24 +35,35 @@ interface Chip {
 export default async function MatchdayPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tag?: string; competition?: string }>;
+  searchParams: Promise<{ tag?: string; competition?: string; season?: string }>;
 }) {
-  const { tag, competition } = await searchParams;
+  const { tag, competition, season } = await searchParams;
   const all = getMatchdayPosts();
+
+  // Football seasons run August to May, so a post dated Oct 2026 is "2026/27".
+  const seasonOf = (date: string) => {
+    const y = Number(date.slice(0, 4));
+    const start = Number(date.slice(5, 7)) >= 7 ? y : y - 1;
+    return `${start}-${String(start + 1).slice(2)}`;
+  };
 
   const activeTag = tag && MATCHDAY_TAGS.some((t) => t.slug === tag) ? tag : null;
   const activeComp = competition && COMPETITIONS[competition] ? competition : null;
+  const activeSeason = season && all.some((p) => seasonOf(p.date) === season) ? season : null;
 
   const posts = all.filter(
     (p) =>
-      (!activeTag || p.tags.includes(activeTag)) && (!activeComp || p.competition === activeComp),
+      (!activeTag || p.tags.includes(activeTag)) &&
+      (!activeComp || p.competition === activeComp) &&
+      (!activeSeason || seasonOf(p.date) === activeSeason),
   );
 
-  // Competition and club filters combine, so each link keeps the other one.
-  const href = (comp: string | null, t: string | null) => {
+  // Competition, club and season filters combine, so each link keeps the others.
+  const href = (comp: string | null, t: string | null, s: string | null = activeSeason) => {
     const q = new URLSearchParams();
     if (comp) q.set("competition", comp);
     if (t) q.set("tag", t);
+    if (s) q.set("season", s);
     const qs = q.toString();
     return qs ? `/matchday?${qs}` : "/matchday";
   };
@@ -74,6 +85,16 @@ export default async function MatchdayPage({
     href: href(activeComp, t.slug),
     active: activeTag === t.slug,
   })).filter((c) => c.count > 0);
+  const seasonChips: Chip[] = [...new Set(all.map((p) => seasonOf(p.date)))]
+    .sort()
+    .reverse()
+    .map((s) => ({
+      key: s,
+      label: s.replace("-", "/"),
+      count: all.filter((p) => seasonOf(p.date) === s).length,
+      href: href(activeComp, activeTag, s),
+      active: activeSeason === s,
+    }));
 
   const countLabel = `${all.length} ${all.length === 1 ? "post" : "posts"}`;
 
@@ -120,7 +141,10 @@ export default async function MatchdayPage({
                 </nav>
 
                 {/* Keyed by filter so the menu closes after a pick. */}
-                <details key={`${activeComp}-${activeTag}`} className="matchday-menu">
+                <details
+                  key={`club-${activeComp}-${activeTag}-${activeSeason}`}
+                  className="matchday-menu"
+                >
                   <summary>
                     <span className="matchday-menu-label">Club</span>
                     {clubChips.find((c) => c.active)?.label ?? "All"}
@@ -133,6 +157,33 @@ export default async function MatchdayPage({
                       All <span className="matchday-segment-count">{all.length}</span>
                     </Link>
                     {clubChips.map((c) => (
+                      <Link
+                        key={c.key}
+                        href={c.href}
+                        className={`matchday-segment${c.active ? " is-active" : ""}`}
+                      >
+                        {c.label} <span className="matchday-segment-count">{c.count}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+
+                <details
+                  key={`season-${activeComp}-${activeTag}-${activeSeason}`}
+                  className="matchday-menu"
+                >
+                  <summary>
+                    <span className="matchday-menu-label">Season</span>
+                    {seasonChips.find((c) => c.active)?.label ?? "All"}
+                  </summary>
+                  <div className="matchday-menu-list">
+                    <Link
+                      href={href(activeComp, activeTag, null)}
+                      className={`matchday-segment${!activeSeason ? " is-active" : ""}`}
+                    >
+                      All <span className="matchday-segment-count">{all.length}</span>
+                    </Link>
+                    {seasonChips.map((c) => (
                       <Link
                         key={c.key}
                         href={c.href}
@@ -189,7 +240,10 @@ export default async function MatchdayPage({
             ) : (
               // Keyed by filter so the grid remounts and replays its entrance. Without
               // this, cards new to the list mount hidden and never animate in.
-              <StaggerList key={activeComp ?? activeTag ?? "all"} className="matchday-grid">
+              <StaggerList
+                key={`${activeComp}-${activeTag}-${activeSeason}`}
+                className="matchday-grid"
+              >
                 {posts.map((post, i) => (
                   <StaggerItem key={post.slug} style={{ display: "flex" }}>
                     <MatchdayCard post={post} featured={i === 0} />
