@@ -2,7 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { COMPETITIONS, type MatchdayPost } from "@/lib/matchday";
 
-export default function MatchdayCard({ post }: { post: MatchdayPost }) {
+export default function MatchdayCard({
+  post,
+  featured = false,
+}: {
+  post: MatchdayPost;
+  featured?: boolean;
+}) {
   const competition = post.competition ? COMPETITIONS[post.competition] : undefined;
   const cardImage = post.cardImage ?? post.heroImage;
 
@@ -18,11 +24,16 @@ export default function MatchdayCard({ post }: { post: MatchdayPost }) {
               src={cardImage}
               alt=""
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw"
+              sizes={
+                featured
+                  ? "(max-width: 640px) 100vw, 50vw"
+                  : "(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              }
               style={{ objectFit: "cover", objectPosition: post.cardFocus ?? "center 15%" }}
             />
           )}
           {post.scoreline && <span className="matchday-score-chip">{post.scoreline}</span>}
+          {featured && <span className="matchday-latest">Latest</span>}
         </div>
 
         <div
