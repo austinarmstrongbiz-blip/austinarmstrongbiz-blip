@@ -970,18 +970,18 @@ a {
 /* Matchday callouts — a bold yellow "button" pull-quote, not a subtle margin
    quote. Scoped to .matchday-callouts so essays keep the quieter style. */
 .matchday-callouts blockquote {
-  margin: 2.5rem 0;
-  padding: 1.5rem 1.75rem;
-  border-left: none;
-  border-radius: 12px;
+  margin: 1.75rem 0;
+  padding: 0.85rem 1.25rem;
+  border-left: 5px solid var(--city-navy);
+  border-radius: 10px;
   background: var(--city-gold);
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: 700;
-  font-size: 1.45rem;
-  line-height: 1.35;
+  font-size: 1.05rem;
+  line-height: 1.4;
   color: var(--city-navy);
-  text-align: center;
+  text-align: left;
 }
 .essay-body img {
   max-width: 100%;
@@ -1334,4 +1334,105 @@ a {
   margin-top: 0.7rem;
   border-radius: 3px;
   background: linear-gradient(90deg, var(--city-gold) var(--p), rgba(255, 255, 255, 0.16) var(--p));
+}
+
+/* Stat box layouts: md-r / md-l float beside the paragraph that follows,
+   md-pair sits two boxes side by side above it. Phones stack everything. */
+.matchday-callouts .md-r,
+.matchday-callouts .md-l {
+  width: 46%;
+  margin-top: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+.matchday-callouts .md-r {
+  float: right;
+  clear: both;
+  margin-left: 1.75rem;
+  margin-right: 0;
+}
+.matchday-callouts .md-l {
+  float: left;
+  clear: both;
+  margin-right: 1.75rem;
+  margin-left: 0;
+}
+.matchday-callouts .md-pair {
+  clear: both;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2.5rem 0 2rem;
+}
+.matchday-callouts .md-pair > * {
+  margin: 0;
+}
+.matchday-callouts blockquote {
+  clear: both;
+}
+.matchday-callouts::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Compact sizes when a box is half width */
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player {
+  padding: 1.15rem 1.1rem 1.05rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player::before {
+  font-size: 7rem;
+  bottom: -1.8rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player header b {
+  font-size: 2.1rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player header i {
+  font-size: 1.6rem;
+  padding: 0.35rem 0.55rem 0.3rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player dd {
+  font-size: 1.25rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player dl > div {
+  padding: 0 0.5rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player dl > div:first-child {
+  padding-left: 0;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-player > p {
+  font-size: 0.85rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-tiles {
+  padding: 1.1rem 1.1rem 0.4rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-tiles > p b {
+  font-size: 1.4rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-tiles > div {
+  grid-template-columns: 5.4rem 1fr;
+  padding: 0.7rem 0;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-tiles strong {
+  font-size: 1.9rem;
+}
+.matchday-callouts :is(.md-r, .md-l, .md-pair > *).md-tiles span {
+  padding-left: 0.7rem;
+  font-size: 0.64rem;
+}
+@media (max-width: 640px) {
+  .matchday-callouts .md-r,
+  .matchday-callouts .md-l {
+    float: none;
+    width: auto;
+    margin: 2rem 0;
+  }
+  .matchday-callouts .md-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Post hero: drop the round ("Fourth Round") on phones to keep one line */
+@media (max-width: 640px) {
+  .md-round {
+    display: none;
+  }
 }

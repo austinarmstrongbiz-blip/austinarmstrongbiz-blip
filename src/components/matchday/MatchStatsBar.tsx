@@ -17,9 +17,11 @@ export default function MatchStatsBar({ stats }: { stats: MatchdayStats }) {
   return (
     <div
       style={{
-        border: "1px solid var(--color-rule)",
-        borderRadius: "10px",
+        border: "2px solid var(--city-sky)",
+        borderRadius: "12px",
         overflow: "hidden",
+        background: "#fff",
+        boxShadow: "0 18px 40px -24px rgba(28,44,91,0.45)",
       }}
     >
       <div
