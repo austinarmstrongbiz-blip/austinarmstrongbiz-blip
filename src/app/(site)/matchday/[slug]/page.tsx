@@ -60,6 +60,7 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
 
   const bodyStyle = {
     maxWidth: "68ch",
+    margin: "0 auto",
     fontFamily: "var(--font-sans)",
     fontSize: "1.075rem",
     lineHeight: 1.8,
@@ -82,6 +83,9 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
   const restAfterSpotlight =
     spotlightAt === -1 ? "" : restOfBodyHtml.slice(spotlightAt + spotlightMarker.length);
 
+  // "Man City 2 — 2 Brighton · Carabao Cup, Fourth Round" → score chip + meta line.
+  const [scoreLine, competitionLine] = (post.fixture ?? "").split(" · ");
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -103,13 +107,15 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
       />
 
-      {/* ── Hero ───────────────────────────────────────────────── */}
+      {/* ── Hero: match photo behind a short title block ───────── */}
       <section
         style={{
-          paddingTop: "3.5rem",
-          paddingBottom: "3rem",
-          background: `linear-gradient(160deg, var(--city-sky) 0%, var(--city-sky-deep) 100%)`,
-          borderBottom: "3px solid var(--city-navy)",
+          paddingTop: "2rem",
+          paddingBottom: "2.25rem",
+          borderBottom: "3px solid var(--city-gold)",
+          background: post.heroImage
+            ? `linear-gradient(180deg, rgba(18,28,60,0.2) 0%, rgba(18,28,60,0.9) 80%), url(${post.heroImage}) center 30% / cover`
+            : "linear-gradient(160deg, var(--city-sky-deep) 0%, var(--city-navy) 100%)",
         }}
       >
         <div className="container-editorial">
@@ -117,46 +123,42 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
             <Link
               href="/matchday"
               className="folio"
-              style={{ color: "rgba(28,44,91,0.7)", textDecoration: "none" }}
+              style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}
             >
               ← All matchdays
             </Link>
           </FadeUp>
 
-          {post.fixture && (
-            <FadeUp delay={0.05}>
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: "clamp(1.75rem, 5vw, 3.25rem)",
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.01em",
-                  color: "var(--city-gold)",
-                  textShadow: "0 2px 10px rgba(28,44,91,0.25)",
-                  margin: "1.75rem 0 1.25rem",
-                }}
-              >
-                {post.fixture}
-              </div>
-            </FadeUp>
-          )}
-
-          <FadeUp delay={0.08}>
+          <FadeUp delay={0.05}>
             <div
               style={{
                 display: "flex",
-                gap: "1.5rem",
-                marginBottom: "1.5rem",
+                alignItems: "center",
+                gap: "0.75rem 1.25rem",
                 flexWrap: "wrap",
+                marginTop: post.heroImage ? "6rem" : "2.5rem",
               }}
             >
-              <span className="folio" style={{ color: "var(--city-navy)" }}>
-                {post.dateFormatted}
-              </span>
-              <span className="folio" style={{ color: "rgba(28,44,91,0.65)" }}>
-                {post.readTime}
-              </span>
+              {scoreLine && (
+                <span
+                  style={{
+                    background: "var(--city-gold)",
+                    color: "var(--city-navy)",
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 700,
+                    fontSize: "1.05rem",
+                    padding: "0.4rem 0.85rem",
+                    borderRadius: "6px",
+                  }}
+                >
+                  {scoreLine}
+                </span>
+              )}
+              {[competitionLine, post.dateFormatted, post.readTime].filter(Boolean).map((t) => (
+                <span key={t} className="folio" style={{ color: "rgba(255,255,255,0.85)" }}>
+                  {t}
+                </span>
+              ))}
             </div>
           </FadeUp>
 
@@ -166,11 +168,12 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
                 fontStyle: "italic",
-                fontSize: "clamp(2rem, 5vw, 3.75rem)",
-                lineHeight: 1.0,
-                letterSpacing: "-0.025em",
-                color: "var(--city-navy)",
-                maxWidth: "20ch",
+                fontSize: "clamp(1.8rem, 3.4vw, 2.7rem)",
+                lineHeight: 1.02,
+                letterSpacing: "-0.02em",
+                color: "#fff",
+                maxWidth: "26ch",
+                margin: "0.9rem 0 0",
               }}
             >
               {post.title}
@@ -203,7 +206,7 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
 
           {post.matchStats && (
             <FadeUp>
-              <div style={{ maxWidth: "68ch", margin: "2.5rem auto" }}>
+              <div style={{ maxWidth: "68ch", fontSize: "1.075rem", margin: "2.5rem auto" }}>
                 <MatchStatsBar stats={post.matchStats} />
               </div>
             </FadeUp>
@@ -223,7 +226,8 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
             <FadeUp>
               <div
                 style={{
-                  maxWidth: post.spotlight.layout === "side" ? undefined : "68ch",
+                  maxWidth: "68ch",
+                  fontSize: "1.075rem",
                   margin: "3rem auto",
                 }}
               >
