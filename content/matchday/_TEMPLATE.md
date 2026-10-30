@@ -30,6 +30,13 @@ Add `style="--p:97%"` to a row to show a fill bar (use it for x/y numbers).
 
 <div class="md-tiles"><p>The difference makers<b>Who dragged us through</b></p><div style="--p:97%"><strong>57/59</strong><span>Kovačić passes</span></div><div><strong>20</strong><span>Brighton fouls</span></div></div>
 
+Layouts: one box per paragraph, placed right before it. Add `md-r` (box right, text
+wraps left) or `md-l` (box left, text wraps right) to the box's class, or wrap two
+boxes in `<div class="md-pair">...</div>` to sit them side by side above the
+paragraph. Never the same layout twice in a row. Phones stack everything.
+
+<div class="md-tiles md-r"><p>4-3 on pens<b>The shootout</b></p><div style="--p:80%"><strong>4/5</strong><span>City pens scored</span></div><div style="--p:60%"><strong>3/5</strong><span>Brighton pens scored</span></div></div>
+
 ---
 
 Notes on the fields above:
