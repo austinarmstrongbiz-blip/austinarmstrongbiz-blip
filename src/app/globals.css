@@ -1429,3 +1429,10 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* Post hero: drop the round ("Fourth Round") on phones to keep one line */
+@media (max-width: 640px) {
+  .md-round {
+    display: none;
+  }
+}

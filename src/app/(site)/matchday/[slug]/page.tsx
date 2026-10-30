@@ -84,7 +84,11 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
     spotlightAt === -1 ? "" : restOfBodyHtml.slice(spotlightAt + spotlightMarker.length);
 
   // "Man City 2 — 2 Brighton · Carabao Cup, Fourth Round" → score chip + meta line.
-  const [scoreLine, competitionLine] = (post.fixture ?? "").split(" · ");
+  // A "(City win 4-3 on pens)" tail moves into the chip as "4-3 pens", and the
+  // round after the comma is hidden on phones so the line stays on one row.
+  const [scoreLine, rawCompetition = ""] = (post.fixture ?? "").split(" · ");
+  const pens = rawCompetition.match(/\((?:.*?)(\d+-\d+) on pens\)/)?.[1];
+  const [competition, round] = rawCompetition.replace(/\s*\(.*\)$/, "").split(", ");
 
   const blogPostingSchema = {
     "@context": "https://schema.org",
@@ -152,9 +156,28 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
                   }}
                 >
                   {scoreLine}
+                  {pens && (
+                    <span
+                      style={{
+                        marginLeft: "0.6rem",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.68rem",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {pens} pens
+                    </span>
+                  )}
                 </span>
               )}
-              {[competitionLine, post.dateFormatted, post.readTime].filter(Boolean).map((t) => (
+              {competition && (
+                <span className="folio" style={{ color: "rgba(255,255,255,0.85)" }}>
+                  {competition}
+                  {round && <span className="md-round">, {round}</span>}
+                </span>
+              )}
+              {[post.dateFormatted, post.readTime].filter(Boolean).map((t) => (
                 <span key={t} className="folio" style={{ color: "rgba(255,255,255,0.85)" }}>
                   {t}
                 </span>
