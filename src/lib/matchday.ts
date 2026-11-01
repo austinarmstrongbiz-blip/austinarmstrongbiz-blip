@@ -30,6 +30,8 @@ export interface MatchdayRatings {
   starters: RatingsPlayer[];
   subs: RatingsPlayer[];
   manager: { name: string; rating: number };
+  /** Credit line when someone other than Austin did the ratings. */
+  ratedBy?: string;
 }
 
 interface MatchStatRow {
