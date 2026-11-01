@@ -65,6 +65,14 @@ export interface PlayerSpotlightData {
   layout?: "side";
 }
 
+/** Per-post override for the City colors, e.g. another club's or an app's red. */
+export interface MatchdayPalette {
+  sky: string;
+  skyDeep: string;
+  navy: string;
+  navySoft: string;
+}
+
 export interface MatchdayPost {
   slug: string;
   title: string;
@@ -92,6 +100,8 @@ export interface MatchdayPost {
   competition: string | null;
   /** Short score for the card overlay, e.g. "2 — 0". */
   scoreline: string | null;
+  /** Optional color swap for this post's graphics. Defaults to City sky/navy. */
+  palette: MatchdayPalette | null;
 }
 
 /**
@@ -190,6 +200,7 @@ function toPost(slug: string, raw: string): MatchdayPost {
     cardFocus: meta.cardFocus || null,
     competition: meta.competition || null,
     scoreline: meta.scoreline || null,
+    palette: parseJson<MatchdayPalette>(meta.palette),
   };
 }
 

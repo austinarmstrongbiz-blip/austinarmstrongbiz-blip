@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMatchdayPosts, getMatchdayPostBySlug, tagLabel } from "@/lib/matchday";
@@ -105,7 +106,18 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
   };
 
   return (
-    <>
+    <div
+      style={
+        post.palette
+          ? ({
+              "--city-sky": post.palette.sky,
+              "--city-sky-deep": post.palette.skyDeep,
+              "--city-navy": post.palette.navy,
+              "--city-navy-soft": post.palette.navySoft,
+            } as CSSProperties)
+          : undefined
+      }
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
@@ -283,6 +295,6 @@ export default async function MatchdayPostPage({ params }: { params: Promise<{ s
           <MatchdaySignup />
         </div>
       </section>
-    </>
+    </div>
   );
 }
