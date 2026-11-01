@@ -94,6 +94,20 @@ export default function RatingsPitch({ ratings }: { ratings: MatchdayRatings }) 
         </span>
       </div>
 
+      {ratings.ratedBy && (
+        <div
+          className="folio"
+          style={{
+            textAlign: "center",
+            padding: "0.6rem 1.5rem",
+            color: "rgba(255,255,255,0.75)",
+            borderBottom: "1px solid rgba(255,255,255,0.12)",
+          }}
+        >
+          Rated by {ratings.ratedBy}
+        </div>
+      )}
+
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {/* Pitch */}
         <div
