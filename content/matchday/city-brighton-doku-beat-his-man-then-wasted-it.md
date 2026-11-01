@@ -6,7 +6,7 @@ excerpt: City had 62% of the ball, 21 shots to Brighton's 7, and 5 big chances. 
 fixture: Man City 0 — 1 Brighton · Premier League, Matchday 9
 competition: premier-league
 scoreline: 0 — 1
-heroImage: /images/matchday/Maresca.jpeg
+heroImage: /images/matchday/maresca-brighton-header.jpg
 cardImage: /images/matchday/huddle.jpeg
 cardFocus: center 30%
 ratings: {"score":{"home":"Man City","homeScore":0,"away":"Brighton","awayScore":1},"starters":[{"name":"Haaland","rating":60,"row":1},{"name":"Doku","rating":48,"row":2},{"name":"Fernández","rating":70,"row":2},{"name":"Ndiaye","rating":66,"row":2},{"name":"Bouaddi","rating":70,"row":3},{"name":"Anderson","rating":68,"row":3},{"name":"Gvardiol","rating":35,"row":4},{"name":"Dias","rating":57,"row":4},{"name":"Khusanov","rating":73,"row":4},{"name":"Nunes","rating":60,"row":4},{"name":"Donnarumma","rating":57,"row":5}],"subs":[{"name":"Cherki","rating":66,"row":0},{"name":"O'Reilly","rating":59,"row":0},{"name":"Allan","rating":56,"row":0},{"name":"Foden","rating":56,"row":0}],"manager":{"name":"Maresca","rating":56}}
