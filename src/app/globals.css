@@ -85,6 +85,7 @@
   --color-ink-muted: #7a7577;
   --color-bg: #f9f9f9;
   --color-bg-warm: #ffffff;
+  --color-bg-soft: #ecebe8;
   --color-rule: #e4e0db;
 
   /* Typography */
@@ -375,56 +376,114 @@ a {
 }
 
 /* ─── RESUME ─────────────────────────────────────────────────────── */
-/* Dates sit in a left rail so the eye can run down the results. Phones stack it. */
-.resume-row {
-  display: grid;
-  grid-template-columns: 11rem minmax(0, 1fr);
-  gap: 2.5rem;
-  padding-block: 2.25rem;
-  border-bottom: 1px solid var(--color-rule);
+/* Each role is a card with a dark title bar, so roles stay distinct as you scroll. */
+.resume-body {
+  background: var(--color-bg-soft);
+  padding-bottom: 5rem;
 }
-.resume-row-tight {
-  padding-block: 1.25rem;
+.resume-card {
+  background: var(--color-bg-warm);
+  box-shadow: 0 8px 24px rgba(35, 31, 32, 0.1);
+  margin-top: 2rem;
 }
-.resume-rail {
+.resume-card-head {
   display: grid;
-  align-content: start;
-  gap: 0.4rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.75rem 2rem;
+  padding: 1.5rem clamp(1.25rem, 4vw, 2.25rem);
+  background: var(--color-ink);
+  border-bottom: 5px solid var(--color-yellow);
+}
+.resume-card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: #f9f9f9;
+}
+.resume-card-org {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-yellow);
+  margin-top: 0.3rem;
+}
+.resume-card-meta {
+  display: grid;
+  gap: 0.3rem;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.resume-card-date {
+  font-size: 0.85rem;
+  color: #f9f9f9;
+}
+.resume-card-place {
+  font-size: 0.72rem;
+  color: rgba(249, 249, 249, 0.85);
+}
+.resume-card-note {
+  padding: 1.5rem clamp(1.25rem, 4vw, 2.25rem);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
 }
 .resume-bullets {
   list-style: none;
-  padding: 0;
-  margin-top: 1.1rem;
   display: grid;
-  gap: 0.65rem;
-  max-width: 70ch;
+  gap: 1rem;
+  padding: 1.75rem clamp(1.25rem, 4vw, 2.25rem);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.55;
   color: var(--color-ink-soft);
 }
-/* The logo's yellow bar, run under a result. */
-.resume-mark {
-  color: var(--color-ink);
-  font-weight: 600;
-  background: linear-gradient(
-    transparent 58%,
-    var(--color-yellow) 58%,
-    var(--color-yellow) 94%,
-    transparent 94%
-  );
+.resume-bullets li {
+  display: flex;
+  gap: 0.9rem;
+}
+.resume-bullets li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-top: 0.5rem;
+  background: var(--color-yellow);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
+.resume-bullets strong {
+  font-weight: 700;
+}
+.resume-skill-row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.25rem clamp(1.25rem, 4vw, 2.25rem);
+  border-bottom: 1px solid var(--color-rule);
+}
+.resume-skill-row:last-child {
+  border-bottom: none;
+}
 @media (max-width: 640px) {
-  .resume-row {
+  .resume-card-head {
     grid-template-columns: 1fr;
-    gap: 0.9rem;
-    padding-block: 1.75rem;
   }
-  .resume-row-tight {
+  .resume-card-meta {
+    text-align: left;
+    white-space: normal;
+  }
+  .resume-skill-row {
+    grid-template-columns: 1fr;
     gap: 0.4rem;
-    padding-block: 1.1rem;
   }
 }
 
@@ -616,9 +675,22 @@ a {
   @page {
     margin: 0.5in;
   }
+  .resume-section .folio {
+    font-size: 6.5pt !important;
+  }
+  /* Keep a section's label with its first card across a page break. */
+  .resume-section h2,
+  .resume-section hr,
+  .resume-section > div:first-child {
+    break-after: avoid;
+  }
   .resume-section {
     padding-top: 0.9rem !important;
     padding-bottom: 0 !important;
+  }
+  .resume-body {
+    background: transparent;
+    padding-bottom: 0;
   }
   .resume-name {
     font-size: 26pt !important;
@@ -628,11 +700,6 @@ a {
     display: inline-block !important;
     margin-right: 0.25em;
   }
-  .resume-intro {
-    font-size: 10.5pt !important;
-    max-width: none !important;
-    margin-bottom: 0.4rem !important;
-  }
   .resume-section p {
     font-size: 8.5pt !important;
     line-height: 1.35 !important;
@@ -640,28 +707,62 @@ a {
   }
   .resume-section p.resume-intro {
     font-size: 10.5pt !important;
+    margin-bottom: 0.4rem !important;
   }
-  .resume-section h3 {
-    font-size: 10.5pt !important;
-  }
-  .resume-section .folio {
-    font-size: 6.5pt !important;
-  }
-  .resume-row {
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    gap: 0.75rem;
-    padding-block: 0.45rem;
+  .resume-card {
+    box-shadow: none;
+    margin-top: 0.5rem;
     break-inside: avoid;
   }
-  .resume-rail {
-    gap: 0.1rem;
+  .resume-card-head {
+    background: transparent;
+    padding: 0 0 0.2rem;
+    border-bottom-width: 2px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .resume-card-title {
+    font-size: 10.5pt;
+    color: var(--color-ink);
+  }
+  .resume-section .resume-card-org {
+    font-size: 9pt !important;
+    color: var(--color-ink-soft);
+    margin-top: 0;
+  }
+  .resume-card-date {
+    font-size: 7.5pt;
+    color: var(--color-ink);
+  }
+  .resume-card-place {
+    font-size: 6.5pt;
+    color: var(--color-ink-soft);
+  }
+  .resume-card-meta {
+    gap: 0.05rem;
+  }
+  .resume-section .resume-card-note {
+    padding: 0.2rem 0 0;
   }
   .resume-bullets {
-    margin-top: 0.2rem;
+    padding: 0.25rem 0 0;
     gap: 0.1rem;
-    max-width: none;
     font-size: 8.5pt;
     line-height: 1.35;
+  }
+  .resume-bullets li {
+    gap: 0.45rem;
+  }
+  .resume-bullets li::before {
+    width: 0.35rem;
+    height: 0.35rem;
+    margin-top: 0.3rem;
+  }
+  .resume-skill-row {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.2rem 0;
+    border-bottom: none;
   }
   body {
     background: #fff !important;

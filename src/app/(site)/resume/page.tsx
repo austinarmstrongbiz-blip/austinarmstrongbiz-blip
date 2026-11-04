@@ -18,25 +18,20 @@ function formatPeriod(startDate: string | null, endDate: string | null, current:
   return s && e ? `${s} — ${e}` : s || e;
 }
 
-// The results a skimming reader should catch: money, percents, multiples, big counts.
-const RESULT = /\$[\d,.]*\d[BMK]?\+?|\d[\d,.]*%|\d+(?:-\d+)?x\b|\b\d{1,3}(?:,\d{3})+\b/g;
-const MAX_MARKS_PER_BULLET = 2;
+// The result a skimming reader should catch: money, a percent, a multiple, or a big count.
+const RESULT = /\$[\d,.]*\d[BMK]?\+?|\d[\d,.]*%|\d+(?:-\d+)?x\b|\b\d{1,3}(?:,\d{3})+\b/;
 
-// Put the logo's yellow bar under a bullet's first results.
-function Highlighted({ text }: { text: string }) {
-  const parts: React.ReactNode[] = [];
-  let cursor = 0;
-  for (const match of [...text.matchAll(RESULT)].slice(0, MAX_MARKS_PER_BULLET)) {
-    parts.push(text.slice(cursor, match.index));
-    parts.push(
-      <mark key={match.index} className="resume-mark">
-        {match[0]}
-      </mark>,
-    );
-    cursor = match.index + match[0].length;
-  }
-  parts.push(text.slice(cursor));
-  return <>{parts}</>;
+// Bold a bullet's first result.
+function WithResult({ text }: { text: string }) {
+  const match = text.match(RESULT);
+  if (!match || match.index === undefined) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, match.index)}
+      <strong>{match[0]}</strong>
+      {text.slice(match.index + match[0].length)}
+    </>
+  );
 }
 
 const competencies = [
@@ -83,30 +78,6 @@ const competencies = [
 ];
 
 const sectionStyle = { paddingTop: "3.5rem" };
-const entryTitleStyle = {
-  fontFamily: "var(--font-display)",
-  fontWeight: 700,
-  fontStyle: "italic",
-  fontSize: "clamp(1.25rem, 2.5vw, 1.6rem)",
-  letterSpacing: "-0.01em",
-  lineHeight: 1.15,
-  color: "var(--color-ink)",
-} as const;
-const entryOrgStyle = {
-  fontFamily: "var(--font-display)",
-  fontStyle: "italic",
-  fontSize: "1rem",
-  color: "var(--color-ink-soft)",
-  marginTop: "0.3rem",
-} as const;
-const entryNoteStyle = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "0.95rem",
-  lineHeight: 1.7,
-  color: "var(--color-ink-soft)",
-  marginTop: "0.5rem",
-  maxWidth: "65ch",
-} as const;
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -116,6 +87,34 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
       </h2>
       <hr className="rule rule-thick" />
     </FadeUp>
+  );
+}
+
+// The dark title bar every card shares.
+function CardHead({
+  title,
+  organization,
+  period,
+  place,
+}: {
+  title: string;
+  organization?: string;
+  period?: string;
+  place?: string;
+}) {
+  return (
+    <div className="resume-card-head">
+      <div>
+        <h3 className="resume-card-title">{title}</h3>
+        {organization && <p className="resume-card-org">{organization}</p>}
+      </div>
+      {(period || place) && (
+        <div className="resume-card-meta">
+          {period && <span className="resume-card-date">{period}</span>}
+          {place && <span className="resume-card-place">{place}</span>}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -139,7 +138,7 @@ export default async function ResumePage() {
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
       <div style={{ background: "var(--color-yellow)", height: "4px" }} />
-      <section className="resume-section" style={{ paddingTop: "4rem" }}>
+      <section className="resume-section" style={{ paddingTop: "4rem", paddingBottom: "3.5rem" }}>
         <div className="container-editorial">
           <FadeUp>
             <h1
@@ -222,119 +221,123 @@ export default async function ResumePage() {
         </div>
       </section>
 
-      <div className="container-editorial" style={{ paddingBottom: "5rem" }}>
-        {/* ── Experience ─────────────────────────────────────────── */}
-        {work.length > 0 && (
-          <section className="resume-section" style={sectionStyle}>
-            <SectionHeading>Experience</SectionHeading>
-            <StaggerList>
-              {work.map((job) => {
-                const bullets = job.description ? job.description.split("\n").filter(Boolean) : [];
-                return (
-                  <StaggerItem key={job.id} as="article" className="resume-row">
-                    <div className="resume-rail">
-                      <div className="folio">
-                        {formatPeriod(job.startDate, job.endDate, job.current)}
-                      </div>
-                      {job.location && <div className="folio">{job.location}</div>}
-                    </div>
-                    <div>
-                      <h3 style={entryTitleStyle}>{job.role}</h3>
-                      {job.organization && <p style={entryOrgStyle}>{job.organization}</p>}
+      <div className="resume-body">
+        <div className="container-editorial">
+          {/* ── Experience ─────────────────────────────────────────── */}
+          {work.length > 0 && (
+            <section className="resume-section" style={sectionStyle}>
+              <SectionHeading>Experience</SectionHeading>
+              <StaggerList>
+                {work.map((job) => {
+                  const bullets = job.description
+                    ? job.description.split("\n").filter(Boolean)
+                    : [];
+                  return (
+                    <StaggerItem key={job.id} as="article" className="resume-card">
+                      <CardHead
+                        title={job.role}
+                        organization={job.organization}
+                        period={formatPeriod(job.startDate, job.endDate, job.current)}
+                        place={job.location}
+                      />
                       {bullets.length > 0 && (
                         <ul className="resume-bullets">
                           {bullets.map((bullet) => (
                             <li key={bullet}>
-                              {/* Jaba's only figure is a seed target that never closed, so it stays unmarked. */}
-                              {isJaba(job.organization) ? bullet : <Highlighted text={bullet} />}
+                              {/* Jaba's only figure is a seed target that never closed, so it stays plain. */}
+                              <span>
+                                {isJaba(job.organization) ? bullet : <WithResult text={bullet} />}
+                              </span>
                             </li>
                           ))}
                         </ul>
                       )}
-                    </div>
-                  </StaggerItem>
-                );
-              })}
-            </StaggerList>
-          </section>
-        )}
-
-        {/* ── Skills ─────────────────────────────────────────────── */}
-        <section className="resume-section" style={sectionStyle}>
-          <SectionHeading>Core Competencies</SectionHeading>
-          {competencies.map(({ group, skills }) => (
-            <div key={group} className="resume-row resume-row-tight">
-              <h3 className="resume-rail folio" style={{ color: "var(--color-ink)" }}>
-                {group}
-              </h3>
-              <p style={{ ...entryNoteStyle, marginTop: 0 }}>{skills.join(", ")}</p>
-            </div>
-          ))}
-        </section>
-
-        {/* ── Projects ───────────────────────────────────────────── */}
-        {projects.length > 0 && (
-          <section className="resume-section" style={sectionStyle}>
-            <SectionHeading>Projects &amp; Initiatives</SectionHeading>
-            {projects.map((proj) => (
-              <article key={proj.id} className="resume-row">
-                <div className="resume-rail folio">
-                  {formatPeriod(proj.startDate, proj.endDate, proj.current)}
-                </div>
-                <div>
-                  <h3 style={entryTitleStyle}>{proj.role}</h3>
-                  {proj.organization && <p style={entryOrgStyle}>{proj.organization}</p>}
-                  {proj.description && <p style={entryNoteStyle}>{proj.description}</p>}
-                </div>
-              </article>
-            ))}
-          </section>
-        )}
-
-        {/* ── Education ──────────────────────────────────────────── */}
-        <section className="resume-section" style={sectionStyle}>
-          <SectionHeading>Education</SectionHeading>
-          {education.length > 0 ? (
-            education.map((edu) => (
-              <div key={edu.id} className="resume-row">
-                <div className="resume-rail folio">
-                  {formatPeriod(edu.startDate, edu.endDate, edu.current)}
-                </div>
-                <div>
-                  <h3 style={entryTitleStyle}>{edu.role}</h3>
-                  {edu.organization && <p style={entryOrgStyle}>{edu.organization}</p>}
-                  {edu.description && <p style={entryNoteStyle}>{edu.description}</p>}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="resume-row">
-              <div className="resume-rail" />
-              <div>
-                <h3 style={entryTitleStyle}>
-                  Triple Major: Entrepreneurship, Finance, and Marketing
-                </h3>
-                <p style={entryOrgStyle}>Gannon University</p>
-              </div>
-            </div>
+                    </StaggerItem>
+                  );
+                })}
+              </StaggerList>
+            </section>
           )}
-        </section>
 
-        {/* ── Certifications ─────────────────────────────────────── */}
-        {awards.length > 0 && (
+          {/* ── Skills ─────────────────────────────────────────────── */}
           <section className="resume-section" style={sectionStyle}>
-            <SectionHeading>Certifications</SectionHeading>
-            {awards.map((award) => (
-              <div key={award.id} className="resume-row">
-                <div className="resume-rail folio">{award.organization}</div>
-                <div>
-                  <h3 style={entryTitleStyle}>{award.role}</h3>
-                  {award.description && <p style={entryNoteStyle}>{award.description}</p>}
+            <SectionHeading>Core Competencies</SectionHeading>
+            <div className="resume-card">
+              {competencies.map(({ group, skills }) => (
+                <div key={group} className="resume-skill-row">
+                  <h3 className="folio" style={{ color: "var(--color-ink)" }}>
+                    {group}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.95rem",
+                      lineHeight: 1.6,
+                      color: "var(--color-ink-soft)",
+                    }}
+                  >
+                    {skills.join(", ")}
+                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </section>
-        )}
+
+          {/* ── Projects ───────────────────────────────────────────── */}
+          {projects.length > 0 && (
+            <section className="resume-section" style={sectionStyle}>
+              <SectionHeading>Projects &amp; Initiatives</SectionHeading>
+              {projects.map((proj) => (
+                <article key={proj.id} className="resume-card">
+                  <CardHead
+                    title={proj.role}
+                    organization={proj.organization}
+                    period={formatPeriod(proj.startDate, proj.endDate, proj.current)}
+                  />
+                  {proj.description && <p className="resume-card-note">{proj.description}</p>}
+                </article>
+              ))}
+            </section>
+          )}
+
+          {/* ── Education ──────────────────────────────────────────── */}
+          <section className="resume-section" style={sectionStyle}>
+            <SectionHeading>Education</SectionHeading>
+            {education.length > 0 ? (
+              education.map((edu) => (
+                <div key={edu.id} className="resume-card">
+                  <CardHead
+                    title={edu.role}
+                    organization={edu.organization}
+                    period={formatPeriod(edu.startDate, edu.endDate, edu.current)}
+                    place={edu.location}
+                  />
+                  {edu.description && <p className="resume-card-note">{edu.description}</p>}
+                </div>
+              ))
+            ) : (
+              <div className="resume-card">
+                <CardHead
+                  title="Triple Major: Entrepreneurship, Finance, and Marketing"
+                  organization="Gannon University"
+                />
+              </div>
+            )}
+          </section>
+
+          {/* ── Certifications ─────────────────────────────────────── */}
+          {awards.length > 0 && (
+            <section className="resume-section" style={sectionStyle}>
+              <SectionHeading>Certifications</SectionHeading>
+              {awards.map((award) => (
+                <div key={award.id} className="resume-card">
+                  <CardHead title={award.role} organization={award.organization} />
+                  {award.description && <p className="resume-card-note">{award.description}</p>}
+                </div>
+              ))}
+            </section>
+          )}
+        </div>
       </div>
 
       {/* ── Close ──────────────────────────────────────────────── */}
