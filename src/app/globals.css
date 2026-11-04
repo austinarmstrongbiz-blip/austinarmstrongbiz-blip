@@ -374,17 +374,57 @@ a {
   }
 }
 
-/* ─── RESUME ROLE HEADER ─────────────────────────────────────────── */
-/* Role title beside a big impact number ("$100K") overflows a phone. Stack it,
-   same approach as .hero-grid below. !important because the page sets these
-   inline, which is this repo's convention. */
+/* ─── RESUME ─────────────────────────────────────────────────────── */
+/* Dates sit in a left rail so the eye can run down the results. Phones stack it. */
+.resume-row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 2.5rem;
+  padding-block: 2.25rem;
+  border-bottom: 1px solid var(--color-rule);
+}
+.resume-row-tight {
+  padding-block: 1.25rem;
+}
+.resume-rail {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+}
+.resume-bullets {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.1rem;
+  display: grid;
+  gap: 0.65rem;
+  max-width: 70ch;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+}
+/* The logo's yellow bar, run under a result. */
+.resume-mark {
+  color: var(--color-ink);
+  font-weight: 600;
+  background: linear-gradient(
+    transparent 58%,
+    var(--color-yellow) 58%,
+    var(--color-yellow) 94%,
+    transparent 94%
+  );
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
 @media (max-width: 640px) {
-  .resume-role-header {
-    grid-template-columns: 1fr !important;
-    gap: 0.75rem !important;
+  .resume-row {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    padding-block: 1.75rem;
   }
-  .resume-role-header > div:last-child {
-    text-align: left !important;
+  .resume-row-tight {
+    gap: 0.4rem;
+    padding-block: 1.1rem;
   }
 }
 
@@ -566,6 +606,62 @@ a {
   footer,
   .no-print {
     display: none !important;
+  }
+  /* Scroll fade-ins never fire on paper, so unscrolled sections would print blank. */
+  main * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* The resume on paper: a tight document, not the web page's generous spacing. */
+  @page {
+    margin: 0.5in;
+  }
+  .resume-section {
+    padding-top: 0.9rem !important;
+    padding-bottom: 0 !important;
+  }
+  .resume-name {
+    font-size: 26pt !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .resume-name > span {
+    display: inline-block !important;
+    margin-right: 0.25em;
+  }
+  .resume-intro {
+    font-size: 10.5pt !important;
+    max-width: none !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .resume-section p {
+    font-size: 8.5pt !important;
+    line-height: 1.35 !important;
+    max-width: none !important;
+  }
+  .resume-section p.resume-intro {
+    font-size: 10.5pt !important;
+  }
+  .resume-section h3 {
+    font-size: 10.5pt !important;
+  }
+  .resume-section .folio {
+    font-size: 6.5pt !important;
+  }
+  .resume-row {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-block: 0.45rem;
+    break-inside: avoid;
+  }
+  .resume-rail {
+    gap: 0.1rem;
+  }
+  .resume-bullets {
+    margin-top: 0.2rem;
+    gap: 0.1rem;
+    max-width: none;
+    font-size: 8.5pt;
+    line-height: 1.35;
   }
   body {
     background: #fff !important;

@@ -11,63 +11,126 @@ export const metadata: Metadata = {
 
 function formatPeriod(startDate: string | null, endDate: string | null, current: boolean): string {
   const fmt = (d: string) =>
-    new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "short" });
+    new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "short", timeZone: "UTC" });
   const s = startDate ? fmt(startDate) : "";
   if (current) return s ? `${s} — Present` : "Present";
   const e = endDate ? fmt(endDate) : "";
   return s && e ? `${s} — ${e}` : s || e;
 }
 
-// Pull the headline number out of the first bullet and label it by context.
-function extractImpactStat(firstBullet: string): { num: string; label: string } | null {
-  const match = firstBullet.match(/\$[\d,.]+[BMK+]*/);
-  if (!match) return null;
-  let label = "managed";
-  if (/budget/i.test(firstBullet)) label = "IT budget managed";
-  else if (/contract|sold|arr|revenue/i.test(firstBullet)) label = "contracts sold";
-  return { num: match[0], label };
+// The results a skimming reader should catch: money, percents, multiples, big counts.
+const RESULT = /\$[\d,.]*\d[BMK]?\+?|\d[\d,.]*%|\d+(?:-\d+)?x\b|\b\d{1,3}(?:,\d{3})+\b/g;
+const MAX_MARKS_PER_BULLET = 2;
+
+// Put the logo's yellow bar under a bullet's first results.
+function Highlighted({ text }: { text: string }) {
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
+  for (const match of [...text.matchAll(RESULT)].slice(0, MAX_MARKS_PER_BULLET)) {
+    parts.push(text.slice(cursor, match.index));
+    parts.push(
+      <mark key={match.index} className="resume-mark">
+        {match[0]}
+      </mark>,
+    );
+    cursor = match.index + match[0].length;
+  }
+  parts.push(text.slice(cursor));
+  return <>{parts}</>;
 }
 
 const competencies = [
-  "Enterprise Relationship Management",
-  "Consultative Selling",
-  "Go-to-Market Strategy",
-  "Account Management",
-  "RFI/RFP Writing",
-  "Contract Negotiation",
-  "IT Financial Management",
-  "Financial Forecasting",
-  "Cost Optimization",
-  "Variance Analysis",
-  "GAAP Compliance",
-  "Executive Dashboards",
-  "ApptioOne",
-  "Power BI",
-  "HubSpot",
-  "Apollo.io",
-  "LinkedIn Sales Navigator",
-  "SQL",
-  "Process Automation",
-  "RPA",
-  "Data Migration",
-  "AI / LLMs",
-  "AI Positioning & Messaging",
-  "Cross-Functional Stakeholder Alignment",
-  "Long-Form Writing",
-  "Capital Planning",
-  "Financial Reporting",
+  {
+    group: "Revenue",
+    skills: [
+      "Enterprise Relationship Management",
+      "Consultative Selling",
+      "Go-to-Market Strategy",
+      "Account Management",
+      "RFI/RFP Writing",
+      "Contract Negotiation",
+    ],
+  },
+  {
+    group: "Finance",
+    skills: [
+      "IT Financial Management",
+      "Financial Forecasting",
+      "Cost Optimization",
+      "Variance Analysis",
+      "GAAP Compliance",
+      "Executive Dashboards",
+      "Capital Planning",
+      "Financial Reporting",
+    ],
+  },
+  {
+    group: "AI & Operations",
+    skills: [
+      "AI / LLMs",
+      "AI Positioning & Messaging",
+      "Process Automation",
+      "RPA",
+      "Data Migration",
+      "Cross-Functional Stakeholder Alignment",
+      "Long-Form Writing",
+    ],
+  },
+  {
+    group: "Tools",
+    skills: ["ApptioOne", "Power BI", "HubSpot", "Apollo.io", "LinkedIn Sales Navigator", "SQL"],
+  },
 ];
+
+const sectionStyle = { paddingTop: "3.5rem" };
+const entryTitleStyle = {
+  fontFamily: "var(--font-display)",
+  fontWeight: 700,
+  fontStyle: "italic",
+  fontSize: "clamp(1.25rem, 2.5vw, 1.6rem)",
+  letterSpacing: "-0.01em",
+  lineHeight: 1.15,
+  color: "var(--color-ink)",
+} as const;
+const entryOrgStyle = {
+  fontFamily: "var(--font-display)",
+  fontStyle: "italic",
+  fontSize: "1rem",
+  color: "var(--color-ink-soft)",
+  marginTop: "0.3rem",
+} as const;
+const entryNoteStyle = {
+  fontFamily: "var(--font-sans)",
+  fontSize: "0.95rem",
+  lineHeight: 1.7,
+  color: "var(--color-ink-soft)",
+  marginTop: "0.5rem",
+  maxWidth: "65ch",
+} as const;
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <FadeUp>
+      <h2 className="text-label" style={{ marginBottom: "0.5rem" }}>
+        {children}
+      </h2>
+      <hr className="rule rule-thick" />
+    </FadeUp>
+  );
+}
 
 export default async function ResumePage() {
   const entries = await getCVEntries();
 
+  const isJaba = (organization: string) => /jaba/i.test(organization);
+  const workRank = (role: string, organization: string) => {
+    if (/chief revenue officer/i.test(role)) return 0;
+    if (isJaba(organization)) return 2;
+    return 1;
+  };
   const work = entries.filter((e) => e.type === "Work");
-  // Pin Chief Revenue Officer to the top; stable sort keeps the rest date-ordered.
-  work.sort(
-    (a, b) =>
-      (/chief revenue officer/i.test(a.role) ? 0 : 1) -
-      (/chief revenue officer/i.test(b.role) ? 0 : 1),
-  );
+  // Pin Chief Revenue Officer to the top and Jaba to the bottom; stable sort keeps the rest date-ordered.
+  work.sort((a, b) => workRank(a.role, a.organization) - workRank(b.role, b.organization));
   const education = entries.filter((e) => e.type === "Education");
   const awards = entries.filter((e) => e.type === "Award");
   const projects = entries.filter((e) => e.type === "Project" || e.type === "Volunteer");
@@ -75,54 +138,25 @@ export default async function ResumePage() {
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
-      <section
-        style={{
-          paddingTop: "0",
-          paddingBottom: "5rem",
-          background: "var(--color-ink)",
-        }}
-        className="print-header"
-      >
-        <div style={{ background: "var(--color-yellow)", height: "4px" }} />
-        <div className="container-editorial" style={{ paddingTop: "4rem" }}>
+      <div style={{ background: "var(--color-yellow)", height: "4px" }} />
+      <section className="resume-section" style={{ paddingTop: "4rem" }}>
+        <div className="container-editorial">
           <FadeUp>
-            <div
-              className="folio"
-              style={{ marginBottom: "2rem", color: "var(--color-ink-muted)" }}
+            <h1
+              className="resume-name"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "clamp(3rem, 8vw, 6.5rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.025em",
+                color: "var(--color-ink)",
+                marginBottom: "1.75rem",
+              }}
             >
-              Curriculum Vitae
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.1} as="div" style={{ marginBottom: "2.5rem" }}>
-            <h1>
-              <span
-                style={{
-                  display: "block",
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  fontSize: "clamp(3rem, 8vw, 7rem)",
-                  lineHeight: 0.92,
-                  letterSpacing: "-0.025em",
-                  color: "#f9f9f9",
-                }}
-              >
-                Austin
-              </span>
-              <span
-                style={{
-                  display: "inline-block",
-                  position: "relative",
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  fontSize: "clamp(3rem, 8vw, 7rem)",
-                  lineHeight: 1,
-                  letterSpacing: "-0.025em",
-                  color: "#f9f9f9",
-                }}
-              >
+              <span style={{ display: "block" }}>Austin</span>
+              <span style={{ display: "inline-block", position: "relative" }}>
                 <span
                   aria-hidden
                   style={{
@@ -140,44 +174,44 @@ export default async function ResumePage() {
             </h1>
           </FadeUp>
 
-          <FadeUp delay={0.2}>
+          <FadeUp delay={0.1}>
             <p
+              className="resume-intro"
               style={{
                 fontFamily: "var(--font-display)",
                 fontStyle: "italic",
-                fontWeight: 400,
-                fontSize: "1.15rem",
-                color: "rgba(249,249,249,0.65)",
-                maxWidth: "52ch",
-                lineHeight: 1.6,
-                marginBottom: "2rem",
+                fontSize: "clamp(1.15rem, 2.2vw, 1.45rem)",
+                lineHeight: 1.5,
+                color: "var(--color-ink-soft)",
+                maxWidth: "48ch",
+                marginBottom: "1.75rem",
               }}
             >
-              Generalist operator at the intersection of enterprise IT finance, AI go-to-market, and
-              organizational change. I bridge technical and executive teams across health systems,
-              AI startups, and founder-led product teams.
+              I&rsquo;ve managed IT budgets up to $400M at health systems. Now I also run revenue at
+              Autonomi, where I&rsquo;ve closed enterprise AI contracts and built the outbound team.
             </p>
-            <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "center" }}>
-              <span className="folio" style={{ color: "rgba(249,249,249,0.45)" }}>
-                austin-armstrong.me
-              </span>
-              <span className="folio" style={{ color: "rgba(249,249,249,0.45)" }}>
+            <div style={{ display: "flex", gap: "0.75rem 2rem", flexWrap: "wrap" }}>
+              <a
+                href="mailto:austin@austin-armstrong.me"
+                className="folio"
+                style={{ textDecoration: "none" }}
+              >
                 austin@austin-armstrong.me
-              </span>
+              </a>
               <a
                 href="https://www.linkedin.com/in/austin-armstrong20/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="folio"
-                style={{ color: "rgba(249,249,249,0.45)", textDecoration: "none" }}
+                style={{ textDecoration: "none" }}
               >
                 linkedin.com/in/austin-armstrong20
               </a>
               <span
                 className="folio"
                 style={{
-                  color: "var(--color-yellow)",
-                  borderBottom: "1px solid var(--color-yellow)",
+                  color: "var(--color-ink)",
+                  borderBottom: "2px solid var(--color-yellow)",
                   paddingBottom: "1px",
                 }}
               >
@@ -188,569 +222,155 @@ export default async function ResumePage() {
         </div>
       </section>
 
-      {/* ── Experience ─────────────────────────────────────────── */}
-      {work.length > 0 && (
-        <section
-          style={{
-            paddingTop: "4rem",
-            paddingBottom: "4rem",
-            background: "var(--color-bg)",
-            borderBottom: "1px solid var(--color-rule)",
-          }}
-        >
-          <div className="container-editorial">
-            <FadeUp>
-              <div className="text-label" style={{ marginBottom: "0.5rem" }}>
-                Experience
-              </div>
-              <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
-            </FadeUp>
-
+      <div className="container-editorial" style={{ paddingBottom: "5rem" }}>
+        {/* ── Experience ─────────────────────────────────────────── */}
+        {work.length > 0 && (
+          <section className="resume-section" style={sectionStyle}>
+            <SectionHeading>Experience</SectionHeading>
             <StaggerList>
               {work.map((job) => {
-                const period = formatPeriod(job.startDate, job.endDate, job.current);
                 const bullets = job.description ? job.description.split("\n").filter(Boolean) : [];
-                const impactStat = bullets.length > 0 ? extractImpactStat(bullets[0]) : null;
-
                 return (
-                  <StaggerItem key={job.id} as="article">
-                    <article
-                      style={{
-                        padding: "clamp(1.25rem, 5vw, 2.5rem)",
-                        marginBottom: "1.5rem",
-                        background: "var(--color-bg-warm)",
-                        borderLeft: "4px solid var(--color-yellow)",
-                      }}
-                    >
-                      {/* Role header with impact callout */}
-                      <div
-                        className="resume-role-header"
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: impactStat ? "minmax(0, 1fr) auto" : "1fr",
-                          gap: "2rem",
-                          alignItems: "start",
-                          marginBottom: "1.5rem",
-                        }}
-                      >
-                        <div>
-                          <h2
-                            style={{
-                              fontFamily: "var(--font-display)",
-                              fontWeight: 700,
-                              fontStyle: "italic",
-                              fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)",
-                              letterSpacing: "-0.01em",
-                              color: "var(--color-ink)",
-                              lineHeight: 1.1,
-                              marginBottom: "0.4rem",
-                            }}
-                          >
-                            {job.role}
-                          </h2>
-                          {job.organization && (
-                            <span
-                              style={{
-                                display: "inline-block",
-                                position: "relative",
-                                fontFamily: "var(--font-display)",
-                                fontStyle: "italic",
-                                fontWeight: 400,
-                                fontSize: "1rem",
-                                color: "var(--color-ink-soft)",
-                                marginBottom: "0.5rem",
-                              }}
-                            >
-                              <span
-                                aria-hidden
-                                style={{
-                                  position: "absolute",
-                                  left: 0,
-                                  right: 0,
-                                  bottom: "0",
-                                  height: "0.35em",
-                                  background: "var(--color-yellow)",
-                                  zIndex: 0,
-                                }}
-                              />
-                              <span style={{ position: "relative", zIndex: 1 }}>
-                                {job.organization}
-                              </span>
-                            </span>
-                          )}
-                          <div style={{ display: "flex", gap: "1.5rem", marginTop: "0.25rem" }}>
-                            {period && <span className="folio">{period}</span>}
-                            {job.location && <span className="folio">{job.location}</span>}
-                          </div>
-                        </div>
-
-                        {/* Impact callout number */}
-                        {impactStat && (
-                          <div style={{ textAlign: "right" }}>
-                            <div
-                              style={{
-                                fontFamily: "var(--font-display)",
-                                fontWeight: 700,
-                                fontStyle: "italic",
-                                fontSize: "clamp(2rem, 4vw, 3rem)",
-                                lineHeight: 1,
-                                letterSpacing: "-0.025em",
-                                color: "var(--color-ink)",
-                              }}
-                            >
-                              {impactStat.num}
-                            </div>
-                            <div
-                              className="folio"
-                              style={{ marginTop: "0.25rem", color: "var(--color-ink-muted)" }}
-                            >
-                              {impactStat.label}
-                            </div>
-                          </div>
-                        )}
+                  <StaggerItem key={job.id} as="article" className="resume-row">
+                    <div className="resume-rail">
+                      <div className="folio">
+                        {formatPeriod(job.startDate, job.endDate, job.current)}
                       </div>
-
+                      {job.location && <div className="folio">{job.location}</div>}
+                    </div>
+                    <div>
+                      <h3 style={entryTitleStyle}>{job.role}</h3>
+                      {job.organization && <p style={entryOrgStyle}>{job.organization}</p>}
                       {bullets.length > 0 && (
-                        <ul
-                          style={{ listStyle: "none", padding: 0, display: "grid", gap: "0.7rem" }}
-                        >
+                        <ul className="resume-bullets">
                           {bullets.map((bullet) => (
-                            <li
-                              key={bullet}
-                              style={{
-                                display: "grid",
-                                gridTemplateColumns: "1rem 1fr",
-                                gap: "0.75rem",
-                                fontFamily: "var(--font-sans)",
-                                fontSize: "0.95rem",
-                                lineHeight: 1.7,
-                                color: "var(--color-ink-soft)",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  width: "5px",
-                                  height: "5px",
-                                  background: "var(--color-yellow)",
-                                  display: "inline-block",
-                                  marginTop: "0.65rem",
-                                  flexShrink: 0,
-                                }}
-                                aria-hidden
-                              />
-                              {bullet}
+                            <li key={bullet}>
+                              {/* Jaba's only figure is a seed target that never closed, so it stays unmarked. */}
+                              {isJaba(job.organization) ? bullet : <Highlighted text={bullet} />}
                             </li>
                           ))}
                         </ul>
-                      )}
-
-                      {job.skills.length > 0 && (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "0.4rem",
-                            flexWrap: "wrap",
-                            marginTop: "1.25rem",
-                          }}
-                        >
-                          {job.skills.map((skill) => (
-                            <span
-                              key={skill}
-                              className="interest-tag"
-                              style={{ fontSize: "0.58rem" }}
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </article>
-                  </StaggerItem>
-                );
-              })}
-            </StaggerList>
-          </div>
-        </section>
-      )}
-
-      {/* ── Competencies ───────────────────────────────────────── */}
-      <section
-        style={{
-          paddingTop: "4rem",
-          paddingBottom: "4rem",
-          background: "var(--color-ink)",
-        }}
-      >
-        <div className="container-editorial">
-          <FadeUp>
-            <div
-              className="text-label"
-              style={{ marginBottom: "0.5rem", color: "rgba(249,249,249,0.45)" }}
-            >
-              Core Competencies
-            </div>
-            <hr
-              style={{
-                border: "none",
-                borderTop: "2px solid var(--color-yellow)",
-                marginBottom: "2rem",
-              }}
-            />
-          </FadeUp>
-
-          <FadeUp delay={0.1}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-              {competencies.map((skill) => (
-                <span
-                  key={skill}
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.65rem",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    padding: "0.35rem 0.75rem",
-                    border: "1px solid rgba(249,249,249,0.2)",
-                    color: "rgba(249,249,249,0.75)",
-                    background: "transparent",
-                  }}
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── Certifications ─────────────────────────────────────── */}
-      {awards.length > 0 && (
-        <section
-          style={{
-            paddingTop: "4rem",
-            paddingBottom: "4rem",
-            borderBottom: "1px solid var(--color-rule)",
-          }}
-        >
-          <div className="container-editorial">
-            <FadeUp>
-              <div className="text-label" style={{ marginBottom: "0.5rem" }}>
-                Certifications
-              </div>
-              <hr className="rule rule-thick" style={{ marginBottom: "2.5rem" }} />
-            </FadeUp>
-
-            <StaggerList
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
-                gap: "1.25rem",
-              }}
-            >
-              {awards.map((award) => (
-                <StaggerItem key={award.id}>
-                  <div
-                    style={{
-                      padding: "clamp(1.1rem, 4vw, 1.5rem) clamp(1.25rem, 5vw, 2rem)",
-                      borderLeft: "4px solid var(--color-yellow)",
-                      background: "var(--color-bg-warm)",
-                    }}
-                  >
-                    <h2
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        fontStyle: "italic",
-                        fontSize: "1.05rem",
-                        letterSpacing: "-0.01em",
-                        color: "var(--color-ink)",
-                        lineHeight: 1.2,
-                        marginBottom: "0.35rem",
-                      }}
-                    >
-                      {award.role}
-                    </h2>
-                    {award.organization && <div className="folio">{award.organization}</div>}
-                    {award.description && (
-                      <p
-                        style={{
-                          fontFamily: "var(--font-sans)",
-                          fontSize: "0.875rem",
-                          color: "var(--color-ink-muted)",
-                          lineHeight: 1.6,
-                          marginTop: "0.5rem",
-                          fontStyle: "italic",
-                        }}
-                      >
-                        {award.description}
-                      </p>
-                    )}
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerList>
-          </div>
-        </section>
-      )}
-
-      {/* ── Projects ───────────────────────────────────────────── */}
-      {projects.length > 0 && (
-        <section
-          style={{
-            paddingTop: "4rem",
-            paddingBottom: "4rem",
-            borderBottom: "1px solid var(--color-rule)",
-          }}
-        >
-          <div className="container-editorial">
-            <FadeUp>
-              <div className="text-label" style={{ marginBottom: "0.5rem" }}>
-                Projects & Initiatives
-              </div>
-              <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
-            </FadeUp>
-            <StaggerList>
-              {projects.map((proj) => {
-                const period = formatPeriod(proj.startDate, proj.endDate, proj.current);
-                return (
-                  <StaggerItem key={proj.id} as="article">
-                    <article
-                      style={{
-                        paddingBottom: "2rem",
-                        marginBottom: "2rem",
-                        borderBottom: "1px solid var(--color-rule)",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                          gap: "1.5rem",
-                          marginBottom: "0.5rem",
-                        }}
-                      >
-                        <h2
-                          style={{
-                            fontFamily: "var(--font-display)",
-                            fontWeight: 700,
-                            fontStyle: "italic",
-                            fontSize: "1.2rem",
-                            letterSpacing: "-0.01em",
-                            color: "var(--color-ink)",
-                          }}
-                        >
-                          {proj.role}
-                        </h2>
-                        {period && (
-                          <div className="folio" style={{ flexShrink: 0 }}>
-                            {period}
-                          </div>
-                        )}
-                      </div>
-                      {proj.organization && (
-                        <p className="folio" style={{ marginBottom: "0.5rem" }}>
-                          {proj.organization}
-                        </p>
-                      )}
-                      {proj.description && (
-                        <p
-                          style={{
-                            fontFamily: "var(--font-sans)",
-                            fontSize: "0.95rem",
-                            lineHeight: 1.7,
-                            color: "var(--color-ink-soft)",
-                            maxWidth: "65ch",
-                          }}
-                        >
-                          {proj.description}
-                        </p>
-                      )}
-                    </article>
-                  </StaggerItem>
-                );
-              })}
-            </StaggerList>
-          </div>
-        </section>
-      )}
-
-      {/* ── Education ──────────────────────────────────────────── */}
-      <section style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
-        <div className="container-editorial">
-          <FadeUp>
-            <div className="text-label" style={{ marginBottom: "0.5rem" }}>
-              Education
-            </div>
-            <hr className="rule rule-thick" style={{ marginBottom: "3rem" }} />
-          </FadeUp>
-
-          {education.length > 0 ? (
-            <StaggerList>
-              {education.map((edu) => {
-                const period = formatPeriod(edu.startDate, edu.endDate, edu.current);
-                return (
-                  <StaggerItem key={edu.id}>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        flexWrap: "wrap",
-                        alignItems: "flex-start",
-                        gap: "2rem",
-                        paddingBottom: "2rem",
-                        marginBottom: "2rem",
-                        borderBottom: "1px solid var(--color-rule)",
-                      }}
-                    >
-                      <div>
-                        <h2
-                          style={{
-                            fontFamily: "var(--font-display)",
-                            fontWeight: 700,
-                            fontStyle: "italic",
-                            fontSize: "1.3rem",
-                            color: "var(--color-ink)",
-                            letterSpacing: "-0.01em",
-                            marginBottom: "0.3rem",
-                          }}
-                        >
-                          {edu.role}
-                        </h2>
-                        {edu.organization && (
-                          <p
-                            style={{
-                              fontFamily: "var(--font-display)",
-                              fontStyle: "italic",
-                              fontWeight: 400,
-                              fontSize: "1rem",
-                              color: "var(--color-ink-soft)",
-                              marginBottom: "0.4rem",
-                            }}
-                          >
-                            {edu.organization}
-                          </p>
-                        )}
-                        {edu.description && (
-                          <p
-                            style={{
-                              fontFamily: "var(--font-sans)",
-                              fontSize: "0.9rem",
-                              color: "var(--color-ink-muted)",
-                              fontStyle: "italic",
-                              lineHeight: 1.6,
-                            }}
-                          >
-                            {edu.description}
-                          </p>
-                        )}
-                      </div>
-                      {period && (
-                        <div className="folio" style={{ flexShrink: 0 }}>
-                          {period}
-                        </div>
                       )}
                     </div>
                   </StaggerItem>
                 );
               })}
             </StaggerList>
-          ) : (
-            <FadeUp delay={0.1}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  alignItems: "flex-start",
-                  gap: "2rem",
-                }}
-              >
+          </section>
+        )}
+
+        {/* ── Skills ─────────────────────────────────────────────── */}
+        <section className="resume-section" style={sectionStyle}>
+          <SectionHeading>Core Competencies</SectionHeading>
+          {competencies.map(({ group, skills }) => (
+            <div key={group} className="resume-row resume-row-tight">
+              <h3 className="resume-rail folio" style={{ color: "var(--color-ink)" }}>
+                {group}
+              </h3>
+              <p style={{ ...entryNoteStyle, marginTop: 0 }}>{skills.join(", ")}</p>
+            </div>
+          ))}
+        </section>
+
+        {/* ── Projects ───────────────────────────────────────────── */}
+        {projects.length > 0 && (
+          <section className="resume-section" style={sectionStyle}>
+            <SectionHeading>Projects &amp; Initiatives</SectionHeading>
+            {projects.map((proj) => (
+              <article key={proj.id} className="resume-row">
+                <div className="resume-rail folio">
+                  {formatPeriod(proj.startDate, proj.endDate, proj.current)}
+                </div>
                 <div>
-                  <h2
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontWeight: 700,
-                      fontStyle: "italic",
-                      fontSize: "1.3rem",
-                      color: "var(--color-ink)",
-                      letterSpacing: "-0.01em",
-                      marginBottom: "0.3rem",
-                    }}
-                  >
-                    Bachelor of Science in Finance
-                  </h2>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                      fontSize: "1rem",
-                      color: "var(--color-ink-soft)",
-                    }}
-                  >
-                    Gannon University
-                  </p>
+                  <h3 style={entryTitleStyle}>{proj.role}</h3>
+                  {proj.organization && <p style={entryOrgStyle}>{proj.organization}</p>}
+                  {proj.description && <p style={entryNoteStyle}>{proj.description}</p>}
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {/* ── Education ──────────────────────────────────────────── */}
+        <section className="resume-section" style={sectionStyle}>
+          <SectionHeading>Education</SectionHeading>
+          {education.length > 0 ? (
+            education.map((edu) => (
+              <div key={edu.id} className="resume-row">
+                <div className="resume-rail folio">
+                  {formatPeriod(edu.startDate, edu.endDate, edu.current)}
+                </div>
+                <div>
+                  <h3 style={entryTitleStyle}>{edu.role}</h3>
+                  {edu.organization && <p style={entryOrgStyle}>{edu.organization}</p>}
+                  {edu.description && <p style={entryNoteStyle}>{edu.description}</p>}
                 </div>
               </div>
-            </FadeUp>
+            ))
+          ) : (
+            <div className="resume-row">
+              <div className="resume-rail" />
+              <div>
+                <h3 style={entryTitleStyle}>
+                  Triple Major: Entrepreneurship, Finance, and Marketing
+                </h3>
+                <p style={entryOrgStyle}>Gannon University</p>
+              </div>
+            </div>
           )}
+        </section>
 
-          {/* Projects callout */}
-          <FadeUp delay={0.1}>
-            <div
-              style={{
-                marginTop: "3rem",
-                padding: "clamp(1.25rem, 5vw, 2rem)",
-                borderLeft: "4px solid var(--color-yellow)",
-                background: "var(--color-bg-warm)",
-              }}
-              className="no-print"
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "0.95rem",
-                  color: "var(--color-ink-soft)",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                Looking for case studies and builds?
-              </p>
-              <Link href="/projects" className="btn-outline" style={{ display: "inline-block" }}>
-                View Projects &amp; Case Studies →
-              </Link>
-            </div>
-          </FadeUp>
+        {/* ── Certifications ─────────────────────────────────────── */}
+        {awards.length > 0 && (
+          <section className="resume-section" style={sectionStyle}>
+            <SectionHeading>Certifications</SectionHeading>
+            {awards.map((award) => (
+              <div key={award.id} className="resume-row">
+                <div className="resume-rail folio">{award.organization}</div>
+                <div>
+                  <h3 style={entryTitleStyle}>{award.role}</h3>
+                  {award.description && <p style={entryNoteStyle}>{award.description}</p>}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+      </div>
 
-          {/* Print CTA */}
-          <div
+      {/* ── Close ──────────────────────────────────────────────── */}
+      <section
+        className="no-print"
+        style={{ background: "var(--color-ink)", paddingTop: "3.5rem", paddingBottom: "3.5rem" }}
+      >
+        <div
+          className="container-editorial"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1.5rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <p
             style={{
-              marginTop: "3rem",
-              paddingTop: "3rem",
-              borderTop: "1px solid var(--color-rule)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "1.5rem",
-              flexWrap: "wrap",
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontStyle: "italic",
+              fontSize: "clamp(1.4rem, 3vw, 2rem)",
+              color: "#f9f9f9",
             }}
-            className="no-print"
           >
-            <p
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "0.9rem",
-                color: "var(--color-ink-muted)",
-              }}
-            >
-              Save as PDF — File → Print → Save as PDF in your browser.
-            </p>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <PrintButton />
-              <a href="mailto:austin@austin-armstrong.me" className="btn-outline">
-                Get in touch →
-              </a>
-            </div>
+            Let&rsquo;s talk.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+            <a href="mailto:austin@austin-armstrong.me" className="btn-yellow">
+              Email me
+            </a>
+            <PrintButton />
+            <Link href="/projects" className="folio" style={{ color: "#f9f9f9" }}>
+              See my projects
+            </Link>
           </div>
         </div>
       </section>
