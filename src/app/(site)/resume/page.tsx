@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { getCVEntries } from "@/lib/notion";
 import { FadeUp, StaggerList, StaggerItem } from "@/components/ui/Animate";
@@ -140,84 +141,102 @@ export default async function ResumePage() {
       <div style={{ background: "var(--color-yellow)", height: "4px" }} />
       <section className="resume-section" style={{ paddingTop: "4rem", paddingBottom: "3.5rem" }}>
         <div className="container-editorial">
-          <FadeUp>
-            <h1
-              className="resume-name"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontStyle: "italic",
-                fontSize: "clamp(3rem, 8vw, 6.5rem)",
-                lineHeight: 1,
-                letterSpacing: "-0.025em",
-                color: "var(--color-ink)",
-                marginBottom: "1.75rem",
-              }}
-            >
-              <span style={{ display: "block" }}>Austin</span>
-              <span style={{ display: "inline-block", position: "relative" }}>
-                <span
-                  aria-hidden
+          <div className="resume-pdf no-print">
+            <PrintButton className="resume-pdf-btn" />
+          </div>
+          <div className="resume-hero">
+            <div>
+              <FadeUp>
+                <h1
+                  className="resume-name"
                   style={{
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    bottom: "0.06em",
-                    height: "0.4em",
-                    background: "var(--color-yellow)",
-                    zIndex: 0,
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 700,
+                    fontStyle: "italic",
+                    fontSize: "clamp(3rem, 8vw, 6.5rem)",
+                    lineHeight: 1,
+                    letterSpacing: "-0.025em",
+                    color: "var(--color-ink)",
+                    marginBottom: "1.75rem",
                   }}
-                />
-                <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
-              </span>
-            </h1>
-          </FadeUp>
+                >
+                  <span style={{ display: "block" }}>Austin</span>
+                  <span style={{ display: "inline-block", position: "relative" }}>
+                    <span
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        bottom: "0.06em",
+                        height: "0.4em",
+                        background: "var(--color-yellow)",
+                        zIndex: 0,
+                      }}
+                    />
+                    <span style={{ position: "relative", zIndex: 1 }}>Armstrong.</span>
+                  </span>
+                </h1>
+              </FadeUp>
 
-          <FadeUp delay={0.1}>
-            <p
-              className="resume-intro"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontStyle: "italic",
-                fontSize: "clamp(1.15rem, 2.2vw, 1.45rem)",
-                lineHeight: 1.5,
-                color: "var(--color-ink-soft)",
-                maxWidth: "48ch",
-                marginBottom: "1.75rem",
-              }}
-            >
-              I&rsquo;ve managed IT budgets up to $400M at health systems. Now I also run revenue at
-              Autonomi, where I&rsquo;ve closed enterprise AI contracts and built the outbound team.
-            </p>
-            <div style={{ display: "flex", gap: "0.75rem 2rem", flexWrap: "wrap" }}>
-              <a
-                href="mailto:austin@austin-armstrong.me"
-                className="folio"
-                style={{ textDecoration: "none" }}
-              >
-                austin@austin-armstrong.me
-              </a>
-              <a
-                href="https://www.linkedin.com/in/austin-armstrong20/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="folio"
-                style={{ textDecoration: "none" }}
-              >
-                linkedin.com/in/austin-armstrong20
-              </a>
-              <span
-                className="folio"
-                style={{
-                  color: "var(--color-ink)",
-                  borderBottom: "2px solid var(--color-yellow)",
-                  paddingBottom: "1px",
-                }}
-              >
-                Open to enterprise partnerships &amp; advisory roles
-              </span>
+              <FadeUp delay={0.1}>
+                <p
+                  className="resume-intro"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontStyle: "italic",
+                    fontSize: "clamp(1.15rem, 2.2vw, 1.45rem)",
+                    lineHeight: 1.5,
+                    color: "var(--color-ink-soft)",
+                    maxWidth: "48ch",
+                    marginBottom: "1.75rem",
+                  }}
+                >
+                  I&rsquo;ve managed IT budgets up to $400M at health systems. Now I also run
+                  revenue at Autonomi, where I&rsquo;ve closed enterprise AI contracts and built the
+                  outbound team.
+                </p>
+                <div style={{ display: "flex", gap: "0.75rem 2rem", flexWrap: "wrap" }}>
+                  <a
+                    href="mailto:austin@austin-armstrong.me"
+                    className="folio"
+                    style={{ textDecoration: "none" }}
+                  >
+                    austin@austin-armstrong.me
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/austin-armstrong20/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="folio"
+                    style={{ textDecoration: "none" }}
+                  >
+                    linkedin.com/in/austin-armstrong20
+                  </a>
+                  <span
+                    className="folio"
+                    style={{
+                      color: "var(--color-ink)",
+                      borderBottom: "2px solid var(--color-yellow)",
+                      paddingBottom: "1px",
+                    }}
+                  >
+                    Open to enterprise partnerships &amp; advisory roles
+                  </span>
+                </div>
+              </FadeUp>
             </div>
-          </FadeUp>
+            <FadeUp delay={0.1} className="resume-photo no-print">
+              <Image
+                src="/images/Groom_601246435.jpg"
+                alt="Austin Armstrong"
+                width={600}
+                height={800}
+                sizes="300px"
+                priority
+              />
+            </FadeUp>
+          </div>
         </div>
       </section>
 

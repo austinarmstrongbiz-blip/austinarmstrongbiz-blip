@@ -377,6 +377,60 @@ a {
 
 /* ─── RESUME ─────────────────────────────────────────────────────── */
 /* Each role is a card with a dark title bar, so roles stay distinct as you scroll. */
+.resume-pdf {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+.resume-pdf-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0.55rem 0.9rem;
+  background: transparent;
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-ink);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.resume-pdf-btn:hover {
+  background: var(--color-yellow);
+}
+.resume-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 3rem;
+  align-items: end;
+}
+/* The headshot sits on an offset yellow block, the logo's bar turned into a frame. */
+.resume-photo {
+  position: relative;
+  margin: 0 12px 12px 0;
+}
+.resume-photo::before {
+  content: "";
+  position: absolute;
+  inset: 12px -12px -12px 12px;
+  background: var(--color-yellow);
+}
+.resume-photo img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 900px) {
+  .resume-hero {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .resume-photo {
+    max-width: 230px;
+  }
+}
 .resume-body {
   background: var(--color-bg-soft);
   padding-bottom: 5rem;
@@ -677,6 +731,9 @@ a {
   }
   .resume-section .folio {
     font-size: 6.5pt !important;
+  }
+  .resume-hero {
+    display: block;
   }
   /* Keep a section's label with its first card across a page break. */
   .resume-section h2,

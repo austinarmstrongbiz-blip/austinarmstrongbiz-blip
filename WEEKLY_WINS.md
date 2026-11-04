@@ -13,7 +13,7 @@ about how those writes appear on the live website at austin-armstrong.me/resume.
 The resume page at `/resume` fetches from the Notion CV database (`022275c8-be64-4aa4-8d3c-571eaf613d5a`)
 and renders each entry's `Description` field as a **bullet list**.
 
-**Parsing logic (from `src/app/resume/page.tsx`):**
+**Parsing logic (from `src/app/(site)/resume/page.tsx`):**
 
 ```ts
 const bullets = job.description ? job.description.split("\n").filter(Boolean) : [];
@@ -61,27 +61,13 @@ Developed the 2025 Apptio roadmap focusing on capital project prioritization and
 
 ---
 
-## Impact Callout — First Bullet Matters
+## Bold Result — First Number In Each Bullet
 
-The resume page extracts the largest dollar figure from the **first bullet** and
-displays it as a large visual callout next to the job header:
+The resume page bolds the first result in each bullet (a dollar figure, percent,
+multiple, or number over 1,000). There is no big hero number any more.
 
-```ts
-function extractImpactStat(description: string): { num: string; label: string } | null {
-  const match = description.match(/\$[\d,.]+[BMK+]*/);
-  // Returns first match from bullets[0]
-}
-```
-
-**If the first bullet contains a dollar figure, it becomes the hero number for that job.**
-
-Example — Wellstar entry's first bullet:
-
-> "Managed and executed a $250M+ IT budget..."
-
-This renders as `$250M+` in large Basilia type next to the role header.
-
-Keep the highest-impact, most quantified bullet first in each Description.
+Keep the highest-impact, most quantified bullet first in each Description, since
+recruiters read top to bottom. Jaba's bullets stay plain on purpose.
 
 ---
 
@@ -113,17 +99,17 @@ them batch-push on Monday without opening a Claude session.
 **Database ID:** `022275c8-be64-4aa4-8d3c-571eaf613d5a`
 **Collection:** `collection://e80906a0-cfa0-4feb-8a14-95b6689b4d8d`
 
-| Field        | Type         | Notes                                                                       |
-| ------------ | ------------ | --------------------------------------------------------------------------- |
-| Role         | Title        | Job title or project name                                                   |
-| Organization | Rich Text    | Company name                                                                |
-| Type         | Select       | Work / Education / Project / Volunteer / Award                              |
-| Current      | Checkbox     | True = "Present" in the period display                                      |
-| Start Date   | Date         | ISO date                                                                    |
-| End Date     | Date         | ISO date (leave empty if Current = true)                                    |
-| Location     | Rich Text    | City or "Remote"                                                            |
-| Description  | Rich Text    | **One achievement per line. No bullet chars. First line = impact callout.** |
-| Skills       | Multi-select | Leadership / Marketing / Sales / AI / Strategy / Content / Technology       |
+| Field        | Type         | Notes                                                                  |
+| ------------ | ------------ | ---------------------------------------------------------------------- |
+| Role         | Title        | Job title or project name                                              |
+| Organization | Rich Text    | Company name                                                           |
+| Type         | Select       | Work / Education / Project / Volunteer / Award                         |
+| Current      | Checkbox     | True = "Present" in the period display                                 |
+| Start Date   | Date         | ISO date                                                               |
+| End Date     | Date         | ISO date (leave empty if Current = true)                               |
+| Location     | Rich Text    | City or "Remote"                                                       |
+| Description  | Rich Text    | **One achievement per line. No bullet chars. Strongest result first.** |
+| Skills       | Multi-select | Leadership / Marketing / Sales / AI / Strategy / Content / Technology  |
 
 ---
 
@@ -132,7 +118,7 @@ them batch-push on Monday without opening a Claude session.
 Before the SKILL writes any Description content, it should know:
 
 1. **No bullet characters** — the site renders them as plain text
-2. **First bullet = hero number** — put the biggest metric first
+2. **Strongest result first** — put the biggest metric in the first bullet
 3. **Append, never overwrite** — fetch existing content, add a newline, append
 4. **One line = one bullet** — keep each line to 15–25 words
 
